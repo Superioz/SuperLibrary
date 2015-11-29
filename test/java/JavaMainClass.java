@@ -14,14 +14,14 @@ public class JavaMainClass {
 //
 //        MongoCollection mongoCollection = mongoDB.getCollection("testCollection");
 //
-//        FindIterable findIterable = mongoCollection.find(new Document("name", "Hurensohn"));
+//        FindIterable findIterable = mongoCollection.find(new Document("name", "Hans"));
 //
 //        for(Object aFindIterable : findIterable){
 //            System.out.println(aFindIterable);
 //        }
 //        mongoCollection.drop();
 //
-//        mongoCollection.insertOne(new Document("name", "Hurensohn").append("age", 13).append("friends", Arrays.asList(
+//        mongoCollection.insertOne(new Document("name", "Hans").append("age", 13).append("friends", Arrays.asList(
 //                new Document("name", "Peter"), new Document("name", "Hans")
 //        )));
 //        System.out.println("Created");
