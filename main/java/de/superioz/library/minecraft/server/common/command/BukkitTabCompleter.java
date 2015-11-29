@@ -1,6 +1,6 @@
-package de.superioz.library.minecraft.server.command;
+package de.superioz.library.minecraft.server.common.command;
 
-import de.superioz.library.minecraft.server.command.context.TabCompleterContext;
+import de.superioz.library.minecraft.server.common.command.context.TabCompleterContext;
 import de.superioz.library.minecraft.server.event.CommandExecutionErrorEvent;
 import lombok.Getter;
 import org.bukkit.command.CommandSender;

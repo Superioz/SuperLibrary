@@ -3,7 +3,7 @@ package de.superioz.library.test;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.command.CommandHandler;
+import de.superioz.library.minecraft.server.common.command.CommandHandler;
 import de.superioz.library.minecraft.server.exception.CommandRegisterException;
 import org.bukkit.craftbukkit.v1_8_R3.Overridden;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +28,7 @@ public class TestPlugin extends JavaPlugin {
         SuperLibrary.initProtocol(protocolManager);
 
         try{
-            CommandHandler.registerCommand(TestCommandClass.class);
+            CommandHandler.registerCommand(TestCommandClass.class, TestCommandClass2.class);
         }catch(CommandRegisterException e){
             System.out.println(e.getReason());
         }

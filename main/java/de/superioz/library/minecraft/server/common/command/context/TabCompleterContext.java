@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.command.context;
+package de.superioz.library.minecraft.server.common.command.context;
 
 import lombok.Getter;
 import org.bukkit.command.CommandSender;

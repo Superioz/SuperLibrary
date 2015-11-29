@@ -1,7 +1,7 @@
 package de.superioz.library.minecraft.server.event;
 
-import de.superioz.library.minecraft.server.command.context.CommandContext;
-import de.superioz.library.minecraft.server.command.context.TabCompleterContext;
+import de.superioz.library.minecraft.server.common.command.context.CommandContext;
+import de.superioz.library.minecraft.server.common.command.context.TabCompleterContext;
 import org.bukkit.event.*;
 
 /**

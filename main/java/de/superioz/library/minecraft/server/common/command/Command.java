@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.command;
+package de.superioz.library.minecraft.server.common.command;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,7 +28,7 @@ public @interface Command {
 
     String usage() default "";
 
-    CommandWrapper.AllowedSender commandTarget() default CommandWrapper.AllowedSender.PLAYER_AND_CONSOLE;
+    AllowedCommandSender commandTarget() default AllowedCommandSender.PLAYER_AND_CONSOLE;
 
     Class<?> tabCompleter() default BukkitTabCompleter.class;
 

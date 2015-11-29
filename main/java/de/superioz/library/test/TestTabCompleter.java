@@ -1,8 +1,8 @@
 package de.superioz.library.test;
 
-import de.superioz.library.minecraft.server.command.BukkitTabCompleter;
-import de.superioz.library.minecraft.server.command.CommandWrapper;
-import de.superioz.library.minecraft.server.command.context.TabCompleterContext;
+import de.superioz.library.minecraft.server.common.command.BukkitTabCompleter;
+import de.superioz.library.minecraft.server.common.command.CommandWrapper;
+import de.superioz.library.minecraft.server.common.command.context.TabCompleterContext;
 
 import java.util.Arrays;
 import java.util.List;

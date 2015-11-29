@@ -1,11 +1,8 @@
 package de.superioz.library.test;
 
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.command.Command;
-import de.superioz.library.minecraft.server.command.CommandCase;
-import de.superioz.library.minecraft.server.command.CommandWrapper;
-import de.superioz.library.minecraft.server.command.SubCommand;
-import de.superioz.library.minecraft.server.command.context.CommandContext;
+import de.superioz.library.minecraft.server.common.command.*;
+import de.superioz.library.minecraft.server.common.command.context.CommandContext;
 import de.superioz.library.minecraft.server.common.inventory.InventorySize;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
 import de.superioz.library.minecraft.server.common.view.SuperScoreboard;
@@ -23,7 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @Command(label = "test", aliases = "t", desc = "Test", min = -1, permission = "", usage = "",
         commandTarget =
-                CommandWrapper.AllowedSender.PLAYER_AND_CONSOLE, tabCompleter = TestTabCompleter.class)
+                AllowedCommandSender.PLAYER_AND_CONSOLE, tabCompleter = TestTabCompleter.class)
 public class TestCommandClass implements CommandCase {
 
     @Override
@@ -34,7 +31,7 @@ public class TestCommandClass implements CommandCase {
     // =========================================================================================
 
     @SubCommand(label = "inv", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = CommandWrapper.AllowedSender.PLAYER)
+            commandTarget = AllowedCommandSender.PLAYER)
     public void inv(CommandContext context){
         Player player = (Player) context.getSender();
 
@@ -48,7 +45,7 @@ public class TestCommandClass implements CommandCase {
     }
 
     @SubCommand(label = "scoreboard", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = CommandWrapper.AllowedSender.PLAYER)
+            commandTarget = AllowedCommandSender.PLAYER)
     public void scoreboard(CommandContext context){
         Player player = (Player) context.getSender();
 
@@ -59,20 +56,21 @@ public class TestCommandClass implements CommandCase {
         scoreboard.build().show(player);
     }
 
+    @SubCommand.Nested(parent = "scoreboard")
     @SubCommand(label = "scoreboard1", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = CommandWrapper.AllowedSender.PLAYER)
+            commandTarget = AllowedCommandSender.PLAYER)
     public void scoreboard1(CommandContext context){
         Player player = (Player) context.getSender();
 
         SuperScoreboard scoreboard = new SuperScoreboard("&4Scoreboard")
-                .add("&cLeben: &d" + player.getHealth()/2).add("&cName: &d" + player.getDisplayName())
+                .add("&cLeben: &d" + player.getHealth() / 2).add("&cName: &d" + player.getDisplayName())
                 .blankLine().add("&cLevel: &d" + player.getLevel()).blankLine();
 
         scoreboard.build().show(player);
     }
 
     @SubCommand(label = "red", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = CommandWrapper.AllowedSender.PLAYER)
+            commandTarget = AllowedCommandSender.PLAYER)
     public void red(CommandContext context){
         Player player = (Player) context.getSender();
 
@@ -87,12 +85,20 @@ public class TestCommandClass implements CommandCase {
     }
 
     @SubCommand(label = "tab", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = CommandWrapper.AllowedSender.PLAYER)
+            commandTarget = AllowedCommandSender.PLAYER)
     public void tab(CommandContext context){
         Player player = (Player) context.getSender();
 
         player.sendMessage("Set tab & header ..");
         BukkitUtil.setTabHeaderFooter("&cHeader!!!", "&dFooter!!!", player);
     }
+
+    @SubCommand(label = "test1", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test1(CommandContext context){
+        Player player = (Player) context.getSender();
+    }
+
+
 
 }

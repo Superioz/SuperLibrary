@@ -1,8 +1,8 @@
-package de.superioz.library.minecraft.server.command;
+package de.superioz.library.minecraft.server.common.command;
 
 import de.superioz.library.java.util.ReflectionUtils;
 import de.superioz.library.java.util.list.ListUtil;
-import de.superioz.library.minecraft.server.command.context.CommandContext;
+import de.superioz.library.minecraft.server.common.command.context.CommandContext;
 import de.superioz.library.minecraft.server.exception.CommandRegisterException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -10,6 +10,7 @@ import org.bukkit.command.CommandMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +34,16 @@ public class CommandHandler {
             }catch(Exception e){
                 e.printStackTrace();
             }
-        }else{
+        }
+        else{
             return commandMap;
         }
 
         return getCommandMap();
     }
 
-    public static boolean registerCommand(Class<?> commandClass) throws CommandRegisterException{
+    public static boolean registerCommand(Class<?> commandClass, Class<?>... subClasses) throws
+            CommandRegisterException{
         if(!isCommandClass(commandClass)){
             throw new CommandRegisterException(CommandRegisterException.Reason.CLASS_NOT_COMMAND_CASE,
                     commandClass);
@@ -48,10 +51,11 @@ public class CommandHandler {
 
         // Get parent command
         CommandWrapper parentCommand = getParentCommand(commandClass);
-        parentCommand.initialize(getFullCommands(commandClass));
+        parentCommand.initialize(getFullCommands(commandClass, subClasses));
+        initParents(parentCommand);
 
         // Get bukkit command
-        CommandWrapper.BukkitCommand command = parentCommand.getBukkitCommand();
+        BukkitCommand command = parentCommand.getCommand();
 
         for(CommandWrapper c : commands){
             if(c.equals(parentCommand)
@@ -70,8 +74,8 @@ public class CommandHandler {
         return true;
     }
 
-    private static List<CommandWrapper> getFullCommands(Class<?> c){
-        List<CommandWrapper>[] commands = getCommands(c);
+    private static List<CommandWrapper> getFullCommands(Class<?> commandClass, Class<?>... c){
+        List<CommandWrapper>[] commands = getCommands(commandClass, c);
         List<CommandWrapper> subCommands = commands[0];
         List<CommandWrapper> fullCommands = new ArrayList<>();
 
@@ -88,21 +92,29 @@ public class CommandHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private static List<CommandWrapper>[] getCommands(Class<?>... c){
+    private static List<CommandWrapper>[] getCommands(Class<?> commandClass,
+                                                      Class<?>... commandArray){
+        List<Class<?>> commands = new ArrayList<>();
+        commands.add(commandClass);
+        Collections.addAll(commands, commandArray);
+
         List<CommandWrapper> subCommands = new ArrayList<>();
         List<CommandWrapper> nestedCommands = new ArrayList<>();
 
-        for(Class<?> cl : c){
+        for(Class<?> cl : commands){
             for(Method m : cl.getMethods()){
-                if(m.getName().equals(EXECUTE_METHOD_NAME)
+                if(!m.isAnnotationPresent(SubCommand.class)
                         || !isCommandMethod(m))
                     continue;
-                CommandWrapper command = new CommandWrapper(m);
+                CommandWrapper command = new CommandWrapper(m, isNestedCommandMethod(m)
+                        ? CommandType.NESTED : CommandType.SUB);
 
-                if(isNestedCommandMethod(m))
+                if(isNestedCommandMethod(m)){
                     nestedCommands.add(command);
-                else
+                }
+                else{
                     subCommands.add(command);
+                }
             }
         }
 
@@ -110,7 +122,7 @@ public class CommandHandler {
     }
 
     private static CommandWrapper getParentCommand(Class<?> c) throws CommandRegisterException{
-        return new CommandWrapper(getExecuteMethod(c));
+        return new CommandWrapper(getExecuteMethod(c), CommandType.ROOT);
     }
 
     private static List<CommandWrapper> getSubCommands(CommandWrapper command){
@@ -118,6 +130,17 @@ public class CommandHandler {
 
         return nestedCommands.stream().filter(c ->
                 c.getParentCommand().equalsIgnoreCase(command.getLabel())).collect(Collectors.toList());
+    }
+
+    private static void initParents(CommandWrapper parentCommand)
+            throws CommandRegisterException{
+        for(CommandWrapper c : parentCommand.getSubCommands()){
+            c.setParent(parentCommand);
+
+            for(CommandWrapper sc : c.getSubCommands()){
+                sc.setParent(c);
+            }
+        }
     }
 
     private static boolean hasSubCommands(CommandWrapper command){
@@ -138,7 +161,7 @@ public class CommandHandler {
 
     public static CommandWrapper getCommand(String label){
         for(CommandWrapper wr : getCommands(label)){
-            if(!wr.isChild()){
+            if(wr.getCommandType() != CommandType.SUB){
                 return wr;
             }
         }
@@ -156,7 +179,7 @@ public class CommandHandler {
     }
 
     private static boolean isNestedCommandMethod(Method m){
-        return m.isAnnotationPresent(SubCommand.Nested.class)
+        return m.isAnnotationPresent(SubCommand.Nested.class) && m.isAnnotationPresent(SubCommand.class)
                 && ListUtil.listContains(m.getParameterTypes(), CommandContext.class);
     }
 
