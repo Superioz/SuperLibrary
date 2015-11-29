@@ -60,7 +60,7 @@ public class CommandContext {
         if(getCommand().getCommandType() == CommandType.SUB)
             index += 0;
         else if(getCommand().getCommandType() == CommandType.NESTED)
-            index += 2;
+            index += 1;
 
         return getArguments()[index];
     }
