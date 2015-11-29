@@ -21,7 +21,7 @@ public class JavaMainClass {
 //        }
 //        mongoCollection.drop();
 //
-//        mongoCollection.insertOne(new Document("name", "Hans").append("age", 13).append("friends", Arrays.asList(
+//        mongoCollection.insertOne(new Document("name", "Hans").append("age", 15).append("friends", Arrays.asList(
 //                new Document("name", "Peter"), new Document("name", "Hans")
 //        )));
 //        System.out.println("Created");
