@@ -1,6 +1,6 @@
 package de.superioz.library.minecraft.server.event;
 
-import de.superioz.library.minecraft.server.chat.ChatMessageChannel;
+import de.superioz.library.minecraft.server.message.ChatMessageChannel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

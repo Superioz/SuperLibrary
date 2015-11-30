@@ -1,11 +1,13 @@
 package de.superioz.library.test;
 
-import de.superioz.library.minecraft.server.chat.BukkitChat;
+import de.superioz.library.minecraft.server.message.BukkitChat;
 import de.superioz.library.minecraft.server.common.command.AllowedCommandSender;
 import de.superioz.library.minecraft.server.common.command.CommandHandler;
 import de.superioz.library.minecraft.server.common.command.CommandWrapper;
 import de.superioz.library.minecraft.server.common.command.SubCommand;
 import de.superioz.library.minecraft.server.common.command.context.CommandContext;
+import de.superioz.library.minecraft.server.message.MessageChannel;
+import de.superioz.library.minecraft.server.message.PlayerMessager;
 import org.bukkit.entity.Player;
 
 /**
@@ -39,8 +41,11 @@ public class TestCommandClass2 {
             commandTarget = AllowedCommandSender.PLAYER)
     public void info1(CommandContext context){
         Player player = (Player) context.getSender();
+        PlayerMessager messager = new PlayerMessager("&6TEST &8|");
 
-        BukkitChat.send("&7Has Parent? &f" + context.getCommand().hasParent(), player);
+        messager.write("&eHallo. Das ist ein Test", true, MessageChannel.CHAT, player);
+        messager.write("&eHallo. Das ist ein Test", true, MessageChannel.ACTIONBAR, player);
+        messager.write("&eHallo. Das ist ein Test", true, MessageChannel.TITLE, player);
     }
 
 }

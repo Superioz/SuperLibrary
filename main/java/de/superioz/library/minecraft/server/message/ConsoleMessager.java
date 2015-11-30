@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.chat;
+package de.superioz.library.minecraft.server.message;
 
 import org.bukkit.Bukkit;
 

@@ -1,13 +1,18 @@
 package de.superioz.library.test;
 
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.common.command.*;
+import de.superioz.library.minecraft.server.common.command.AllowedCommandSender;
+import de.superioz.library.minecraft.server.common.command.Command;
+import de.superioz.library.minecraft.server.common.command.CommandCase;
+import de.superioz.library.minecraft.server.common.command.SubCommand;
 import de.superioz.library.minecraft.server.common.command.context.CommandContext;
 import de.superioz.library.minecraft.server.common.inventory.InventorySize;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
+import de.superioz.library.minecraft.server.common.lab.ctags.NametagManager;
 import de.superioz.library.minecraft.server.common.view.SuperScoreboard;
 import de.superioz.library.minecraft.server.exception.InventoryCreateException;
 import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.ChatUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -97,8 +102,17 @@ public class TestCommandClass implements CommandCase {
             commandTarget = AllowedCommandSender.PLAYER)
     public void test1(CommandContext context){
         Player player = (Player) context.getSender();
+
+        player.sendMessage(ChatColor.YELLOW + "Set name ..");
+
+        NametagManager.clear(player.getDisplayName());
+        NametagManager.update(player.getDisplayName(), ChatUtil.colored("&7[&9DEV&7] &r"), "");
     }
 
-
+    @SubCommand(label = "test2", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test2(CommandContext context){
+        Player player = (Player) context.getSender();
+    }
 
 }

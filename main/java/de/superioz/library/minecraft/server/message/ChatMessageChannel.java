@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.chat;
+package de.superioz.library.minecraft.server.message;
 
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.event.ChatMessageChannelEvent;
@@ -27,7 +27,7 @@ public abstract class ChatMessageChannel {
     }
 
     protected String getMessage(String msg, boolean spacePrefix){
-        return ChatUtil.colored(msg);
+        return !spacePrefix ? ChatUtil.colored(prefix + msg) : ChatUtil.colored(prefix + " " + msg);
     }
 
     protected boolean callEvent(ChatMessageChannel channel, String message,

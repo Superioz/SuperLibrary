@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolManager;
 import de.superioz.library.minecraft.server.listener.DefaultCommandListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,6 +48,10 @@ public class SuperLibrary {
 
     private static void registerListener(){
         pluginManager().registerEvents(new DefaultCommandListener(), plugin());
+    }
+
+    public static void registerListener(Listener listener){
+        pluginManager().registerEvents(listener, plugin());
     }
 
 }

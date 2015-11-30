@@ -39,6 +39,10 @@ public class CommandContext {
         return root;
     }
 
+    public CommandWrapper getParent(){
+        return getCommand().getParent();
+    }
+
     public CommandWrapper getCommand(){
         if(command == null)
             return getRoot();
