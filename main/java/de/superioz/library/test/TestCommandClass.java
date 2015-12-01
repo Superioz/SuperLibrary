@@ -8,14 +8,15 @@ import de.superioz.library.minecraft.server.common.command.SubCommand;
 import de.superioz.library.minecraft.server.common.command.context.CommandContext;
 import de.superioz.library.minecraft.server.common.inventory.InventorySize;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
-import de.superioz.library.minecraft.server.common.lab.ctags.NametagManager;
 import de.superioz.library.minecraft.server.common.view.SuperScoreboard;
 import de.superioz.library.minecraft.server.exception.InventoryCreateException;
 import de.superioz.library.minecraft.server.util.BukkitUtil;
-import de.superioz.library.minecraft.server.util.ChatUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -98,21 +99,15 @@ public class TestCommandClass implements CommandCase {
         BukkitUtil.setTabHeaderFooter("&cHeader!!!", "&dFooter!!!", player);
     }
 
-    @SubCommand(label = "test1", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = AllowedCommandSender.PLAYER)
-    public void test1(CommandContext context){
-        Player player = (Player) context.getSender();
-
-        player.sendMessage(ChatColor.YELLOW + "Set name ..");
-
-        NametagManager.clear(player.getDisplayName());
-        NametagManager.update(player.getDisplayName(), ChatUtil.colored("&7[&9DEV&7] &r"), "");
-    }
-
     @SubCommand(label = "test2", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
             commandTarget = AllowedCommandSender.PLAYER)
     public void test2(CommandContext context){
         Player player = (Player) context.getSender();
+
+        player.sendMessage(org.bukkit.ChatColor.RED + "Set nametag ..");
+        de.superioz.library.minecraft.server.common.lab.nametag.
+                NametagManager.setNametag("&9[DEV] &r", " &5[OP]", false,
+                Collections.singletonList(player), Arrays.asList(BukkitUtil.onlinePlayers()));
     }
 
 }
