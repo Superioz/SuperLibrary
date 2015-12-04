@@ -154,6 +154,21 @@ public class CommandHandler {
         return commands;
     }
 
+    public static List<CommandWrapper> getAllCommands() {
+        List<CommandWrapper> commands = new ArrayList<>();
+
+        for(CommandWrapper c : getCommands()){
+            commands.add(c);
+
+            for(CommandWrapper sc : c.getSubCommands()){
+                commands.add(sc);
+
+                commands.addAll(sc.getSubCommands().stream().collect(Collectors.toList()));
+            }
+        }
+        return commands;
+    }
+
     public static List<CommandWrapper> getCommands(String label){
         return getCommands().stream().filter(wr
                 -> wr.getLabel().equalsIgnoreCase(label)).collect(Collectors.toList());

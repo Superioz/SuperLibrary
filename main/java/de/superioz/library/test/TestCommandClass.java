@@ -110,4 +110,13 @@ public class TestCommandClass implements CommandCase {
                 Collections.singletonList(player), Arrays.asList(BukkitUtil.onlinePlayers()));
     }
 
+    @SubCommand(label = "test3", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test3(CommandContext context){
+        Player player = (Player) context.getSender();
+
+        System.out.println("Argumente: " + Arrays.toString(context.getArguments()) + " [" + context
+                .getArgumentsLength()+"]");
+    }
+
 }

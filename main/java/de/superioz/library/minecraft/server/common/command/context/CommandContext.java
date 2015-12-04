@@ -5,6 +5,8 @@ import de.superioz.library.minecraft.server.common.command.CommandType;
 import de.superioz.library.minecraft.server.common.command.CommandWrapper;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
+
 /**
  * This class was created as a part of SuperLibrary
  *
@@ -32,7 +34,7 @@ public class CommandContext {
     }
 
     public int getArgumentsLength(){
-        return args.length;
+        return getArguments().length;
     }
 
     public CommandWrapper getRoot(){
@@ -51,6 +53,14 @@ public class CommandContext {
 
     public void setCommand(CommandWrapper command){
         this.command = command;
+
+        int startIndex = 0;
+        if(getCommand().getCommandType() == CommandType.SUB
+                || getCommand().getCommandType() == CommandType.NESTED){
+            startIndex = 1;
+        }
+
+        this.args = Arrays.copyOfRange(args, startIndex, args.length);
     }
 
     public boolean allows(AllowedCommandSender sender){
@@ -61,12 +71,11 @@ public class CommandContext {
 
     // /test arg0 arg1 arg2 arg3
     public String getArgument(int index){
-        if(getCommand().getCommandType() == CommandType.SUB)
-            index += 0;
-        else if(getCommand().getCommandType() == CommandType.NESTED)
-            index += 1;
+        if((index-1) < 0
+                || (index) > args.length)
+            index = 1;
 
-        return getArguments()[index];
+        return getArguments()[index-1];
     }
 
 }

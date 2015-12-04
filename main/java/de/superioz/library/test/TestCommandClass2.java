@@ -10,6 +10,8 @@ import de.superioz.library.minecraft.server.message.MessageChannel;
 import de.superioz.library.minecraft.server.message.PlayerMessager;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+
 /**
  * This class was created as a part of SuperLibrary
  *
@@ -34,6 +36,10 @@ public class TestCommandClass2 {
                 }
             }
         }
+
+        System.out.println("Argumente: " + Arrays.toString(context.getArguments()));
+        for(int i = 1; i < context.getArgumentsLength()+1; i++){
+            System.out.println("#" + i + " > " + context.getArgument(i)); }
     }
 
     @SubCommand.Nested(parent = "info")
@@ -46,6 +52,15 @@ public class TestCommandClass2 {
         messager.write("&eHallo. Das ist ein Test", true, MessageChannel.CHAT, player);
         messager.write("&eHallo. Das ist ein Test", true, MessageChannel.ACTIONBAR, player);
         messager.write("&eHallo. Das ist ein Test", true, MessageChannel.TITLE, player);
-    }
 
+        System.out.println("Argumente: " + Arrays.toString(context.getArguments()));
+
+        if(context.getArgumentsLength() > 1){
+            String a = context.getArgument(1);
+            System.out.println("Argument #1: " + a);
+        }
+
+        for(int i = 1; i < context.getArgumentsLength()+1; i++){
+            System.out.println("#" + i + " > " + context.getArgument(i)); }
+    }
 }
