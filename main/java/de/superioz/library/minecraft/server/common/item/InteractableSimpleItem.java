@@ -4,6 +4,7 @@ import de.superioz.library.minecraft.server.util.BukkitUtil;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
 import de.superioz.library.minecraft.server.event.WrappedInventoryClickEvent;
+import de.superioz.library.minecraft.server.util.ItemUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -83,7 +84,7 @@ public class InteractableSimpleItem implements Listener {
                 return;
             }
 
-            if(event.getCurrentItem().isSimilar(this.getStack())){
+            if(ItemUtil.compare(this.getStack(), event.getCurrentItem())){
                 eventConsumer.accept(new WrappedInventoryClickEvent(event));
             }
         }

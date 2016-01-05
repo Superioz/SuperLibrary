@@ -48,7 +48,7 @@ public class MySQL extends Database {
 
     @Override
     public Connection openConnection()  {
-        if (checkConnection()) {
+        if(checkConnection()){
             return connection;
         }
 
@@ -60,7 +60,7 @@ public class MySQL extends Database {
                     + "&autoReconnect=true");
             return connection;
         }catch(SQLException | ClassNotFoundException e){
-            e.printStackTrace();
+            //
         }
 
         return null;

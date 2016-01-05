@@ -7,14 +7,13 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedSignedProperty;
 import de.superioz.library.java.util.ReflectionUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Server;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -48,6 +47,11 @@ public class BukkitUtil {
         return pl.toArray(new Player[pl.size()]);
     }
 
+    public static void pushAwayEntity(Entity e, Location from, double speed){
+        Vector unit = e.getLocation().toVector().subtract(from.toVector()).normalize();
+        e.setVelocity(unit.multiply(speed));
+    }
+
     public static boolean compareInventory(Inventory first, Inventory second){
         if(first == null || second == null) return true;
         if(!first.getTitle().equals(second.getTitle())) return false;
@@ -63,6 +67,20 @@ public class BukkitUtil {
                 return false;
         }
         return true;
+    }
+
+    public static boolean hasContent(PlayerInventory inventory){
+        for(ItemStack item : inventory.getContents()){
+            if(item != null
+                    && item.getType() != Material.AIR)
+                return true;
+        }
+        for(ItemStack item : inventory.getArmorContents()){
+            if(item != null
+                    && item.getType() != Material.AIR)
+                return true;
+        }
+        return false;
     }
 
     public static String getVersion(){
@@ -87,8 +105,7 @@ public class BukkitUtil {
     }
 
     public static void sendPacket(Object packet, Player... players){
-        for(Player p : players)
-            sendPacket(packet, p);
+        for(Player p : players){ sendPacket(packet, p); }
     }
 
     public static void sendPacket(Object packet, List<Player> except, Player... players){

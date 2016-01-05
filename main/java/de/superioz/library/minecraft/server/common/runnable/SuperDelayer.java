@@ -12,7 +12,11 @@ import java.util.function.Consumer;
  */
 public class SuperDelayer extends SuperRunnable {
 
-    public void run(Consumer<BukkitRunnable> onFinish, int delay){
+    public SuperDelayer(int counter){
+        super(counter);
+    }
+
+    public void run(Consumer<BukkitRunnable> onFinish){
         super.runnable = new BukkitRunnable() {
             @Override
             public void run(){
@@ -20,7 +24,7 @@ public class SuperDelayer extends SuperRunnable {
             }
         };
 
-        super.getRunnable().runTaskLater(SuperLibrary.plugin(), delay);
+        super.getRunnable().runTaskLater(SuperLibrary.plugin(), getCounter());
     }
 
 

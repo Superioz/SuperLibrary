@@ -32,6 +32,16 @@ public class TimeUtils {
         return time;
     }
 
+    public static String[] toClock(int seconds, boolean withZero){
+        String secondsString = (seconds < 10) && withZero ? "0"+seconds : seconds+"";
+        int minutes = seconds / 60;
+        String minutesString = (minutes < 10) && withZero ? "0"+minutes : minutes+"";
+        int hours = minutes / 60;
+        String hoursString = (hours < 10) && withZero ? "0"+hours : hours+"";
+
+        return new String[]{secondsString,minutesString,hoursString};
+    }
+
     /**
      * Returns the year in an integer
      */

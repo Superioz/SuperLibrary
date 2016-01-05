@@ -57,7 +57,7 @@ public class SQLite extends Database {
                             + dbLocation);
             return connection;
         }catch(SQLException | ClassNotFoundException e){
-            e.printStackTrace();
+            //
         }
 
         return null;

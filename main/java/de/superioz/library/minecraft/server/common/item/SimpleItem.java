@@ -1,6 +1,7 @@
 package de.superioz.library.minecraft.server.common.item;
 
 import de.superioz.library.minecraft.server.util.ChatUtil;
+import de.superioz.library.minecraft.server.util.ItemUtil;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -10,8 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -60,6 +63,19 @@ public class SimpleItem {
     public SimpleItem setLore(String... lines){
         ItemMeta m = getItemMeta();
         m.setLore(Arrays.asList(ChatUtil.colored(lines)));
+        getWrappedStack().setItemMeta(m);
+        return this;
+    }
+
+    public SimpleItem addLore(String... lines){
+        ItemMeta m = getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        if(m.hasLore())
+            lore = m.getLore();
+        Collections.addAll(lore, ChatUtil.colored(lines));
+
+        m.setLore(lore);
         getWrappedStack().setItemMeta(m);
         return this;
     }
@@ -192,6 +208,10 @@ public class SimpleItem {
 
     public boolean compareType(Material mat){
         return getType() == mat;
+    }
+
+    public boolean compareWith(ItemStack item){
+        return ItemUtil.compare(getWrappedStack(), item);
     }
 
 }

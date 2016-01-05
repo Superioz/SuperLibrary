@@ -12,20 +12,24 @@ import java.util.function.Consumer;
  */
 public class SuperRepeater extends SuperRunnable {
 
-    public void run(Consumer<BukkitRunnable> onRepeat, Consumer<BukkitRunnable> onFinish, int delay, int repeats){
-        super.counter = repeats;
-        super.runnable = new BukkitRunnable() {
+    public SuperRepeater(int counter){
+        super(counter);
+    }
+
+    public void run(Consumer<BukkitRunnable> onRepeat, Consumer<BukkitRunnable> onFinish, int delay){
+        super.setRunnable(new BukkitRunnable() {
             @Override
             public void run(){
-                if(counter == 0){
+                if(getCounter() == 0){
                     onFinish.accept(this);
                     this.cancel();
+                    return;
                 }
 
                 onRepeat.accept(this);
-                counter--;
+                setCounter(getCounter()-1);
             }
-        };
+        });
 
         super.getRunnable().runTaskTimer(SuperLibrary.plugin(), 0L, delay);
     }

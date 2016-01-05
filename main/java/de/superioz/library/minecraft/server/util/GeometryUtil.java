@@ -1,11 +1,12 @@
 package de.superioz.library.minecraft.server.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class was created as a part of SuperFramework
@@ -70,6 +71,36 @@ public class GeometryUtil {
         return circle(loc, radius, height, hollow, false);
     }
 
+    public static Set<Block> fill4(Location middle, Material type){
+        Block b = middle.getBlock();
+        return fill4(b.getWorld(), b.getX(), b.getY(), b.getZ(), type, false);
+    }
+
+    public static Set<Block> fill4(World world, int x, int y, int z, Material oldType, boolean flipped){
+        Stack<SimpleBlock> stack = new Stack<>();
+        Set<Block> blockSet = new HashSet<>();
+
+        stack.push(new SimpleBlock(x, z));
+
+        while(!stack.empty()){
+            SimpleBlock block = stack.pop();
+            Block b = world.getBlockAt(block.getX(), y, block.getZ());
+
+            if(blockSet.size() >= MAX_FLOODFILL_SIZE)
+                break;
+
+            if(!blockSet.contains(b) && (flipped ? b.getType() != oldType : b.getType() == oldType)){
+                blockSet.add(world.getBlockAt(block.getX(), y, block.getZ()));
+
+                stack.push(new SimpleBlock(block.getX(), block.getZ() + 1));
+                stack.push(new SimpleBlock(block.getX(), block.getZ() - 1));
+                stack.push(new SimpleBlock(block.getX() + 1, block.getZ()));
+                stack.push(new SimpleBlock(block.getX() - 1, block.getZ()));
+            }
+        }
+        return blockSet;
+    }
+
     // ===============================================================================================================
 
     private static List<Location> circle(Location origin, int radius, int height, boolean hollow, boolean sphere){
@@ -87,6 +118,28 @@ public class GeometryUtil {
             }
         }
         return blocks;
+    }
+
+    public static final int MAX_FLOODFILL_SIZE = Integer.MAX_VALUE;
+
+    private static class SimpleBlock {
+
+        private int x;
+        private int z;
+
+        public SimpleBlock(int x, int z){
+            this.x = x;
+            this.z = z;
+        }
+
+        public int getX(){
+            return x;
+        }
+
+        public int getZ(){
+            return z;
+        }
+
     }
 
 }

@@ -8,6 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * This class was created as a part of SuperLibrary
  *
@@ -17,6 +20,7 @@ public class SuperLibrary {
     private static ProtocolManager protocolManager;
     private static JavaPlugin plugin;
     private static PluginManager pluginManager;
+    private static ExecutorService executorService;
 
     public static void initProtocol(ProtocolManager manager){
         protocolManager = manager;
@@ -25,6 +29,7 @@ public class SuperLibrary {
     public static void initFor(JavaPlugin pl){
         plugin = pl;
         pluginManager = Bukkit.getServer().getPluginManager();
+        executorService = Executors.newCachedThreadPool();
 
         // register default listener
         registerListener();
@@ -48,6 +53,10 @@ public class SuperLibrary {
 
     private static void registerListener(){
         pluginManager().registerEvents(new DefaultCommandListener(), plugin());
+    }
+
+    public static ExecutorService getExecutorService(){
+        return executorService;
     }
 
     public static void registerListener(Listener listener){

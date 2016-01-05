@@ -4,10 +4,12 @@ import de.superioz.library.minecraft.server.common.item.InteractableSimpleItem;
 import de.superioz.library.minecraft.server.exception.InventoryCreateException;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -115,6 +117,10 @@ public class SuperInventory {
 
     public String getTitle(){
         return title;
+    }
+
+    public List<HumanEntity> getViewers(){
+        return getInventory().getViewers();
     }
 
 }

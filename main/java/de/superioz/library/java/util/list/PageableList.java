@@ -17,7 +17,10 @@ public class PageableList<T> {
     public PageableList(int objectsPerPage, List<T> objects){
         this.objects = objects;
         this.objectsPerPage = objectsPerPage;
+        this.init();
+    }
 
+    public void init(){
         this.totalPages = objects.size() / objectsPerPage;
         if(objects.size() % objectsPerPage != 0) this.totalPages++;
     }
@@ -57,4 +60,14 @@ public class PageableList<T> {
     public int getTotalPages(){
         return totalPages;
     }
+
+    public List<T> getObjects(){
+        return objects;
+    }
+
+    public void setObjects(List<T> objects){
+        this.objects = objects;
+        this.init();
+    }
+
 }

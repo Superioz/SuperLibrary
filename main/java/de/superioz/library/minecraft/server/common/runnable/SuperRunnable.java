@@ -10,10 +10,14 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Superioz
  */
 @Getter
+@Setter
 public abstract class SuperRunnable {
 
-    @Setter
-    protected int counter = 0;
+    public SuperRunnable(int counter){
+        setCounter(counter);
+    }
+
+    protected int counter;
     protected BukkitRunnable runnable;
 
 }
