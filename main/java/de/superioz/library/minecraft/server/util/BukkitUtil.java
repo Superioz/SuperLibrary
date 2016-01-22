@@ -28,12 +28,27 @@ import java.util.List;
  */
 public class BukkitUtil {
 
+    /**
+     * Verify given username
+     *
+     * @param name The name
+     *
+     * @return The result
+     */
     public static boolean verifyUsername(String name){
         return (name != null)
                 && !(name.isEmpty())
                 && !(name.length() > 16);
     }
 
+    /**
+     * Get entity of given world and id
+     *
+     * @param world    The world
+     * @param entityID The id
+     *
+     * @return The entity
+     */
     public static Entity getEntity(World world, int entityID){
         for(Entity e : world.getEntities()){
             if(e.getEntityId() == entityID)
@@ -42,16 +57,36 @@ public class BukkitUtil {
         return null;
     }
 
+    /**
+     * Get all online players
+     *
+     * @return The array
+     */
     public static Player[] onlinePlayers(){
         Collection<? extends Player> pl = Bukkit.getOnlinePlayers();
         return pl.toArray(new Player[pl.size()]);
     }
 
+    /**
+     * Push away given entity from loc
+     *
+     * @param e     The entity
+     * @param from  The from location
+     * @param speed The speed
+     */
     public static void pushAwayEntity(Entity e, Location from, double speed){
         Vector unit = e.getLocation().toVector().subtract(from.toVector()).normalize();
         e.setVelocity(unit.multiply(speed));
     }
 
+    /**
+     * Compares given inventories
+     *
+     * @param first  First inventory
+     * @param second Second inventory
+     *
+     * @return The result
+     */
     public static boolean compareInventory(Inventory first, Inventory second){
         if(first == null || second == null) return true;
         if(!first.getTitle().equals(second.getTitle())) return false;
@@ -69,6 +104,13 @@ public class BukkitUtil {
         return true;
     }
 
+    /**
+     * Checks if given inventory has content
+     *
+     * @param inventory The inventory
+     *
+     * @return The result
+     */
     public static boolean hasContent(PlayerInventory inventory){
         for(ItemStack item : inventory.getContents()){
             if(item != null
@@ -83,10 +125,21 @@ public class BukkitUtil {
         return false;
     }
 
+    /**
+     * Get version of current bukkit
+     *
+     * @return The version as string
+     */
     public static String getVersion(){
         return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     }
 
+    /**
+     * Send given packet to given player
+     *
+     * @param packet The packet
+     * @param player The player
+     */
     public static void sendPacket(Object packet, Player player){
         try{
             Object craftPlayer = player.getClass()
@@ -104,10 +157,23 @@ public class BukkitUtil {
         }
     }
 
+    /**
+     * Send packet to given players
+     *
+     * @param packet  The packet
+     * @param players The players
+     */
     public static void sendPacket(Object packet, Player... players){
         for(Player p : players){ sendPacket(packet, p); }
     }
 
+    /**
+     * Send given packet to given players except given other players
+     *
+     * @param packet  The packet
+     * @param except  The exceptions
+     * @param players The players
+     */
     public static void sendPacket(Object packet, List<Player> except, Player... players){
         for(Player p : players){
             if(except.contains(p)) continue;
@@ -115,6 +181,13 @@ public class BukkitUtil {
         }
     }
 
+    /**
+     * Get handle of given world
+     *
+     * @param world The world
+     *
+     * @return The handle
+     */
     public static Object getHandle(World world){
         Object nms_world = null;
         Method entity_getHandle = ReflectionUtils.getMethod(world.getClass(), "getHandle");
@@ -126,6 +199,13 @@ public class BukkitUtil {
         return nms_world;
     }
 
+    /**
+     * Get handle of given entity
+     *
+     * @param entity The entity
+     *
+     * @return The handle
+     */
     public static Object getHandle(Entity entity){
         Object obj = null;
         try{
@@ -136,14 +216,31 @@ public class BukkitUtil {
         return obj;
     }
 
+    /**
+     * Get the package of the nms
+     *
+     * @return The name
+     */
     public static String getNMSPackage(){
         return "net.minecraft.server." + getVersion();
     }
 
+    /**
+     * Get the package of the obc
+     *
+     * @return The name
+     */
     public static String getOBCPackage(){
         return "org.bukkit.craftbukkit." + getVersion();
     }
 
+    /**
+     * Gets nms class with given name
+     *
+     * @param exactName The name
+     *
+     * @return The class
+     */
     public static Class<?> getNMSClassExact(String exactName){
         Class<?> clazz;
         try{
@@ -155,6 +252,11 @@ public class BukkitUtil {
         return clazz;
     }
 
+    /**
+     * Gets obc class with given name
+     * @param exactName The name
+     * @return The class
+     */
     public static Class<?> getOBCClassExact(String exactName){
         Class<?> clazz;
         try{
@@ -166,6 +268,9 @@ public class BukkitUtil {
         return clazz;
     }
 
+    /**
+     * Get nms class object
+     */
     public static Object getNMSClassObject(String exactName, Object... args) throws Exception{
         Class<?> clazz = getNMSClassExact(exactName);
         Object obj = null;
@@ -182,6 +287,9 @@ public class BukkitUtil {
         return obj;
     }
 
+    /**
+     * Get gamemode handle
+     */
     public static Object getGamemodeHandle(GameMode gameMode){
         Class c = getNMSClassExact("EnumGamemode");
         if(c == null){
@@ -198,6 +306,9 @@ public class BukkitUtil {
         }
     }
 
+    /**
+     * Get nms text comp
+     */
     @SuppressWarnings("unchecked")
     public static Object getNMSTextComp(String text){
         if(text == null || text.isEmpty()){
@@ -214,6 +325,9 @@ public class BukkitUtil {
         }
     }
 
+    /**
+     * Get chat base comp
+     */
     @SuppressWarnings("unchecked")
     public static Object getChatBaseComp(String text){
         Class chatBase = getNMSClassExact("IChatBaseComponent$ChatSerializer");
@@ -232,6 +346,9 @@ public class BukkitUtil {
         return null;
     }
 
+    /**
+     * Get session service
+     */
     public static Object getSessionService(){
         Server server = Bukkit.getServer();
         try{
@@ -247,6 +364,9 @@ public class BukkitUtil {
         throw new IllegalStateException("No session service found.");
     }
 
+    /**
+     * Get fill method of session service
+     */
     public static Method getFillMethod(Object sessionService){
         for(Method m : sessionService.getClass().getDeclaredMethods()){
             if(m.getName().equals("fillProfileProperties")){
@@ -256,6 +376,9 @@ public class BukkitUtil {
         throw new IllegalStateException("No fillProfileProperties method found in the session service.");
     }
 
+    /**
+     * Get texture properties with given name
+     */
     public static Collection<WrappedSignedProperty> getTextureProperties(String name){
         WrappedGameProfile profile = WrappedGameProfile
                 .fromOfflinePlayer(Bukkit.getOfflinePlayer(name));
@@ -271,14 +394,23 @@ public class BukkitUtil {
         return profile.getProperties().get("textures");
     }
 
+    /**
+     * Set tab header footer for players
+     */
     public static void setTabHeaderFooter(String header, String footer, Player... players){
         sendTabHeaderFooter(header, footer, players);
     }
 
+    /**
+     * Set tab name of player
+     */
     public static void setTabName(Player player, String newName){
         player.setPlayerListName(ChatUtil.colored(newName));
     }
 
+    /**
+     * Send tab header footer packet to players
+     */
     private static void sendTabHeaderFooter(String header, String footer, Player... players){
         PacketContainer packet = de.superioz.library.main.SuperLibrary.protocolManager()
                 .createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
@@ -297,6 +429,9 @@ public class BukkitUtil {
         ProtocolUtil.sendServerPacket(packet, players);
     }
 
+    /**
+     * Only important for me tho
+     */
     public static void flashRedScreen(int redness, Player player){
         // Redness
         int value = redness;
@@ -312,13 +447,19 @@ public class BukkitUtil {
         ProtocolUtil.sendServerPacket(packet, player);
     }
 
-    private static PacketContainer getPacket(){
+    /**
+     * Get packet of red screen
+     */
+    private static PacketContainer getBorderPacket(){
         return de.superioz.library.main.SuperLibrary
                 .protocolManager().createPacket(PacketType.Play.Server.WORLD_BORDER);
     }
 
+    /**
+     * Init world border for player
+     */
     private static PacketContainer initWorldBorder(int distance, Player player){
-        PacketContainer packet = getPacket();
+        PacketContainer packet = getBorderPacket();
         packet.getWorldBorderActions().write(0, EnumWrappers.WorldBorderAction.INITIALIZE);
         packet.getIntegers()
                 .write(0, 29999984)

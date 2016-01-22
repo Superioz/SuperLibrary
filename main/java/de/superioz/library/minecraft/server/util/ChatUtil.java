@@ -7,10 +7,24 @@ import org.bukkit.ChatColor;
  */
 public class ChatUtil {
 
+    /**
+     * Colors given string
+     *
+     * @param s The string
+     *
+     * @return The colored string
+     */
     public static String colored(String s){
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+    /**
+     * Colors all given strings
+     *
+     * @param strings The strings
+     *
+     * @return The colored strings
+     */
     public static String[] colored(String... strings){
         String[] colored = new String[strings.length];
 

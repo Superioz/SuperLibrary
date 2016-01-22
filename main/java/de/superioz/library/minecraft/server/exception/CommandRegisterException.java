@@ -15,6 +15,8 @@ public class CommandRegisterException extends Exception {
         this.clazz = clazz;
     }
 
+    // -- Intern methods
+
     public String getReason(){
         return reason.getReason() + " ["+clazz.getSimpleName()+"]";
     }

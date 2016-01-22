@@ -24,22 +24,47 @@ public class SimpleCache<T> implements Cache, Iterable<T> {
         this.list = list;
     }
 
+    /**
+     * Adds given object to cache
+     *
+     * @param object The object
+     */
     public void add(T object){
         if(!list.contains(object))
             this.list.add(object);
     }
+
+    /**
+     * Gets object from given index
+     *
+     * @param index The index
+     *
+     * @return The object
+     */
     public T get(int index){
         return getCached().get(index);
     }
 
+    /**
+     * Removes given object from cache
+     *
+     * @param object The object
+     */
     public void remove(T object){
         if(list.contains(object))
             this.list.remove(object);
     }
 
+    /**
+     * Removes object with given index
+     *
+     * @param index The index
+     */
     public void remove(int index){
         this.list.remove(index);
     }
+
+    // -- Intern methods
 
     public List<T> getCached(){
         return list;
@@ -52,7 +77,7 @@ public class SimpleCache<T> implements Cache, Iterable<T> {
 
     @Override
     public void from(JsonFile file){
-        this.list = file.read(new TypeToken<ArrayList<T>>(){}.getType());
+        this.list = file.read(new TypeToken<ArrayList<T>>() {}.getType());
 
         if(this.list == null)
             this.list = new ArrayList<>();

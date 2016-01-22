@@ -78,6 +78,9 @@ public class ReflectionUtils {
         return (Method) obj;
     }
 
+    /**
+     * Set a field.
+     */
     public static void setField(String field, Object obj, Object instance){
         Field f;
         try{

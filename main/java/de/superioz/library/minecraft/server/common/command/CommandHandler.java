@@ -25,6 +25,11 @@ public class CommandHandler {
     private static List<CommandWrapper> commands = new ArrayList<>();
     public static final String EXECUTE_METHOD_NAME = "execute";
 
+    /**
+     * Gets the commandMap with reflection
+     *
+     * @return The commandmap object
+     */
     public static CommandMap getCommandMap(){
         if(commandMap == null){
             try{
@@ -42,6 +47,16 @@ public class CommandHandler {
         return getCommandMap();
     }
 
+    /**
+     * Registers given command class
+     *
+     * @param commandClass The class
+     * @param subClasses   All classes of all sub commands
+     *
+     * @return The registering result
+     *
+     * @throws CommandRegisterException
+     */
     public static boolean registerCommand(Class<?> commandClass, Class<?>... subClasses) throws
             CommandRegisterException{
         if(!isCommandClass(commandClass)){
@@ -74,6 +89,14 @@ public class CommandHandler {
         return true;
     }
 
+    /**
+     * Gets all full commands
+     *
+     * @param commandClass The class
+     * @param c            The master class
+     *
+     * @return The list of commands
+     */
     private static List<CommandWrapper> getFullCommands(Class<?> commandClass, Class<?>... c){
         List<CommandWrapper>[] commands = getCommands(commandClass, c);
         List<CommandWrapper> subCommands = commands[0];
@@ -91,6 +114,14 @@ public class CommandHandler {
         return fullCommands;
     }
 
+    /**
+     * Get all commands with class
+     *
+     * @param commandClass The class
+     * @param commandArray The array
+     *
+     * @return The list of command arrays
+     */
     @SuppressWarnings("unchecked")
     private static List<CommandWrapper>[] getCommands(Class<?> commandClass,
                                                       Class<?>... commandArray){
@@ -121,10 +152,26 @@ public class CommandHandler {
         return new List[]{subCommands, nestedCommands};
     }
 
+    /**
+     * Gets the parent class of given class
+     *
+     * @param c The class
+     *
+     * @return The command
+     *
+     * @throws CommandRegisterException
+     */
     private static CommandWrapper getParentCommand(Class<?> c) throws CommandRegisterException{
         return new CommandWrapper(getExecuteMethod(c), CommandType.ROOT);
     }
 
+    /**
+     * Gets all sub commands of given command
+     *
+     * @param command The command
+     *
+     * @return The list of all sub commands
+     */
     private static List<CommandWrapper> getSubCommands(CommandWrapper command){
         List<CommandWrapper> nestedCommands = getCommands(command.parentClass)[1];
 
@@ -132,6 +179,13 @@ public class CommandHandler {
                 c.getParentCommand().equalsIgnoreCase(command.getLabel())).collect(Collectors.toList());
     }
 
+    /**
+     * Init the parents for given parentCommand's sub commands
+     *
+     * @param parentCommand The parent command
+     *
+     * @throws CommandRegisterException
+     */
     private static void initParents(CommandWrapper parentCommand)
             throws CommandRegisterException{
         for(CommandWrapper c : parentCommand.getSubCommands()){
@@ -143,18 +197,24 @@ public class CommandHandler {
         }
     }
 
+    /**
+     * Checks if given command has subCommands
+     *
+     * @param command The command
+     *
+     * @return The result
+     */
     private static boolean hasSubCommands(CommandWrapper command){
         List<CommandWrapper> subCommands = getSubCommands(command);
         return subCommands != null && subCommands.size() != 0;
     }
 
-    // ================================================================================================
-
-    public static List<CommandWrapper> getCommands(){
-        return commands;
-    }
-
-    public static List<CommandWrapper> getAllCommands() {
+    /**
+     * Get all commands exists in registerlist
+     *
+     * @return The list of commands
+     */
+    public static List<CommandWrapper> getAllCommands(){
         List<CommandWrapper> commands = new ArrayList<>();
 
         for(CommandWrapper c : getCommands()){
@@ -169,11 +229,25 @@ public class CommandHandler {
         return commands;
     }
 
+    /**
+     * Get commands of given label
+     *
+     * @param label The label
+     *
+     * @return The list of commands
+     */
     public static List<CommandWrapper> getCommands(String label){
         return getCommands().stream().filter(wr
                 -> wr.getLabel().equalsIgnoreCase(label)).collect(Collectors.toList());
     }
 
+    /**
+     * Get the command wrapper of given label
+     *
+     * @param label The label as string
+     *
+     * @return The command
+     */
     public static CommandWrapper getCommand(String label){
         for(CommandWrapper wr : getCommands(label)){
             if(wr.getCommandType() != CommandType.SUB){
@@ -181,6 +255,30 @@ public class CommandHandler {
             }
         }
         return null;
+    }
+
+    /**
+     * Get method for executing the command
+     *
+     * @param c The class
+     *
+     * @return The method
+     *
+     * @throws CommandRegisterException
+     */
+    private static Method getExecuteMethod(Class<?> c) throws CommandRegisterException{
+        try{
+            return c.getDeclaredMethod(EXECUTE_METHOD_NAME, CommandContext.class);
+        }catch(NoSuchMethodException e){
+            throw new CommandRegisterException(CommandRegisterException.Reason
+                    .CLASS_NOT_COMMAND_CASE, c);
+        }
+    }
+
+    // -- Intern methods
+
+    public static List<CommandWrapper> getCommands(){
+        return commands;
     }
 
     private static boolean isCommandClass(Class<?> c){
@@ -200,15 +298,6 @@ public class CommandHandler {
 
     private static boolean isTabCompleter(Class<?> c){
         return c.getSuperclass().equals(BukkitTabCompleter.class);
-    }
-
-    private static Method getExecuteMethod(Class<?> c) throws CommandRegisterException{
-        try{
-            return c.getDeclaredMethod(EXECUTE_METHOD_NAME, CommandContext.class);
-        }catch(NoSuchMethodException e){
-            throw new CommandRegisterException(CommandRegisterException.Reason
-                    .CLASS_NOT_COMMAND_CASE, c);
-        }
     }
 
 }

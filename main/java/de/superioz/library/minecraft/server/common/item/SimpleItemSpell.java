@@ -17,6 +17,8 @@ public class SimpleItemSpell {
         this.level = level;
     }
 
+    // -- Intern methods
+
     public Enchantment getEnchantment(){
         return enchantment;
     }

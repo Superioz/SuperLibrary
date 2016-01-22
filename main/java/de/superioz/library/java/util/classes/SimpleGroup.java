@@ -17,6 +17,8 @@ public class SimpleGroup<A, B, C> {
         this.object3 = object3;
     }
 
+    // -- Intern methods
+
     public A getObject1(){
         return object1;
     }

@@ -29,6 +29,15 @@ public class BukkitCommandExecutor {
         this.executorClass = clazz;
     }
 
+    /**
+     * The on command method
+     *
+     * @param commandSender The sender
+     * @param label         The command label
+     * @param args          The args
+     *
+     * @return The result
+     */
     public boolean onCommand(CommandSender commandSender, String label, String[] args){
         // Get command
         command = CommandHandler.getCommand(label);
@@ -46,6 +55,13 @@ public class BukkitCommandExecutor {
         return false;
     }
 
+    /**
+     * Execute the command with given context
+     *
+     * @param context The context
+     *
+     * @return The result
+     */
     private boolean executeCommand(CommandContext context){
         try{
             int length = context.getArgumentsLength();
@@ -94,6 +110,13 @@ public class BukkitCommandExecutor {
         }
     }
 
+    /**
+     * Get the execute method for given class
+     *
+     * @param clazz The class
+     *
+     * @return The method
+     */
     private Method getExecuteCommand(Class<?> clazz){
         try{
             return clazz.getDeclaredMethod(CommandHandler.EXECUTE_METHOD_NAME, CommandContext.class);
@@ -103,6 +126,14 @@ public class BukkitCommandExecutor {
         return null;
     }
 
+    /**
+     * Check given context for given command
+     *
+     * @param context The context
+     * @param command The command
+     *
+     * @return The result
+     */
     private boolean checkCommandContext(CommandContext context, CommandWrapper command){
         CommandSender commandSender = context.getSender();
 
@@ -113,7 +144,7 @@ public class BukkitCommandExecutor {
 
             // Fire event
             SuperLibrary.callEvent(new CommandExecutionErrorEvent(CommandExecutionErrorEvent
-                            .Reason.INVALID_COMMAND_USAGE, context));
+                    .Reason.INVALID_COMMAND_USAGE, context));
             return false;
         }
 

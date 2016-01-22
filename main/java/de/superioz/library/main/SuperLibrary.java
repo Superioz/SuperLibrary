@@ -35,6 +35,8 @@ public class SuperLibrary {
         registerListener();
     }
 
+    // -- Intern methods
+
     public static JavaPlugin plugin(){
         return plugin;
     }

@@ -16,6 +16,8 @@ public enum SupportedFiletype {
         this.s = name;
     }
 
+    // -- Intern methods
+
     public String getName(){
         return s;
     }

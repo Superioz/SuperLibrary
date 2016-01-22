@@ -25,6 +25,15 @@ public abstract class BukkitTabCompleter {
         this.tabCompleterClass = wrapper.getTabCompleterClass();
     }
 
+    /**
+     * Tab complete method
+     *
+     * @param sender The sender
+     * @param label  The command label
+     * @param args   The arguments
+     *
+     * @return The result as list
+     */
     public List tabComplete(CommandSender sender, String label, String[] args){
         TabCompleterContext completerContext = new TabCompleterContext(sender, label, args);
 
@@ -35,6 +44,8 @@ public abstract class BukkitTabCompleter {
 
         return this.onTabComplete(completerContext);
     }
+
+    // -- Intern methods
 
     public abstract List<String> onTabComplete(TabCompleterContext context);
 

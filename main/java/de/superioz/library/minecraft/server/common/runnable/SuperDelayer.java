@@ -16,6 +16,10 @@ public class SuperDelayer extends SuperRunnable {
         super(counter);
     }
 
+    /**
+     * Run method
+     * @param onFinish What happens after finishing?
+     */
     public void run(Consumer<BukkitRunnable> onFinish){
         super.runnable = new BukkitRunnable() {
             @Override

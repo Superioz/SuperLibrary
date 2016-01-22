@@ -15,14 +15,23 @@ public class PlayerMessager extends ChatMessageChannel {
         super(prefix, Target.PLAYER);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void write(String message, Player... players){
         this.write(message, false, players);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void write(String message, boolean spacePrefix, Player... players){
         this.write(message, spacePrefix, MessageChannel.CHAT, players);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void write(String message, boolean spacePrefix, MessageChannel channel, Player... players){
         if(!super.callEvent(this, message, getChannelTarget(), BukkitUtil.onlinePlayers()))
             return;
@@ -37,19 +46,28 @@ public class PlayerMessager extends ChatMessageChannel {
                 break;
             case TITLE:
                 for(Player p : players)
-                    ViewManager.sendTitle(p, getMessage(message, spacePrefix));
+                    ViewManager.sendTitle(getMessage(message, spacePrefix), p);
                 break;
         }
     }
 
+    /**
+     * Only important for me tho
+     */
     public void broadcast(String message){
         this.broadcast(message, false);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void broadcast(String message, boolean spacePrefix){
         this.broadcast(message, spacePrefix, MessageChannel.CHAT);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void broadcast(String message, boolean spacePrefix, MessageChannel channel){
         this.write(message, spacePrefix, channel, BukkitUtil.onlinePlayers());
     }

@@ -19,6 +19,11 @@ public class JsonFile extends CustomFile {
         gsonLibrary = new Gson();
     }
 
+    /**
+     * Loads the file
+     *
+     * @param copyDefaults Should
+     */
     public void load(boolean copyDefaults){
         super.load(copyDefaults, true);
     }
@@ -26,15 +31,22 @@ public class JsonFile extends CustomFile {
     public void write(Object obj){
         String json = gsonLibrary.toJson(obj);
 
-        try {
+        try{
             FileWriter writer = new FileWriter(super.file);
             writer.write(json);
             writer.close();
-        } catch (IOException e) {
+        }catch(IOException e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * Reads file with given master class (as type)
+     *
+     * @param clazz The class
+     *
+     * @return The object
+     */
     @SuppressWarnings("unchecked")
     public <T> T read(Class clazz){
         try{
@@ -46,6 +58,13 @@ public class JsonFile extends CustomFile {
         return null;
     }
 
+    /**
+     * Reads file with given type
+     *
+     * @param type The type
+     *
+     * @return The object
+     */
     @SuppressWarnings("unchecked")
     public <T> T read(Type type){
         try{

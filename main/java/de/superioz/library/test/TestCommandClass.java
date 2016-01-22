@@ -114,7 +114,7 @@ public class TestCommandClass implements CommandCase {
         Player player = (Player) context.getSender();
 
         player.sendMessage(org.bukkit.ChatColor.RED + "Set nametag ..");
-        de.superioz.library.minecraft.server.common.lab.nametag.
+        de.superioz.library.minecraft.server.lab.nametag.
                 NametagManager.setNametag("&9[DEV] &r", " &5[OP]", false,
                 Collections.singletonList(player), Arrays.asList(BukkitUtil.onlinePlayers()));
     }

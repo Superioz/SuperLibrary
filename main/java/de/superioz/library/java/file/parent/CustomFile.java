@@ -22,12 +22,18 @@ public abstract class CustomFile {
         file = new File(root + pathAdd, this.filename);
     }
 
-    private void copyDefaultsFrom(InputStream in, File file) {
+    /**
+     * Takes a file with the same name as this file and copies the content from it
+     *
+     * @param in   The file
+     * @param file This file
+     */
+    private void copyDefaultsFrom(InputStream in, File file){
         if(in == null
                 || file == null)
             return;
 
-        try {
+        try{
             OutputStream out = new FileOutputStream(file);
             byte[] buffer = new byte[1024];
             int len;
@@ -38,11 +44,17 @@ public abstract class CustomFile {
 
             out.close();
             in.close();
-        } catch (Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * Loads this file
+     *
+     * @param copyDefaults If defaults should be copied into this file
+     * @param create       If the file should also be created
+     */
     public void load(boolean copyDefaults, boolean create){
         if(!file.exists()){
             file.getParentFile().mkdirs();
@@ -63,11 +75,16 @@ public abstract class CustomFile {
         }
     }
 
+    /**
+     * Deletes this file
+     *
+     * @return If the deletion was successful
+     */
     protected boolean delete(){
         return this.file.delete();
     }
 
-    // ===============================0 GETTER 0================================
+    // -- Intern methods
 
     public String getFilename(){
         return filename;

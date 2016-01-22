@@ -26,6 +26,8 @@ public class CommandExecutionErrorEvent extends Event {
         this.tContext = context;
     }
 
+    // -- Intern methods
+
     @Override
     public HandlerList getHandlers(){
         return handlers;

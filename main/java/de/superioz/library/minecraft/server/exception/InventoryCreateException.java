@@ -19,6 +19,8 @@ public class InventoryCreateException extends Exception {
         this.reason = reason;
     }
 
+    // -- Intern methods
+
     public SuperInventory getParent(){
         return parent;
     }

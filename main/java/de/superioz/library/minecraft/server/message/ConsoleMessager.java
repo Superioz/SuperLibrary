@@ -13,10 +13,16 @@ public class ConsoleMessager extends ChatMessageChannel {
         super(prefix, Target.CONSOLE);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void write(String message){
         this.write(message, false);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void write(String message, boolean spacePrefix){
         if(!super.callEvent(this, message, getChannelTarget())){
             Bukkit.getConsoleSender().sendMessage(getMessage(message, spacePrefix));

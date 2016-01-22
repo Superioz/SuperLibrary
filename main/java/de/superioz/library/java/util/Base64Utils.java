@@ -86,6 +86,9 @@ public class Base64Utils {
         }
     }
 
+    /**
+     * Transforms the given array into a base64 format
+     */
     public static String itemStackArrayToBase64(ItemStack[] items) throws IllegalStateException {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -107,6 +110,9 @@ public class Base64Utils {
         }
     }
 
+    /**
+     * Transforms given base64 into an itemstack array
+     */
     public static ItemStack[] itemStackArrayFromBase64(String data) throws IOException {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));

@@ -29,6 +29,8 @@ public class ChatMessageChannelEvent extends Event implements Cancellable {
         this.playerTargets = playerTargets;
     }
 
+    // -- Intern methods
+
     public String getMessage(){
         return message;
     }

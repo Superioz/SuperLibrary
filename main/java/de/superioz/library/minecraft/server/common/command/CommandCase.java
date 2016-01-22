@@ -9,6 +9,11 @@ import de.superioz.library.minecraft.server.common.command.context.CommandContex
  */
 public interface CommandCase {
 
+    /**
+     * Executes the command
+     *
+     * @param context The context
+     */
     void execute(CommandContext context);
 
 }

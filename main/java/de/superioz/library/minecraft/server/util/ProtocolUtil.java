@@ -16,14 +16,15 @@ public class ProtocolUtil {
 
     /**
      * Sends a packetcontainer to given players
+     *
      * @param pc the packetcontainer
-     * @param p The players
+     * @param p  The players
      */
     public static void sendServerPacket(PacketContainer pc, Player... p){
         try{
             if(p.length == 0){
                 for(final Player pl : Bukkit.getOnlinePlayers()){
-                    SuperLibrary.protocolManager().sendServerPacket(pl,pc);
+                    SuperLibrary.protocolManager().sendServerPacket(pl, pc);
                 }
             }
             else{
@@ -36,17 +37,20 @@ public class ProtocolUtil {
         }
     }
 
+    /**
+     * Not important. Util method
+     */
     public static void sendServerPacket(PacketContainer pc, List<Player> not, Player... p){
         try{
             if(p.length == 0){
                 for(final Player pl : Bukkit.getOnlinePlayers()){
-                    if(not.contains(pl))continue;
-                    SuperLibrary.protocolManager().sendServerPacket(pl,pc);
+                    if(not.contains(pl)) continue;
+                    SuperLibrary.protocolManager().sendServerPacket(pl, pc);
                 }
             }
             else{
                 for(Player pl : p){
-                    if(not.contains(pl))continue;
+                    if(not.contains(pl)) continue;
                     SuperLibrary.protocolManager().sendServerPacket(pl, pc);
                 }
             }
@@ -63,14 +67,14 @@ public class ProtocolUtil {
     }
 
     public static byte toByte(boolean flag, int bitMask){
-        return (byte)(flag ? bitMask : 0);
+        return (byte) (flag ? bitMask : 0);
     }
 
     /**
      * Turns value to byte
      */
     public static byte toByte(int integer){
-        return (byte)integer;
+        return (byte) integer;
     }
 
     /**

@@ -23,27 +23,54 @@ public class MappedCache<T, V> implements Cache, Iterable<T> {
         this.map = map;
     }
 
-    public HashMap<T, V> getCached(){
-        return map;
-    }
-
+    /**
+     * Get object from given key
+     *
+     * @param key The key
+     *
+     * @return The object
+     */
     public V get(T key){
         if(contains(key))
             return map.get(key);
         return null;
     }
 
+    /**
+     * Remove object from given key
+     *
+     * @param key The key
+     */
     public void remove(T key){
         if(contains(key))
             map.remove(key);
     }
 
+    /**
+     * Puts given value with given key into map
+     *
+     * @param key   The key
+     * @param value The value
+     */
     public void put(T key, V value){
         map.put(key, value);
     }
 
+    /**
+     * Checks if map contains given key
+     *
+     * @param key The key
+     *
+     * @return The result
+     */
     public boolean contains(T key){
         return map.containsKey(key);
+    }
+
+    // -- Intern methods
+
+    public HashMap<T, V> getCached(){
+        return map;
     }
 
     @Override
@@ -53,11 +80,12 @@ public class MappedCache<T, V> implements Cache, Iterable<T> {
 
     @Override
     public void from(JsonFile file){
-        this.map = file.read(new TypeToken<HashMap<T, V>>(){}.getType());
+        this.map = file.read(new TypeToken<HashMap<T, V>>() {}.getType());
     }
 
     @Override
     public Iterator<T> iterator(){
         return map.keySet().iterator();
     }
+
 }

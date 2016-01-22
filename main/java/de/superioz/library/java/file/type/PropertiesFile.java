@@ -22,6 +22,8 @@ public class PropertiesFile extends CustomFile {
         super(filename, extraPath, root, SupportedFiletype.PROPERTIES);
     }
 
+    // -- Intern methods
+
     @Override
     public void load(boolean copyDefaults, boolean create){
         super.load(copyDefaults, true);

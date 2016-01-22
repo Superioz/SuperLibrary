@@ -26,8 +26,6 @@ public class MongoDB {
     public static final int DEFAULT_CONFIG_PORT = 27019;
     public static final int DEFAULT_WEBSTATUS_PORT = 28017;
 
-    // ========================================= Constructor =======================================
-
     public MongoDB(String serverAddress, int port){
         this.serverAddress = new ServerAddress(serverAddress, port);
         this.client = new MongoClient(this.serverAddress);
@@ -41,40 +39,68 @@ public class MongoDB {
         this.connect(database);
     }
 
-
-    // ========================================= OTHER =======================================
-
+    /**
+     * Connect to given database
+     *
+     * @param database The database name
+     */
     public void connect(String database){
         this.database = this.client.getDatabase(database);
     }
 
-    public MongoDatabase getDatabase(){
-        return this.database;
-    }
-
+    /**
+     * Creates a collection with given name
+     *
+     * @param coll The name
+     */
     public void createCollection(String coll){
         getDatabase().createCollection(coll);
     }
 
+    /**
+     * Deletes the collection with given name
+     *
+     * @param coll The name
+     */
     public void deleteCollection(String coll){
         if(collectionExists(coll))
             getDatabase().getCollection(coll).drop();
     }
 
+    /**
+     * Checks if given collection exists
+     *
+     * @param name The name
+     *
+     * @return The result
+     */
     public boolean collectionExists(String name){
-        for (final String n : getDatabase().listCollectionNames()) {
-            if (n.equals(name)) {
+        for(final String n : getDatabase().listCollectionNames()){
+            if(n.equals(name)){
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Gets the collection with given name
+     *
+     * @param collection The name
+     *
+     * @return The collection
+     */
     public MongoCollection getCollection(String collection){
         if(!collectionExists(collection)){
             createCollection(collection);
         }
         return getDatabase().getCollection(collection);
+    }
+
+    // -- Intern methods
+
+    public MongoDatabase getDatabase(){
+        return this.database;
     }
 
     public String getDatabaseName(){

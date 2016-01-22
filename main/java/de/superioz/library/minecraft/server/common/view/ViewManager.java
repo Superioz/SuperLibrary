@@ -19,31 +19,73 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ViewManager {
 
-    private static Class packetClass = BukkitUtil.getNMSClassExact("PacketPlayOutChat");
-    private static Class chatComponentClass = BukkitUtil.getNMSClassExact("IChatBaseComponent");
+    private static final Class packetClass = BukkitUtil.getNMSClassExact("PacketPlayOutChat");
+    private static final Class chatComponentClass = BukkitUtil.getNMSClassExact("IChatBaseComponent");
 
+    /**
+     * Send a hotbar message to given player
+     *
+     * @param text    The text
+     * @param players The players
+     */
     public static void sendHotbarMessage(String text, Player... players){
-        for(Player p : players)
-            sendHotbarMessagePacket(text, p);
+        for(Player p : players){ sendHotbarMessagePacket(text, p); }
     }
 
-    public static void sendTitle(Player player, String title, String subtitle, int fadeIn,
-                                 int stay, int fadeOut, boolean timeUnitSeconds){
-        new CraftTitle(title, subtitle, new int[]{fadeIn, stay, fadeOut}).send(timeUnitSeconds, player);
+    /**
+     * Send title to given players
+     *
+     * @param title           The title
+     * @param subtitle        The subtitle
+     * @param fadeIn          Fadein time
+     * @param stay            Stay time
+     * @param fadeOut         Fadeout time
+     * @param timeUnitSeconds Seconds or ticks?
+     * @param players         The players
+     */
+    public static void sendTitle(String title, String subtitle, int fadeIn,
+                                 int stay, int fadeOut, boolean timeUnitSeconds, Player... players){
+        new CraftTitle(title, subtitle, new int[]{fadeIn, stay, fadeOut}).send(timeUnitSeconds, players);
     }
 
-    public static void sendTitle(Player player, String title, String subtitle){
-        sendTitle(player, title, subtitle, 1, 1, 1, true);
+    /**
+     * Send title to given players
+     *
+     * @param title    The title
+     * @param subtitle The subtitle
+     * @param players  The players
+     */
+    public static void sendTitle(String title, String subtitle, Player... players){
+        sendTitle(title, subtitle, 1, 1, 1, true, players);
     }
 
-    public static void sendTitle(Player player, String title){
-        sendTitle(player, title, "");
+    /**
+     * Send title to given players
+     *
+     * @param title   The title
+     * @param players The players
+     */
+    public static void sendTitle(String title, Player... players){
+        sendTitle(title, "", players);
     }
 
+    /**
+     * Set sight for given spectator
+     *
+     * @param camera    The camera
+     * @param spectator The spectator who gets given camera
+     */
     public static void setSight(Player camera, Player spectator){
         ProtocolUtil.sendServerPacket(getPacket(camera.getEntityId()), spectator);
     }
 
+    /**
+     * Get packet with given id
+     *
+     * @param cameraID The id
+     *
+     * @return The packet
+     */
     private static PacketContainer getPacket(int cameraID){
         PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.CAMERA);
         packet.getIntegers().write(0, cameraID);
@@ -51,7 +93,7 @@ public class ViewManager {
         return packet;
     }
 
-    //============================================ PRIVATE ============================================
+    // -- Intern methods
 
     @SuppressWarnings("unchecked")
     private static void sendHotbarMessagePacket(String text, Player player){
@@ -92,70 +134,36 @@ public class ViewManager {
             this.setTimings(timings);
         }
 
-        //============================================ GETTER ============================================
-
-        public int getFadeIn(){
-            return timings[0];
-        }
-
-        public int getFadeOut(){
-            return timings[2];
-        }
-
-        public int getStay(){
-            return timings[1];
-        }
-
-        public int[] getTimings(){
-            return timings;
-        }
-
-        public String getTitle(){
-            return title;
-        }
-
-        public String getSubTitle(){
-            return subTitle;
-        }
-
-        //============================================ SETTER ============================================
-
-        public void setFadeIn(int fadeIn){
-            this.timings[0] = fadeIn;
-        }
-
-        public void setFadeOut(int fadeOut){
-            this.timings[2] = fadeOut;
-        }
-
-        public void setTitle(String title){
-            this.title = title;
-        }
-
-        public void setSubTitle(String subTitle){
-            this.subTitle = subTitle;
-        }
-
-        public void setStay(int stay){
-            this.timings[1] = stay;
-        }
-
+        /**
+         * Set the timings for this
+         *
+         * @param timings The timings as array
+         */
         public void setTimings(int[] timings){
             int[] timeValues = timings;
 
             if(timings != null && timings.length != 3){
-                timeValues = new int[]{1,1,1};
+                timeValues = new int[]{1, 1, 1};
             }
 
             this.timings = timeValues;
         }
 
-        //============================================ PROTOCOL ============================================
-
+        /**
+         * Get the packet
+         *
+         * @return The container
+         */
         public PacketContainer getPacket(){
             return SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.TITLE);
         }
 
+        /**
+         * Send packet to given players
+         *
+         * @param ticks   The ticks
+         * @param players The players
+         */
         public void send(boolean ticks, Player... players){
             // Timings
             if(timings != null && timings.length == 3){
@@ -199,6 +207,52 @@ public class ViewManager {
 
         public void send(Player... players){
             this.send(false, players);
+        }
+
+        // -- Intern methods
+
+        public int getFadeIn(){
+            return timings[0];
+        }
+
+        public int getFadeOut(){
+            return timings[2];
+        }
+
+        public int getStay(){
+            return timings[1];
+        }
+
+        public int[] getTimings(){
+            return timings;
+        }
+
+        public String getTitle(){
+            return title;
+        }
+
+        public String getSubTitle(){
+            return subTitle;
+        }
+
+        public void setFadeIn(int fadeIn){
+            this.timings[0] = fadeIn;
+        }
+
+        public void setFadeOut(int fadeOut){
+            this.timings[2] = fadeOut;
+        }
+
+        public void setTitle(String title){
+            this.title = title;
+        }
+
+        public void setSubTitle(String subTitle){
+            this.subTitle = subTitle;
+        }
+
+        public void setStay(int stay){
+            this.timings[1] = stay;
         }
 
     }

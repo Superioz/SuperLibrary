@@ -41,13 +41,25 @@ public class SimpleItem {
         this.wrapped = item;
     }
 
-    // ===========================================================================
-
+    /**
+     * Set the type of this item
+     *
+     * @param mat The material
+     *
+     * @return This
+     */
     public SimpleItem setType(Material mat){
         getWrappedStack().setType(mat);
         return this;
     }
 
+    /**
+     * Set the name of this item
+     *
+     * @param name The name
+     *
+     * @return This
+     */
     public SimpleItem setName(String name){
         ItemMeta m = getItemMeta();
         m.setDisplayName(ChatUtil.colored(name));
@@ -55,11 +67,25 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Set the amount of this item
+     *
+     * @param amount The amount
+     *
+     * @return This
+     */
     public SimpleItem setAmount(int amount){
         getWrappedStack().setAmount(amount);
         return this;
     }
 
+    /**
+     * Set the lore of this item
+     *
+     * @param lines The lines
+     *
+     * @return This
+     */
     public SimpleItem setLore(String... lines){
         ItemMeta m = getItemMeta();
         m.setLore(Arrays.asList(ChatUtil.colored(lines)));
@@ -67,6 +93,13 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Add lore to item
+     *
+     * @param lines Lines as string
+     *
+     * @return This
+     */
     public SimpleItem addLore(String... lines){
         ItemMeta m = getItemMeta();
         List<String> lore = new ArrayList<>();
@@ -80,6 +113,13 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Set this item unbreakable or not
+     *
+     * @param flag The flag (y or n)
+     *
+     * @return This
+     */
     public SimpleItem setUnbreakable(boolean flag){
         ItemMeta m = getItemMeta();
         m.spigot().setUnbreakable(flag);
@@ -87,6 +127,14 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Set given flags to this item
+     *
+     * @param val   Add or remove the flags?
+     * @param flags The flags
+     *
+     * @return This
+     */
     public SimpleItem setFlags(boolean val, ItemFlag... flags){
         ItemMeta m = getItemMeta();
         if(val) m.addItemFlags(flags);
@@ -96,6 +144,13 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Sets the color of this item
+     *
+     * @param color The color
+     *
+     * @return This
+     */
     public SimpleItem setColor(Color color){
         if(compareType(Material.LEATHER_BOOTS)
                 || compareType(Material.LEATHER_LEGGINGS)
@@ -108,6 +163,13 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Sets the color of this item
+     *
+     * @param color The color
+     *
+     * @return This
+     */
     public SimpleItem setColor(DyeColor color){
         if(compareType(Material.LEATHER_BOOTS)
                 || compareType(Material.LEATHER_LEGGINGS)
@@ -126,11 +188,25 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Set durability of this item
+     *
+     * @param durability The durability/metadata
+     *
+     * @return This
+     */
     public SimpleItem setDurability(short durability){
         getWrappedStack().setDurability(durability);
         return this;
     }
 
+    /**
+     * Enchant this item
+     *
+     * @param enchantments All enchantments to put on
+     *
+     * @return This
+     */
     public SimpleItem enchant(SimpleItemSpell... enchantments){
         for(SimpleItemSpell e : enchantments){
             getWrappedStack().addUnsafeEnchantment(e.getEnchantment(), e.getLevel());
@@ -138,13 +214,21 @@ public class SimpleItem {
         return this;
     }
 
-    // ===========================================================================
-
+    /**
+     * Clears the type
+     *
+     * @return This
+     */
     public SimpleItem clearType(){
         getWrappedStack().setType(Material.STONE);
         return this;
     }
 
+    /**
+     * Clears the name
+     *
+     * @return This
+     */
     public SimpleItem clearName(){
         ItemMeta m = getItemMeta();
         m.setDisplayName("");
@@ -152,11 +236,21 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Clears the amount
+     *
+     * @return This
+     */
     public SimpleItem clearAmount(){
         getWrappedStack().setAmount(1);
         return this;
     }
 
+    /**
+     * Clears the lore
+     *
+     * @return This
+     */
     public SimpleItem clearLore(){
         ItemMeta m = getItemMeta();
         m.setLore(Collections.singletonList(""));
@@ -164,23 +258,38 @@ public class SimpleItem {
         return this;
     }
 
+    /**
+     * Clear all item flags
+     *
+     * @return This
+     */
     public SimpleItem clearFlags(){
         setUnbreakable(false);
         setFlags(false, ItemFlag.values());
         return this;
     }
 
+    /**
+     * Clear the durability
+     *
+     * @return This
+     */
     public SimpleItem clearDurability(){
         getWrappedStack().setDurability((short) 0);
         return this;
     }
 
+    /**
+     * Clear all enchantments
+     *
+     * @return This
+     */
     public SimpleItem clearEnchantments(){
         for(Enchantment e : Enchantment.values()){ getWrappedStack().removeEnchantment(e); }
         return this;
     }
 
-    // ===========================================================================
+    // -- Intern methods
 
     public ItemMeta getItemMeta(){
         return getWrappedStack().getItemMeta();

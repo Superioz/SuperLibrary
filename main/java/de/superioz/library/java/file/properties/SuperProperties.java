@@ -22,6 +22,11 @@ public class SuperProperties<E> extends PropertiesFile {
         properties = new Properties();
     }
 
+    /**
+     * Loads the properties
+     *
+     * @param copyDefaults Should defaults be copied into the file
+     */
     public void load(boolean copyDefaults){
         super.load(copyDefaults, true);
 
@@ -32,10 +37,13 @@ public class SuperProperties<E> extends PropertiesFile {
         }
     }
 
-    public Properties getProperties(){
-        return properties;
-    }
-
+    /**
+     * Gets object from given key
+     *
+     * @param key The key
+     *
+     * @return The object
+     */
     @SuppressWarnings("unchecked")
     public E get(String key){
         if(filter != null)
@@ -44,12 +52,29 @@ public class SuperProperties<E> extends PropertiesFile {
             return (E) properties.get(key);
     }
 
+    /**
+     * Set object to file with given key
+     *
+     * @param key    The key
+     * @param object The object
+     */
     public void set(String key, E object){
         properties.setProperty(key, String.valueOf(object));
     }
 
+    /**
+     * Applies filter to this file
+     *
+     * @param filter The filter
+     */
     public void applyFilter(PropertyFilter<E> filter){
         this.filter = filter;
+    }
+
+    // -- Intern methods
+
+    public Properties getProperties(){
+        return properties;
     }
 
 }

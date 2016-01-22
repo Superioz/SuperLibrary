@@ -37,6 +37,8 @@ public class WrappedInventoryClickEvent {
         return this;
     }
 
+    // -- Intern methods
+
     public ItemStack getItem(){
         return event.getCurrentItem();
     }

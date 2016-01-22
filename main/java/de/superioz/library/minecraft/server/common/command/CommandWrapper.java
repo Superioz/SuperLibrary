@@ -70,6 +70,9 @@ public class CommandWrapper {
         this.initCommand();
     }
 
+    /**
+     * Init this command
+     */
     private void initCommand(){
         this.command = new BukkitCommand(this, this.label);
         this.command.setExecutor(this.commandExecutor);
@@ -88,10 +91,13 @@ public class CommandWrapper {
             this.command.setDescription(this.description);
     }
 
-    public void initialize(List<CommandWrapper> subCommands){
-        this.subCommands = subCommands;
-    }
-
+    /**
+     * Get subcommand with given label
+     *
+     * @param label The label
+     *
+     * @return The command
+     */
     public CommandWrapper getSubCommand(String label){
         if(getSubCommands() == null)
             return null;
@@ -108,6 +114,8 @@ public class CommandWrapper {
         return null;
     }
 
+    // -- Intern methods
+
     public boolean hasSubCommand(String label){
         return getSubCommand(label) != null;
     }
@@ -118,6 +126,10 @@ public class CommandWrapper {
 
     public boolean hasParent(){
         return getParent() != null;
+    }
+
+    public void initialize(List<CommandWrapper> subCommands){
+        this.subCommands = subCommands;
     }
 
 }

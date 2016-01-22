@@ -22,6 +22,30 @@ public class BukkitCommand extends org.bukkit.command.Command {
         this.commandWrapper = commandWrapper;
     }
 
+    /**
+     * Set tab completer for this command
+     * @param clazz The tab completer class
+     * @param wrapper The command
+     */
+    public void setTabCompleter(Class<?> clazz, CommandWrapper wrapper){
+        if(clazz == null || clazz == BukkitTabCompleter.class
+                || clazz.getSuperclass() != BukkitTabCompleter.class){
+            return;
+        }
+
+        try{
+            this.completer = (BukkitTabCompleter) clazz.getConstructor(CommandWrapper.class)
+                    .newInstance(wrapper);
+        }catch(InstantiationException
+                | IllegalAccessException
+                | InvocationTargetException
+                | NoSuchMethodException e){
+            e.printStackTrace();
+        }
+    }
+
+    // -- Intern methods
+
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings){
         if(this.executor != null){
@@ -42,23 +66,6 @@ public class BukkitCommand extends org.bukkit.command.Command {
 
     public void setExecutor(BukkitCommandExecutor executor){
         this.executor = executor;
-    }
-
-    public void setTabCompleter(Class<?> clazz, CommandWrapper wrapper){
-        if(clazz == null || clazz == BukkitTabCompleter.class
-                || clazz.getSuperclass() != BukkitTabCompleter.class){
-            return;
-        }
-
-        try{
-            this.completer = (BukkitTabCompleter) clazz.getConstructor(CommandWrapper.class)
-                    .newInstance(wrapper);
-        }catch(InstantiationException
-                | IllegalAccessException
-                | InvocationTargetException
-                | NoSuchMethodException e){
-            e.printStackTrace();
-        }
     }
 
 }

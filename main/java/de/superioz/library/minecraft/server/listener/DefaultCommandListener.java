@@ -13,6 +13,9 @@ import org.bukkit.event.Listener;
  */
 public class DefaultCommandListener implements Listener {
 
+    /**
+     * Only important for me tho
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEvent(CommandExecutionErrorEvent event){
         String message = "unknown";

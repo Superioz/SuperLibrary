@@ -22,14 +22,23 @@ public abstract class ChatMessageChannel {
         this.channelTarget = target;
     }
 
+    /**
+     * Only important for me tho
+     */
     public String spacePrefix(boolean flag){
         return flag ? (prefix+" ") : prefix;
     }
 
+    /**
+     * Only important for me tho
+     */
     protected String getMessage(String msg, boolean spacePrefix){
         return !spacePrefix ? ChatUtil.colored(prefix + msg) : ChatUtil.colored(prefix + " " + msg);
     }
 
+    /**
+     * Only important for me tho
+     */
     protected boolean callEvent(ChatMessageChannel channel, String message,
                              Target target, Player... players){
         ChatMessageChannelEvent event = new ChatMessageChannelEvent(channel, message, target, players);

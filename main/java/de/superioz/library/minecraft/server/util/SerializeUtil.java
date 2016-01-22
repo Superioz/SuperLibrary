@@ -15,6 +15,9 @@ import java.util.Map;
  */
 public class SerializeUtil {
 
+    /**
+     * Not important. Util method
+     */
     public static String toString(ItemStack... items){
         String serialization = items.length + ";";
         for(int i = 0; i < items.length; i++){
@@ -48,6 +51,9 @@ public class SerializeUtil {
         return serialization;
     }
 
+    /**
+     * Not important. Util method
+     */
     public static ItemStack[] itemsFromString(String string){
         String[] serializedBlocks = string.split(";");
         String invInfo = serializedBlocks[0];
@@ -84,6 +90,9 @@ public class SerializeUtil {
         return itemStacks;
     }
 
+    /**
+     * Not important. Util method
+     */
     public static String toString(Location location){
         return location.getWorld().getName()
                 + ";" + location.getX()
@@ -93,6 +102,9 @@ public class SerializeUtil {
                 + ";" + location.getPitch();
     }
 
+    /**
+     * Not important. Util method
+     */
     public static Location locFromString(String str){
         if(str == null || str.isEmpty()){
             return null;

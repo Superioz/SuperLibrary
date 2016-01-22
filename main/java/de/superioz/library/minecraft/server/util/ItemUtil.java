@@ -9,6 +9,14 @@ import org.bukkit.inventory.ItemStack;
  */
 public class ItemUtil {
 
+    /**
+     * Compares two items of equalitity
+     *
+     * @param item1 One item
+     * @param item2 Second item
+     *
+     * @return The result
+     */
     public static boolean compare(ItemStack item1, ItemStack item2){
         boolean hasMeta = item1.hasItemMeta() && item2.hasItemMeta();
         boolean sameType = item1.getType() == item2.getType();

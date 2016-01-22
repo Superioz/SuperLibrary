@@ -15,6 +15,8 @@ public class SimplePair<A, B> {
         this.type2 = type2;
     }
 
+    // -- Intern methods
+
     public A getType1(){
         return type1;
     }

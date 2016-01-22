@@ -30,6 +30,8 @@ public class SuperScoreboard {
     protected Map<String, Integer> lines;
     private List<Team> teams;
 
+    private static final String IDENTIFIER = "SUPER-";
+
     public SuperScoreboard(String header, Scoreboard scoreboard){
         this.header = header;
         this.scoreboard = scoreboard;
@@ -41,15 +43,35 @@ public class SuperScoreboard {
         this(header, Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
-    public SuperScoreboard blankLine() {
+    /**
+     * Add a blankline to the board
+     *
+     * @return This
+     */
+    public SuperScoreboard blankLine(){
         return add(" ");
     }
 
-    public SuperScoreboard add(String text) {
+    /**
+     * Add given text as line to the board
+     *
+     * @param text The text
+     *
+     * @return This
+     */
+    public SuperScoreboard add(String text){
         return add(text, null);
     }
 
-    public SuperScoreboard add(String text, Integer score) {
+    /**
+     * Add given text with given score to the board
+     *
+     * @param text  The text
+     * @param score The score
+     *
+     * @return The board
+     */
+    public SuperScoreboard add(String text, Integer score){
         text = ChatUtil.colored(text);
         Preconditions.checkArgument(text.length() < 48,
                 "Text length is larger than 48 chars");
@@ -59,29 +81,47 @@ public class SuperScoreboard {
         return this;
     }
 
-    private String fixDuplicates(String text) {
-        while (this.lines.containsKey(text))
-            text += ChatColor.RESET;
-        if (text.length() > 48)
+    /**
+     * Fix duplicates on this board with given text
+     *
+     * @param text The text
+     *
+     * @return The new text
+     */
+    private String fixDuplicates(String text){
+        while(this.lines.containsKey(text)){ text += ChatColor.RESET; }
+        if(text.length() > 48)
             text = text.substring(0, 47);
         return text;
     }
 
-    private Map.Entry<Team, String> createTeam(String text) {
+    /**
+     * Create a team with given text
+     *
+     * @param text The text
+     *
+     * @return The map of teams
+     */
+    private Map.Entry<Team, String> createTeam(String text){
         String result;
-        if (text.length() <= 16)
+        if(text.length() <= 16)
             return new AbstractMap.SimpleEntry<>(null, text);
-        Team team = scoreboard.registerNewTeam("text-" + scoreboard.getTeams().size());
+        Team team = scoreboard.registerNewTeam(IDENTIFIER + scoreboard.getTeams().size());
         Iterator<String> iterator = Splitter.fixedLength(16).split(text).iterator();
         team.setPrefix(iterator.next());
         result = iterator.next();
-        if (text.length() > 32)
+        if(text.length() > 32)
             team.setSuffix(iterator.next());
         teams.add(team);
         return new AbstractMap.SimpleEntry<>(team, result);
     }
 
-    public SuperScoreboard build() {
+    /**
+     * Build this board
+     *
+     * @return This
+     */
+    public SuperScoreboard build(){
         Objective obj = scoreboard.registerNewObjective((getHeader().length() > 16
                 ? getHeader().substring(0, 15) : getHeader()), "dummy");
         obj.setDisplayName(ChatUtil.colored(getHeader()));
@@ -89,11 +129,11 @@ public class SuperScoreboard {
 
         int index = getLines().size();
 
-        for (Map.Entry<String, Integer> text : getLines().entrySet()) {
+        for(Map.Entry<String, Integer> text : getLines().entrySet()){
             Map.Entry<Team, String> team = createTeam(text.getKey());
             Integer score = text.getValue() != null ? text.getValue() : index;
             String entry = team.getValue();
-            if (team.getKey() != null)
+            if(team.getKey() != null)
                 team.getKey().addEntry(entry);
             obj.getScore(entry).setScore(score);
             index -= 1;
@@ -101,12 +141,23 @@ public class SuperScoreboard {
         return this;
     }
 
+    /**
+     * Show this board to given players
+     *
+     * @param players The players
+     */
     public void show(Player... players){
-        for(Player p : players)
-            p.setScoreboard(getScoreboard());
+        for(Player p : players){ p.setScoreboard(getScoreboard()); }
     }
 
-    public SuperScoreboard reset(boolean header) {
+    /**
+     * Reset the board
+     *
+     * @param header Also the header?
+     *
+     * @return This
+     */
+    public SuperScoreboard reset(boolean header){
         if(header)
             this.setHeader(null);
 

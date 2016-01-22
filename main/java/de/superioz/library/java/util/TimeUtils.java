@@ -13,10 +13,7 @@ import java.util.List;
 public class TimeUtils {
 
     /**
-     * Returns an integer array with following content:
-     * [0] = hour
-     * [1] = minute
-     * [2] = second
+     * Returns an integer array with following content: [0] = hour [1] = minute [2] = second
      *
      * @return The integer array
      */
@@ -32,14 +29,22 @@ public class TimeUtils {
         return time;
     }
 
+    /**
+     * Returns a clock format with given values
+     *
+     * @param seconds  The seconds
+     * @param withZero Zero before number?
+     *
+     * @return The clock array
+     */
     public static String[] toClock(int seconds, boolean withZero){
-        String secondsString = (seconds < 10) && withZero ? "0"+seconds : seconds+"";
+        String secondsString = (seconds < 10) && withZero ? "0" + seconds : seconds + "";
         int minutes = seconds / 60;
-        String minutesString = (minutes < 10) && withZero ? "0"+minutes : minutes+"";
+        String minutesString = (minutes < 10) && withZero ? "0" + minutes : minutes + "";
         int hours = minutes / 60;
-        String hoursString = (hours < 10) && withZero ? "0"+hours : hours+"";
+        String hoursString = (hours < 10) && withZero ? "0" + hours : hours + "";
 
-        return new String[]{secondsString,minutesString,hoursString};
+        return new String[]{secondsString, minutesString, hoursString};
     }
 
     /**
@@ -60,16 +65,16 @@ public class TimeUtils {
         String[] nowString = new String[now.length];
 
         for(int i = 0; i < now.length; i++){
-            String s =now[i]+"";
+            String s = now[i] + "";
 
             if(s.length() == 1){
-                s = "0"+now[i];
+                s = "0" + now[i];
             }
 
             nowString[i] = s;
         }
 
-        return nowString[0]+":"+nowString[1]+":"+nowString[2];
+        return nowString[0] + ":" + nowString[1] + ":" + nowString[2];
     }
 
     /**
@@ -92,6 +97,7 @@ public class TimeUtils {
 
     /**
      * Get current timestamp
+     *
      * @return Timestamp as a long
      */
     public static long timestamp(){
@@ -106,7 +112,7 @@ public class TimeUtils {
             return shortenTimestamp(timestamp());
         }
         else{
-            return timestamp()+"";
+            return timestamp() + "";
         }
     }
 
@@ -125,7 +131,7 @@ public class TimeUtils {
             return shortenTimestamp(timestamp(timestampModifier));
         }
         else{
-            return timestamp(timestampModifier)+"";
+            return timestamp(timestampModifier) + "";
         }
     }
 
@@ -146,7 +152,7 @@ public class TimeUtils {
         String timestamp = shortenedTimestamp;
 
         for(String ch : alph){
-            timestamp = timestamp.replaceAll(ch, AlphabetUtils.getFromChar(ch)+"");
+            timestamp = timestamp.replaceAll(ch, AlphabetUtils.getFromChar(ch) + "");
         }
 
         return Long.valueOf(timestamp);
@@ -156,18 +162,19 @@ public class TimeUtils {
      * Shorten the timestamp with numbers
      *
      * @param timestamp The original timestamp
+     *
      * @return The new timestamp string
      */
     public static String shortenTimestamp(long timestamp){
-        String ts = timestamp+"";
+        String ts = timestamp + "";
         String[] tsArray = ts.split("");
 
         /*
         Take packets from timestamp (3er)
          */
         List<String> parts = new ArrayList<>();
-        for(int i = 2; i < tsArray.length; i+=3){
-            parts.add(tsArray[i-2] + tsArray[i-1] + tsArray[i]);
+        for(int i = 2; i < tsArray.length; i += 3){
+            parts.add(tsArray[i - 2] + tsArray[i - 1] + tsArray[i]);
         }
         parts.add(tsArray[tsArray.length - 1]);
 
@@ -177,18 +184,18 @@ public class TimeUtils {
         List<String> newStamp = new ArrayList<>();
         for(String s : parts){
             if(s.length() == 3){
-                String first = s.subSequence(0, 2)+"";
-                String last = s.subSequence(1, 3)+"";
+                String first = s.subSequence(0, 2) + "";
+                String last = s.subSequence(1, 3) + "";
                 int firstNum = Integer.valueOf(first);
                 int lastNum = Integer.valueOf(last);
 
                 if(firstNum > 0 && firstNum <= 52){
                     first = AlphabetUtils.getFromNumber(firstNum);
-                    last = s.charAt(s.length()-1) + "";
+                    last = s.charAt(s.length() - 1) + "";
                 }
                 else if(lastNum > 0 && lastNum <= 52){
                     last = AlphabetUtils.getFromNumber(lastNum);
-                    first = s.charAt(s.length()-1) + "";
+                    first = s.charAt(s.length() - 1) + "";
                 }
                 else{
                     first = AlphabetUtils.getFromNumber(Integer.valueOf(s.charAt(0) + ""));
@@ -202,7 +209,7 @@ public class TimeUtils {
         }
 
         return newStamp.toString()
-                .replaceAll(",","").replaceAll("\\[","").replaceAll("\\]","").replaceAll(" ", "");
+                .replaceAll(",", "").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "");
     }
 
     /**

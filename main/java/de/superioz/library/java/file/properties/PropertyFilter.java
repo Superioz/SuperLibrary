@@ -7,6 +7,11 @@ package de.superioz.library.java.file.properties;
  */
 public abstract class PropertyFilter<E> {
 
+    /**
+     * Filters given object (edit or smth)
+     * @param object The object (a string etc)
+     * @return The object
+     */
     public abstract E filter(E object);
 
 }

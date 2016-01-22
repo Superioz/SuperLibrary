@@ -23,6 +23,9 @@ public class SuperLogger {
         this.consolePrefix = "[" + desc.getName() + "] ";
     }
 
+    /**
+     * Only important for me tho
+     */
     public void log(LogTarget target, ConsoleLogColor color, String message){
         switch(target){
             case CONSOLE:
@@ -39,36 +42,51 @@ public class SuperLogger {
         }
     }
 
-    // =========================================================================
-
+    /**
+     * Only important for me tho
+     */
     public void consoleLog(String message){
         this.log(LogTarget.CONSOLE, consoleLogColor, message);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void fileLog(String message){
         this.log(LogTarget.LOG_FILE, ConsoleLogColor.NONE, message);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void completeLog(String message){
         this.log(LogTarget.CONSOLE_AND_FILE, consoleLogColor, message);
     }
 
-    // =========================================================================
-
+    /**
+     * Only important for me tho
+     */
     public void completeLog(ConsoleLogColor color, String message){
         this.log(LogTarget.CONSOLE_AND_FILE, color, message);
     }
 
+    /**
+     * Only important for me tho
+     */
     public void consoleLog(ConsoleLogColor color, String message){
         this.log(LogTarget.CONSOLE, color, message);
     }
 
-    // =========================================================================
-
+    /**
+     * Only important for me tho
+     */
     public void setColor(ConsoleLogColor color){
         this.consoleLogColor = color;
     }
 
+    /**
+     * Only important for me tho
+     */
     public LogCache cache(){
         return logCache;
     }

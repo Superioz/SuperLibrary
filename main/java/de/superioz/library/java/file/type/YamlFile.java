@@ -19,12 +19,9 @@ public class YamlFile extends CustomFile {
         super(filename, extraPath, root, SupportedFiletype.YAML);
     }
 
-    @Override
-    public void load(boolean copyDefaults, boolean create){
-        super.load(copyDefaults, create);
-        this.configuration = YamlConfiguration.loadConfiguration(super.file);
-    }
-
+    /**
+     * Saves this file
+     */
     public void save() {
         try{
             this.configuration.save(super.file);
@@ -33,8 +30,16 @@ public class YamlFile extends CustomFile {
         }
     }
 
+    // -- Intern methods
+
     public FileConfiguration config(){
         return configuration;
+    }
+
+    @Override
+    public void load(boolean copyDefaults, boolean create){
+        super.load(copyDefaults, create);
+        this.configuration = YamlConfiguration.loadConfiguration(super.file);
     }
 
 }

@@ -33,10 +33,6 @@ public abstract class SimpleItemTool implements Listener {
         SuperLibrary.registerListener(this);
     }
 
-    public void setStaticPlace(boolean staticPlace){
-        this.staticPlace = staticPlace;
-    }
-
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
         if(event.getItem() == null
@@ -87,6 +83,12 @@ public abstract class SimpleItemTool implements Listener {
         if(this.staticPlace){
             event.setCancelled(true);
         }
+    }
+
+    // -- Intern methods
+
+    public void setStaticPlace(boolean staticPlace){
+        this.staticPlace = staticPlace;
     }
 
 }

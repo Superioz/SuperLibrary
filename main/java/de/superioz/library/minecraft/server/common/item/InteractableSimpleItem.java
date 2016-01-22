@@ -48,32 +48,33 @@ public class InteractableSimpleItem implements Listener {
         this(index, item, null, event);
     }
 
-    public InteractableSimpleItem register(){
+    /**
+     * Registers all listeners
+     *
+     * @return The item
+     */
+    private InteractableSimpleItem register(){
         SuperLibrary.pluginManager().registerEvents(this, SuperLibrary.plugin());
         return this;
     }
 
-    public ItemStack getStack(){
-        return item.getWrappedStack();
-    }
-
-    public int getIndex(){
-        return index;
-    }
-
-    public Consumer<WrappedInventoryClickEvent> getEventConsumer(){
-        return eventConsumer;
-    }
-
-    public SuperInventory getInventory(){
-        return inv;
-    }
-
+    /**
+     * Set parent to given inventory
+     *
+     * @param inv The inventory
+     *
+     * @return The item
+     */
     public InteractableSimpleItem setParent(SuperInventory inv){
         this.inv = inv;
         return this;
     }
 
+    /**
+     * What happens on inventory click
+     *
+     * @param event The event
+     */
     @EventHandler
     public void onClick(InventoryClickEvent event){
         if(BukkitUtil.compareInventory(event.getInventory(), getInventory().getInventory())){
@@ -90,11 +91,34 @@ public class InteractableSimpleItem implements Listener {
         }
     }
 
+    /**
+     * What happens on inventory drag
+     *
+     * @param event The event
+     */
     @EventHandler
     public void onDrag(InventoryDragEvent event){
         if(BukkitUtil.compareInventory(event.getInventory(), getInventory().getInventory())){
             event.setCancelled(true);
         }
+    }
+
+    // -- Intern methods
+
+    public ItemStack getStack(){
+        return item.getWrappedStack();
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public Consumer<WrappedInventoryClickEvent> getEventConsumer(){
+        return eventConsumer;
+    }
+
+    public SuperInventory getInventory(){
+        return inv;
     }
 
 }

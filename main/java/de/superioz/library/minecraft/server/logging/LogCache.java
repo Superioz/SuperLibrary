@@ -31,11 +31,17 @@ public class LogCache {
         lines.add("# Start logfile @" + startTimestamp);
     }
 
+    /**
+     * Only important for me tho
+     */
     public LogCache log(String msg){
         lines.add("[" + TimeUtils.getCurrentTime() + "]: " + msg);
         return this;
     }
 
+    /**
+     * Only important for me tho
+     */
     public void build(){
         endTimestamp = TimeUtils.timestamp();
 
@@ -64,10 +70,16 @@ public class LogCache {
         }
     }
 
+    /**
+     * Only important for me tho
+     */
     public long end(){
         return endTimestamp;
     }
 
+    /**
+     * Only important for me tho
+     */
     public long start(){
         return startTimestamp;
     }

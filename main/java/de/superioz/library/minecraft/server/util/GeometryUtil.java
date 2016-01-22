@@ -15,6 +15,16 @@ import java.util.*;
  */
 public class GeometryUtil {
 
+    /**
+     * Calculate a helix
+     *
+     * @param loc    Middle location
+     * @param radius The radius
+     * @param height The height
+     * @param space  The space between every block
+     *
+     * @return The list of locations
+     */
     public static List<Location> calcHelix(Location loc, int radius, int height, double space){
         List<Location> locations = new ArrayList<>();
 
@@ -30,6 +40,14 @@ public class GeometryUtil {
         return locations;
     }
 
+    /**
+     * Calculate a cuboid
+     *
+     * @param pos1 Position one
+     * @param pos2 Position two
+     *
+     * @return The list of locations
+     */
     public static List<Location> calcCuboid(Location pos1, Location pos2){
         List<Location> blockList = new ArrayList<>();
 
@@ -52,9 +70,9 @@ public class GeometryUtil {
 
         World world = pos1.getWorld();
 
-        for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x++) {
-            for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY() && y <= world.getMaxHeight(); y++) {
-                for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z++) {
+        for(int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x++){
+            for(int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY() && y <= world.getMaxHeight(); y++){
+                for(int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z++){
                     blockList.add(world.getBlockAt(x, y, z).getLocation());
                 }
             }
@@ -63,19 +81,58 @@ public class GeometryUtil {
         return blockList;
     }
 
+    /**
+     * Calculate a sphere
+     *
+     * @param loc    Middle location
+     * @param radius The radius
+     * @param hollow Hollow?
+     *
+     * @return The set of locations
+     */
     public static List<Location> calcSphere(Location loc, int radius, boolean hollow){
         return circle(loc, radius, radius, hollow, true);
     }
 
+    /**
+     * Calculate a circle
+     *
+     * @param loc    The middle location
+     * @param radius The radius
+     * @param height The height
+     * @param hollow Hollow?
+     *
+     * @return The list of locations
+     */
     public static List<Location> calcCircle(Location loc, int radius, int height, boolean hollow){
         return circle(loc, radius, height, hollow, false);
     }
 
+    /**
+     * Uses the fill4 algorithm
+     *
+     * @param middle The middle
+     * @param type   The type of surface
+     *
+     * @return The list of locations
+     */
     public static Set<Block> fill4(Location middle, Material type){
         Block b = middle.getBlock();
         return fill4(b.getWorld(), b.getX(), b.getY(), b.getZ(), type, false);
     }
 
+    /**
+     * Uses the fill4 algorithm
+     *
+     * @param world   The world
+     * @param x       X location
+     * @param y       Y location
+     * @param z       Z location
+     * @param oldType Old type
+     * @param flipped Flipped? (border or area)
+     *
+     * @return The list of locations
+     */
     public static Set<Block> fill4(World world, int x, int y, int z, Material oldType, boolean flipped){
         Stack<SimpleBlock> stack = new Stack<>();
         Set<Block> blockSet = new HashSet<>();
@@ -101,7 +158,7 @@ public class GeometryUtil {
         return blockSet;
     }
 
-    // ===============================================================================================================
+    // -- Intern methods
 
     private static List<Location> circle(Location origin, int radius, int height, boolean hollow, boolean sphere){
         List<Location> blocks = new ArrayList<>();

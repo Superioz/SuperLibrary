@@ -32,35 +32,71 @@ public class SuperInventory {
                 this.size.getSlots(), ChatUtil.colored(getTitle()));
     }
 
+    /**
+     * Put given item to given index
+     *
+     * @param index The index
+     * @param item  The item
+     *
+     * @return The inventory
+     */
     private SuperInventory put(int index, InteractableSimpleItem item){
         getContent().put(index, item);
         return this;
     }
 
+    /**
+     * Sets given items to inventory
+     *
+     * @param items The items
+     *
+     * @return The inventory
+     */
     public SuperInventory set(InteractableSimpleItem... items){
         this.setExact(1, items);
         return this;
     }
 
+    /**
+     * Sets given items to given row
+     *
+     * @param row   The row
+     * @param items The items
+     *
+     * @return The inventory
+     */
     public SuperInventory setExact(int row, InteractableSimpleItem... items){
         for(InteractableSimpleItem i : items){
-            int index = i.getIndex() + ((row-1)*9);
-            this.put(index-1, i);
+            int index = i.getIndex() + ((row - 1) * 9);
+            this.put(index - 1, i);
         }
         return this;
     }
 
+    /**
+     * Fill given row with given item
+     *
+     * @param row  The row
+     * @param item The item
+     *
+     * @return The inventory
+     */
     public SuperInventory fill(int row, InteractableSimpleItem item){
         if(!(row > getSize().getRows())){
             for(int i = 1; i < 10; i++){
-                int index = i + ((row-1)*9);
-                this.put(index-1, item);
+                int index = i + ((row - 1) * 9);
+                this.put(index - 1, item);
             }
         }
 
         return this;
     }
 
+    /**
+     * Build this inventory
+     *
+     * @return The built inventory
+     */
     public Inventory build(){
         for(int i : getContent().keySet()){
             if(i < 0 || i >= getSize().getSlots())
@@ -72,6 +108,15 @@ public class SuperInventory {
         return getInventory();
     }
 
+    /**
+     * Gets superinventory from given class
+     *
+     * @param inventoryClass The class
+     *
+     * @return The superInventory
+     *
+     * @throws InventoryCreateException
+     */
     public SuperInventory from(Class<?> inventoryClass) throws InventoryCreateException{
         if(inventoryClass.getConstructors().length > 1){
             throw new InventoryCreateException(this, inventoryClass,
@@ -102,6 +147,8 @@ public class SuperInventory {
 
         return this;
     }
+
+    // -- Intern methods
 
     public Inventory getInventory(){
         return inventory;
