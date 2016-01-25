@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.command.CommandHandler;
+import de.superioz.library.minecraft.server.common.npc.FakeMob;
 import de.superioz.library.minecraft.server.exception.CommandRegisterException;
 import org.bukkit.craftbukkit.v1_8_R3.Overridden;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class TestPlugin extends JavaPlugin {
 
     private static ProtocolManager protocolManager;
+    public static FakeMob testMob;
 
     @Overridden
     public void onLoad(){

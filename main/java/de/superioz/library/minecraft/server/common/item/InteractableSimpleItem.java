@@ -1,9 +1,9 @@
 package de.superioz.library.minecraft.server.common.item;
 
-import de.superioz.library.minecraft.server.util.BukkitUtil;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
 import de.superioz.library.minecraft.server.event.WrappedInventoryClickEvent;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import de.superioz.library.minecraft.server.util.ItemUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,7 +53,7 @@ public class InteractableSimpleItem implements Listener {
      *
      * @return The item
      */
-    private InteractableSimpleItem register(){
+    public InteractableSimpleItem register(){
         SuperLibrary.pluginManager().registerEvents(this, SuperLibrary.plugin());
         return this;
     }
@@ -77,7 +77,7 @@ public class InteractableSimpleItem implements Listener {
      */
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(BukkitUtil.compareInventory(event.getInventory(), getInventory().getInventory())){
+        if(BukkitUtilities.compareInventory(event.getInventory(), getInventory().getInventory())){
             if(event.getCurrentItem() == null
                     || this.getStack() == null
                     || event.getInventory().getViewers().size() == 0){
@@ -98,7 +98,7 @@ public class InteractableSimpleItem implements Listener {
      */
     @EventHandler
     public void onDrag(InventoryDragEvent event){
-        if(BukkitUtil.compareInventory(event.getInventory(), getInventory().getInventory())){
+        if(BukkitUtilities.compareInventory(event.getInventory(), getInventory().getInventory())){
             event.setCancelled(true);
         }
     }

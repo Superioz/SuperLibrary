@@ -2,7 +2,7 @@ package de.superioz.library.minecraft.server.lab.disguise;
 
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import de.superioz.library.java.util.SimpleStringUtils;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
 
 /**
  * Enum for disguisable entities
@@ -79,6 +79,6 @@ public enum DisguiseType {
     }
 
     public String getClassName() {
-        return BukkitUtil.getNMSPackage() + "." + cls;
+        return CraftBukkitUtil.getNMSPackage() + "." + cls;
     }
 }

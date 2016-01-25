@@ -1,6 +1,6 @@
 package de.superioz.library.minecraft.server.message;
 
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import org.bukkit.entity.Player;
 
@@ -23,7 +23,7 @@ public class BukkitChat {
      * Only important for me tho
      */
     public static void broadcast(String message){
-        send(message, BukkitUtil.onlinePlayers());
+        send(message, BukkitUtilities.onlinePlayers());
     }
 
 }

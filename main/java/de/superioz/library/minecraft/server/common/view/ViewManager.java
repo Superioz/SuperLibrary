@@ -6,7 +6,7 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.superioz.library.java.util.TimeUtils;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import de.superioz.library.minecraft.server.util.ProtocolUtil;
 import org.bukkit.entity.Player;
@@ -19,8 +19,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ViewManager {
 
-    private static final Class packetClass = BukkitUtil.getNMSClassExact("PacketPlayOutChat");
-    private static final Class chatComponentClass = BukkitUtil.getNMSClassExact("IChatBaseComponent");
+    private static final Class packetClass = CraftBukkitUtil.getNMSClassExact("PacketPlayOutChat");
+    private static final Class chatComponentClass = CraftBukkitUtil.getNMSClassExact("IChatBaseComponent");
 
     /**
      * Send a hotbar message to given player
@@ -101,14 +101,14 @@ public class ViewManager {
 
         // Get packet
         try{
-            Object chatBaseComp = BukkitUtil.getChatBaseComp("{'text':'" + ChatUtil.colored(text) + "'}");
+            Object chatBaseComp = CraftBukkitUtil.getChatBaseComp("{'text':'" + ChatUtil.colored(text) + "'}");
             Object packet;
 
             if(packetClass != null && chatBaseComp != null){
                 Constructor constructor = packetClass.getDeclaredConstructor(chatComponentClass, byte.class);
                 packet = constructor.newInstance(chatBaseComp, target);
 
-                BukkitUtil.sendPacket(packet, player);
+                CraftBukkitUtil.sendPacket(packet, player);
             }
         }catch(NoSuchMethodException
                 | InvocationTargetException

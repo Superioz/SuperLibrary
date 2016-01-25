@@ -4,7 +4,8 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.darkblade12.particleeffect.ReflectionUtils;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
+import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import de.superioz.library.minecraft.server.util.ProtocolUtil;
 import org.bukkit.Bukkit;
@@ -55,7 +56,7 @@ public class PlayerDisguise {
     }
 
     public void send(){
-        send(BukkitUtil.onlinePlayers());
+        send(BukkitUtilities.onlinePlayers());
     }
 
     public void undisguise(Player... players){
@@ -68,7 +69,7 @@ public class PlayerDisguise {
     }
 
     public void undisguise(){
-        undisguise(BukkitUtil.onlinePlayers());
+        undisguise(BukkitUtilities.onlinePlayers());
     }
 
 
@@ -79,7 +80,7 @@ public class PlayerDisguise {
         Player p = Bukkit.getPlayer(this.disguised);
         Location loc = p.getLocation();
 
-        Object world = BukkitUtil.getHandle(p.getWorld());
+        Object world = CraftBukkitUtil.getHandle(p.getWorld());
         Class<?> entityClass = Class.forName(type.getClassName());
 
         // Init entity class
@@ -117,7 +118,7 @@ public class PlayerDisguise {
         }
 
         ProtocolUtil.sendServerPacket(destroyPacket, Collections.singletonList(p), players);
-        BukkitUtil.sendPacket(spawnPacket, Collections.singletonList(p), players);
+        CraftBukkitUtil.sendPacket(spawnPacket, Collections.singletonList(p), players);
     }
 
     private void sendUndisguise(Player... players) throws Exception {
@@ -127,10 +128,10 @@ public class PlayerDisguise {
 
         // Spawn packet
         Object spawnPacket = ReflectionUtils.instantiateObject("PacketPlayOutNamedEntitySpawn",
-                ReflectionUtils.PackageType.MINECRAFT_SERVER, BukkitUtil.getHandle(p));
+                ReflectionUtils.PackageType.MINECRAFT_SERVER, CraftBukkitUtil.getHandle(p));
 
         ProtocolUtil.sendServerPacket(destroyPacket, Collections.singletonList(p), players);
-        BukkitUtil.sendPacket(spawnPacket, Collections.singletonList(p), players);
+        CraftBukkitUtil.sendPacket(spawnPacket, Collections.singletonList(p), players);
     }
 
     // ======================================== GETTER & SETTER ==========================================

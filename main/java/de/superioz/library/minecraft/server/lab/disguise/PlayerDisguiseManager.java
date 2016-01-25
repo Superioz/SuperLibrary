@@ -6,7 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,7 +59,7 @@ public class PlayerDisguiseManager implements Listener {
                 PacketContainer packet = event.getPacket();
                 int id = packet.getIntegers().read(0);
                 Player clicker = event.getPlayer();
-                Entity clicked = BukkitUtil.getEntity(clicker.getWorld(), id);
+                Entity clicked = BukkitUtilities.getEntity(clicker.getWorld(), id);
 
                 if(clicked == null){
                     return;

@@ -5,6 +5,7 @@ import de.superioz.library.main.SuperLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -38,6 +39,16 @@ public class ProtocolUtil {
     }
 
     /**
+     * Checks if ProtocolLib is enabled
+     *
+     * @return The result
+     */
+    public static boolean checkLibrary(){
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+        return plugin != null && plugin.isEnabled();
+    }
+
+    /**
      * Not important. Util method
      */
     public static void sendServerPacket(PacketContainer pc, List<Player> not, Player... p){
@@ -68,6 +79,10 @@ public class ProtocolUtil {
 
     public static byte toByte(boolean flag, int bitMask){
         return (byte) (flag ? bitMask : 0);
+    }
+
+    public static boolean fromByte(byte b){
+        return b == 1;
     }
 
     /**

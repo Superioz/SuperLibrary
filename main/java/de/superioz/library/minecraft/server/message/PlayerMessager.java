@@ -1,7 +1,7 @@
 package de.superioz.library.minecraft.server.message;
 
 import de.superioz.library.minecraft.server.common.view.ViewManager;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import org.bukkit.entity.Player;
 
 /**
@@ -33,7 +33,7 @@ public class PlayerMessager extends ChatMessageChannel {
      * Only important for me tho
      */
     public void write(String message, boolean spacePrefix, MessageChannel channel, Player... players){
-        if(!super.callEvent(this, message, getChannelTarget(), BukkitUtil.onlinePlayers()))
+        if(!super.callEvent(this, message, getChannelTarget(), BukkitUtilities.onlinePlayers()))
             return;
 
         switch(channel){
@@ -69,7 +69,7 @@ public class PlayerMessager extends ChatMessageChannel {
      * Only important for me tho
      */
     public void broadcast(String message, boolean spacePrefix, MessageChannel channel){
-        this.write(message, spacePrefix, channel, BukkitUtil.onlinePlayers());
+        this.write(message, spacePrefix, channel, BukkitUtilities.onlinePlayers());
     }
 
 }

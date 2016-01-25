@@ -10,13 +10,22 @@ import de.superioz.library.minecraft.server.common.inventory.InventorySize;
 import de.superioz.library.minecraft.server.common.inventory.PageableInventory;
 import de.superioz.library.minecraft.server.common.inventory.SuperInventory;
 import de.superioz.library.minecraft.server.common.item.SimpleItem;
+import de.superioz.library.minecraft.server.common.npc.FakeMob;
+import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
+import de.superioz.library.minecraft.server.common.npc.meta.entity.MobType;
+import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.runnable.SuperRepeater;
 import de.superioz.library.minecraft.server.common.view.SuperScoreboard;
 import de.superioz.library.minecraft.server.event.WrappedInventoryClickEvent;
 import de.superioz.library.minecraft.server.exception.InventoryCreateException;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.message.MessageChannel;
+import de.superioz.library.minecraft.server.message.PlayerMessager;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
+import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.GeometryUtil;
+import de.superioz.library.minecraft.server.util.LocationUtil;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -90,11 +99,11 @@ public class TestCommandClass implements CommandCase {
         Player player = (Player) context.getSender();
 
         player.sendMessage("Flash ..");
-        BukkitUtil.flashRedScreen(1, player);
+        CraftBukkitUtil.flashRedScreen(1, player);
         new BukkitRunnable() {
             @Override
             public void run(){
-                BukkitUtil.flashRedScreen(20, player);
+                CraftBukkitUtil.flashRedScreen(20, player);
             }
         }.runTaskLater(SuperLibrary.plugin(), 20L);
     }
@@ -105,7 +114,7 @@ public class TestCommandClass implements CommandCase {
         Player player = (Player) context.getSender();
 
         player.sendMessage("Set tab & header ..");
-        BukkitUtil.setTabHeaderFooter("&cHeader!!!", "&dFooter!!!", player);
+        BukkitUtilities.setTabHeaderFooter("&cHeader!!!", "&dFooter!!!", player);
     }
 
     @SubCommand(label = "test2", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
@@ -116,7 +125,7 @@ public class TestCommandClass implements CommandCase {
         player.sendMessage(org.bukkit.ChatColor.RED + "Set nametag ..");
         de.superioz.library.minecraft.server.lab.nametag.
                 NametagManager.setNametag("&9[DEV] &r", " &5[OP]", false,
-                Collections.singletonList(player), Arrays.asList(BukkitUtil.onlinePlayers()));
+                Collections.singletonList(player), Arrays.asList(BukkitUtilities.onlinePlayers()));
     }
 
     @SubCommand(label = "test3", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
@@ -225,6 +234,7 @@ public class TestCommandClass implements CommandCase {
 
         new BukkitRunnable() {
             int counter = 0;
+
             @Override
             public void run(){
                 if(counter > 1000 || inventory.getViewers().size() == 0){
@@ -246,6 +256,46 @@ public class TestCommandClass implements CommandCase {
                 counter++;
             }
         }.runTaskTimer(SuperLibrary.plugin(), 0L, 20L);
+    }
+
+    @SubCommand(label = "spawn", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test8(CommandContext context){
+        Player player = (Player) context.getSender();
+        PlayerMessager messager = new PlayerMessager("&cSurvival &8|");
+        Location loc = LocationUtil.fix(player.getLocation().getBlock().getLocation());
+
+        messager.write("&7Spawn mob ..", true, MessageChannel.CHAT, player);
+
+        if(TestPlugin.testMob == null)
+            TestPlugin.testMob = new FakeMob(MobType.VILLAGER, loc, "&cTest Villager", new EntitySettings(false, true, false));
+        TestPlugin.testMob.spawn(player);
+
+        messager.write("&eMob spawned. &7[&b" + NPCRegistry.getEntities().size() + "&7]", true, MessageChannel.CHAT, player);
+    }
+
+    @SubCommand(label = "despawn", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test9(CommandContext context){
+        Player player = (Player) context.getSender();
+
+        PlayerMessager messager = new PlayerMessager("&cSurvival &8|");
+        messager.write("&7Despawn mobs ..", true, MessageChannel.CHAT, player);
+
+        NPCRegistry.unregisterAll();
+    }
+
+    @SubCommand(label = "test10", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test10(CommandContext context){
+        Player player = (Player) context.getSender();
+        PlayerMessager messager = new PlayerMessager("&cSurvival &8|");
+        messager.write("&7Test!!! ..", true, MessageChannel.CHAT, player);
+
+        if(TestPlugin.testMob == null)
+            return;
+        TestPlugin.testMob.setAge(-9999999);
+        TestPlugin.testMob.updateMetadata(player);
     }
 
 }

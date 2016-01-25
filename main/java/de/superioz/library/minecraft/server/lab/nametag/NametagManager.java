@@ -3,16 +3,19 @@ package de.superioz.library.minecraft.server.lab.nametag;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.lab.packet.protocol.WrapperPlayServerScoreboardTeam;
-import de.superioz.library.minecraft.server.util.BukkitUtil;
+import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.WrapperPlayServerScoreboardTeam;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -156,7 +159,7 @@ public class NametagManager {
 
         PacketContainer packet = getPacket(team,
                 WrapperPlayServerScoreboardTeam.Mode.TEAM_REMOVED);
-        ProtocolUtil.sendServerPacket(packet, BukkitUtil.onlinePlayers());
+        ProtocolUtil.sendServerPacket(packet, BukkitUtilities.onlinePlayers());
 
         TEAMS.remove(team);
     }

@@ -2,6 +2,7 @@ package de.superioz.library.minecraft.server.util;
 
 import de.superioz.library.java.util.list.ListUtil;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -66,6 +67,34 @@ public class LocationUtil {
     public static String toString(Location l){
         String[] ar = new String[]{l.getBlockX()+"",l.getBlockY()+"",l.getBlockZ()+""};
         return ListUtil.insert(ar, ",");
+    }
+
+    /**
+     * Calculate angle between two points to set head and body rotation
+     *
+     * @param point1 Vector of location from
+     * @param point2 Vector of location to
+     * @return The angle as a float
+     */
+    public static float getLocalAngle(Vector point1, Vector point2){
+        double dx = point2.getX() - point1.getX();
+        double dz = point2.getZ() - point1.getZ();
+        float angle = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90;
+        if(angle < 0){
+            angle += 360.0F;
+        }
+        return angle;
+    }
+
+    /**
+     * Checks if the realVal is distanceVal +/- aboutVal
+     * @param realVal The real range
+     * @param distanceVal The best distance
+     * @param aboutVal The +/- val
+     * @return The result
+     */
+    public static boolean checkRoughRange(double realVal, double distanceVal, double aboutVal){
+        return (realVal >= distanceVal-aboutVal) && (realVal <= distanceVal+aboutVal);
     }
 
 }

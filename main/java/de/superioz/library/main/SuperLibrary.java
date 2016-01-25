@@ -1,7 +1,12 @@
 package de.superioz.library.main;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
 import de.superioz.library.minecraft.server.listener.DefaultCommandListener;
+import de.superioz.library.minecraft.server.listener.FakeMobListener;
+import de.superioz.library.minecraft.server.listener.ProtocolListener;
+import de.superioz.library.minecraft.server.util.ProtocolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
@@ -17,13 +22,23 @@ import java.util.concurrent.Executors;
  * @author Superioz
  */
 public class SuperLibrary {
+
     private static ProtocolManager protocolManager;
     private static JavaPlugin plugin;
     private static PluginManager pluginManager;
     private static ExecutorService executorService;
 
     public static void initProtocol(ProtocolManager manager){
+        if(!ProtocolUtil.checkLibrary()){
+            return;
+        }
+        if(manager == null){
+            manager = ProtocolLibrary.getProtocolManager();
+        }
         protocolManager = manager;
+
+        // ProtocolListener
+        protocolManager.addPacketListener(new ProtocolListener());
     }
 
     public static void initFor(JavaPlugin pl){
@@ -33,6 +48,9 @@ public class SuperLibrary {
 
         // register default listener
         registerListener();
+
+        // register npc
+        NPCRegistry.init();
     }
 
     // -- Intern methods
@@ -55,6 +73,7 @@ public class SuperLibrary {
 
     private static void registerListener(){
         pluginManager().registerEvents(new DefaultCommandListener(), plugin());
+        pluginManager().registerEvents(new FakeMobListener(), plugin());
     }
 
     public static ExecutorService getExecutorService(){
