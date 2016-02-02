@@ -1,5 +1,5 @@
 # SuperLibrary
-Library I use for myself. Therefore no comments.
+Library I use for myself. Therefore no support for bugs and errors.
 
 You can use this library too, if you want. Just add following lines to your pom.xml:
 
