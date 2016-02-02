@@ -4,7 +4,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeEntity;
 import de.superioz.library.minecraft.server.common.npc.raw.holo.CraftHologramPart;
 import de.superioz.library.minecraft.server.util.ChatUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.entity.EntityType;
 
 /**

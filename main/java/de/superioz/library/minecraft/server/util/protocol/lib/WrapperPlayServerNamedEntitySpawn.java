@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.util.protocol;
+package de.superioz.library.minecraft.server.util.protocol.lib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;

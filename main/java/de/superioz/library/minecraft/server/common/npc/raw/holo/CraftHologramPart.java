@@ -9,7 +9,7 @@ import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySetti
 import de.superioz.library.minecraft.server.common.npc.meta.settings.FakeEntityType;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeEntity;
 import de.superioz.library.minecraft.server.util.LocationUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

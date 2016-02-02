@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.common.view;
+package de.superioz.library.minecraft.server.common;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -6,9 +6,9 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.superioz.library.java.util.TimeUtils;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
+import de.superioz.library.minecraft.server.util.protocol.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.ChatUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;

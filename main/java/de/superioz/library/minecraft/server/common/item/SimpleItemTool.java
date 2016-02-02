@@ -19,7 +19,6 @@ import java.util.function.Consumer;
  *
  * @author Superioz
  */
-@Getter
 public abstract class SimpleItemTool implements Listener {
 
     protected SimpleItem item;
@@ -91,4 +90,15 @@ public abstract class SimpleItemTool implements Listener {
         this.staticPlace = staticPlace;
     }
 
+    public SimpleItem getItem() {
+        return item;
+    }
+
+    public Consumer<WrappedItemInteractEvent> getConsumer() {
+        return consumer;
+    }
+
+    public boolean isStaticPlace() {
+        return staticPlace;
+    }
 }

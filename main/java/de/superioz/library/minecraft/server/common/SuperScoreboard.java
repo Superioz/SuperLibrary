@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.common.view;
+package de.superioz.library.minecraft.server.common;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;

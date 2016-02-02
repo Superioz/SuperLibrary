@@ -6,7 +6,7 @@ import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
 import de.superioz.library.minecraft.server.listener.DefaultCommandListener;
 import de.superioz.library.minecraft.server.listener.FakeMobListener;
 import de.superioz.library.minecraft.server.listener.ProtocolListener;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;

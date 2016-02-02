@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.util.protocol;
+package de.superioz.library.minecraft.server.util.protocol.lib;
 
 /**
  * This file is part of PacketWrapper.

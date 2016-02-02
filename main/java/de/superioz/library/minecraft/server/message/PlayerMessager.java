@@ -1,6 +1,6 @@
 package de.superioz.library.minecraft.server.message;
 
-import de.superioz.library.minecraft.server.common.view.ViewManager;
+import de.superioz.library.minecraft.server.common.ViewManager;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import org.bukkit.entity.Player;
 

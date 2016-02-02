@@ -1,12 +1,10 @@
-package de.superioz.library.minecraft.server.lab.nametag;
+package de.superioz.library.minecraft.server.common;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import de.superioz.library.main.SuperLibrary;
+import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
-import de.superioz.library.minecraft.server.util.ChatUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
-import de.superioz.library.minecraft.server.util.protocol.WrapperPlayServerScoreboardTeam;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.lib.WrapperPlayServerScoreboardTeam;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -25,52 +23,72 @@ import java.util.stream.Collectors;
  */
 public class NametagManager {
 
-    private static final String TEAM_PREFIX = "SL";
+    private static final String TEAM_PREFIX = "SPRL";
     private static final HashMap<TeamHandle, List<String>> TEAMS = new HashMap<>();
     private static final List<Integer> IDENTIFIER = new ArrayList<>();
 
-    public static void setNametag(String prefix, String suffix, boolean tab,
-                                  List<Player> target, List<Player> viewer){
+    /**
+     * Set the nametag for given players with given viewer
+     *
+     * @param resetTab Should the tab get resetted
+     * @param prefix   The prefix
+     * @param suffix   The suffix
+     * @param target   The target
+     * @param viewer   The viewer
+     */
+    public static void setNametag(boolean resetTab, String prefix, String suffix, List<Player> target, Player... viewer){
         PacketContainer packet;
         HashMap<Player, String> tabNames = new HashMap<>();
-        for(Player p : target) tabNames.put(p, p.getPlayerListName());
+        for(Player p : target){ tabNames.put(p, p.getPlayerListName()); }
 
         if(getTeam(prefix, suffix) == null){
             createTeam(prefix, suffix, target);
-            packet = getPacket(getTeam(prefix, suffix),
-                    WrapperPlayServerScoreboardTeam.Mode.TEAM_CREATED);
+            packet = BukkitPackets.getNameTagPacket(getTeam(prefix, suffix),
+                    WrapperPlayServerScoreboardTeam.Mode.TEAM_CREATED, TEAMS);
         }
         else{
             TeamHandle team = getTeam(prefix, suffix);
-            packet = getPacket(team, WrapperPlayServerScoreboardTeam.Mode.PLAYERS_ADDED);
+            packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.PLAYERS_ADDED, TEAMS);
         }
 
         TeamHandle team = getTeam(prefix, suffix);
         assert team != null;
 
-        for(Player p : viewer)
-            ProtocolUtil.sendServerPacket(packet, p);
+        for(Player p : viewer){ ProtocolUtil.sendServerPacket(packet, p); }
 
-        if(!tab){
+        if(resetTab){
             for(Player p : tabNames.keySet()){
                 p.setPlayerListName(ChatColor.RESET + p.getName());
             }
         }
     }
 
-    public static void updateNametag(List<Player> target, List<Player> viewer, boolean tab){
+    /**
+     * Updates the nameTag for given players
+     *
+     * @param target   The target players
+     * @param resetTab Should the tab get resetted
+     * @param viewer   The viewer
+     */
+    public static void updateNametag(List<Player> target, boolean resetTab, Player... viewer){
         for(Player player : target){
             TeamHandle team = getTeam(player);
 
             if(team == null)
                 continue;
 
-            setNametag(team.getPrefix(), team.getSuffix(), tab,
+            setNametag(resetTab, team.getPrefix(), team.getSuffix(),
                     Collections.singletonList(player), viewer);
         }
     }
 
-    public static void clearNametag(Player player, List<Player> viewer){
+    /**
+     * Clears the nameTag for given player
+     *
+     * @param player The player
+     * @param viewer The viewer
+     */
+    public static void clearNametag(Player player, Player... viewer){
         TeamHandle team = getTeam(player);
 
         if(team == null)
@@ -79,8 +97,7 @@ public class NametagManager {
         List<String> l = TEAMS.get(team);
         l.remove(player.getDisplayName());
 
-        PacketContainer packet = getPacket(team,
-                WrapperPlayServerScoreboardTeam.Mode.PLAYERS_REMOVED);
+        PacketContainer packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.PLAYERS_REMOVED, TEAMS);
         ProtocolUtil.sendServerPacket(packet, viewer);
 
         if(TEAMS.get(team).size() == 0){
@@ -88,31 +105,15 @@ public class NametagManager {
         }
     }
 
-    /// ===============================================================================================
-
-    private static PacketContainer getPacket(TeamHandle team, int mode){
-        PacketContainer packetc = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
-        WrapperPlayServerScoreboardTeam packet = new WrapperPlayServerScoreboardTeam(packetc);
-
-        if(!TEAMS.containsKey(team))
-            return packet.getHandle();
-
-        packet.setPrefix(ChatUtil.colored(team.getPrefix()));
-        packet.setSuffix(ChatUtil.colored(team.getSuffix()));
-        packet.setMode(mode);
-        packet.setName(team.getName());
-        packet.setDisplayName(team.getName());
-        packet.setPlayers(TEAMS.get(team));
-        System.out.println("Packet: '"+packet.getPrefix()+"','"+packet.getSuffix()+"','"+packet.getDisplayName()+"'" +
-                ",'"+packet.getPlayers().toString()+"'");
-
-        return packet.getHandle();
-    }
-
+    /**
+     * Get the name for the next team
+     *
+     * @return The team name
+     */
     private static String getNextTeamName(){
         int index = 0;
 
-        while(IDENTIFIER.contains(index)) {
+        while(IDENTIFIER.contains(index)){
             index++;
         }
 
@@ -120,14 +121,29 @@ public class NametagManager {
         return TEAM_PREFIX + index;
     }
 
+    /**
+     * Get team with given id
+     *
+     * @param id The id
+     *
+     * @return The team
+     */
     private static TeamHandle getTeam(int id){
         for(TeamHandle th : TEAMS.keySet()){
-            if(th.getName().equalsIgnoreCase(TEAM_PREFIX+id))
+            if(th.getName().equalsIgnoreCase(TEAM_PREFIX + id))
                 return th;
         }
         return null;
     }
 
+    /**
+     * Get the team with given prefix & suffix
+     *
+     * @param prefix The prefix
+     * @param suffix The suffix
+     *
+     * @return The team
+     */
     private static TeamHandle getTeam(String prefix, String suffix){
         for(TeamHandle th : TEAMS.keySet()){
             if(th.getPrefix().equalsIgnoreCase(prefix) &&
@@ -137,6 +153,13 @@ public class NametagManager {
         return null;
     }
 
+    /**
+     * Get the team of given player
+     *
+     * @param player The player
+     *
+     * @return The team
+     */
     private static TeamHandle getTeam(Player player){
         for(TeamHandle th : TEAMS.keySet()){
             if(TEAMS.get(th).contains(player.getDisplayName()))
@@ -145,6 +168,13 @@ public class NametagManager {
         return null;
     }
 
+    /**
+     * Creates a team with given preferences
+     *
+     * @param prefix  The prefix
+     * @param suffix  The suffix
+     * @param players The players
+     */
     private static void createTeam(String prefix, String suffix, List<Player> players){
         List<String> ls = players.stream().map(Player::getDisplayName)
                 .collect(Collectors.toList());
@@ -153,19 +183,21 @@ public class NametagManager {
         TEAMS.put(team, ls);
     }
 
+    /**
+     * Deletes given team
+     *
+     * @param team The team
+     */
     private static void deleteTeam(TeamHandle team){
-        if(TEAMS.get(team).size()!=0)
+        if(TEAMS.get(team).size() != 0)
             return;
 
-        PacketContainer packet = getPacket(team,
-                WrapperPlayServerScoreboardTeam.Mode.TEAM_REMOVED);
+        PacketContainer packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.TEAM_REMOVED, TEAMS);
         ProtocolUtil.sendServerPacket(packet, BukkitUtilities.onlinePlayers());
 
         TEAMS.remove(team);
     }
 
-    @Getter
-    @Setter
     public static class TeamHandle {
 
         private String name;
@@ -178,6 +210,17 @@ public class NametagManager {
             this.suffix = suffix;
         }
 
+        public String getName() {
+            return name;
+        }
+
+        public String getPrefix() {
+            return prefix;
+        }
+
+        public String getSuffix() {
+            return suffix;
+        }
     }
 
 }

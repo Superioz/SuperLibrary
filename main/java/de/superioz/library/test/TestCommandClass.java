@@ -15,13 +15,14 @@ import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
 import de.superioz.library.minecraft.server.common.npc.meta.entity.MobType;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.runnable.SuperRepeater;
-import de.superioz.library.minecraft.server.common.view.SuperScoreboard;
+import de.superioz.library.minecraft.server.common.SuperScoreboard;
 import de.superioz.library.minecraft.server.event.WrappedInventoryClickEvent;
 import de.superioz.library.minecraft.server.exception.InventoryCreateException;
+import de.superioz.library.minecraft.server.common.NametagManager;
 import de.superioz.library.minecraft.server.message.MessageChannel;
 import de.superioz.library.minecraft.server.message.PlayerMessager;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
-import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
+import de.superioz.library.minecraft.server.util.protocol.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.GeometryUtil;
 import de.superioz.library.minecraft.server.util.LocationUtil;
 import net.md_5.bungee.api.ChatColor;
@@ -115,17 +116,6 @@ public class TestCommandClass implements CommandCase {
 
         player.sendMessage("Set tab & header ..");
         BukkitUtilities.setTabHeaderFooter("&cHeader!!!", "&dFooter!!!", player);
-    }
-
-    @SubCommand(label = "test2", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
-            commandTarget = AllowedCommandSender.PLAYER)
-    public void test2(CommandContext context){
-        Player player = (Player) context.getSender();
-
-        player.sendMessage(org.bukkit.ChatColor.RED + "Set nametag ..");
-        de.superioz.library.minecraft.server.lab.nametag.
-                NametagManager.setNametag("&9[DEV] &r", " &5[OP]", false,
-                Collections.singletonList(player), Arrays.asList(BukkitUtilities.onlinePlayers()));
     }
 
     @SubCommand(label = "test3", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
@@ -292,10 +282,7 @@ public class TestCommandClass implements CommandCase {
         PlayerMessager messager = new PlayerMessager("&cSurvival &8|");
         messager.write("&7Test!!! ..", true, MessageChannel.CHAT, player);
 
-        if(TestPlugin.testMob == null)
-            return;
-        TestPlugin.testMob.setAge(-9999999);
-        TestPlugin.testMob.updateMetadata(player);
+        NametagManager.setNametag(false, "&cAdmin &8| &r", "", Collections.singletonList(player), BukkitUtilities.onlinePlayers());
     }
 
 }
