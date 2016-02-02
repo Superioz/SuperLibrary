@@ -16,6 +16,6 @@ You can use this library too, if you want. Just add following lines to your pom.
 <dependency>
   <groupId>de.superioz</groupId>
   <artifactId>SuperLibrary</artifactId>
-  <version>1.8</version>
+  <version>1.9</version>
 </dependency>
 ```
