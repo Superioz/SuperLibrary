@@ -70,7 +70,7 @@ public class ReflectionUtils {
         try {
             f = instance.getClass().getDeclaredField(field);
             f.setAccessible(true);
-            f.set(instance, true);
+            f.set(instance, obj);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

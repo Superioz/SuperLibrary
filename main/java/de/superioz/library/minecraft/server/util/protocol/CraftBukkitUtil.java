@@ -436,8 +436,14 @@ public class CraftBukkitUtil {
          * @return The class with the specified name
          * @throws ClassNotFoundException If the desired class with the specified name and package cannot be found
          */
-        public Class<?> getClass(String className) throws ClassNotFoundException {
-            return Class.forName(this + "." + className);
+        public Class<?> getClass(String className) {
+            try{
+                return Class.forName(this + "." + className);
+            }
+            catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+            return getClass();
         }
 
         // Override for convenience

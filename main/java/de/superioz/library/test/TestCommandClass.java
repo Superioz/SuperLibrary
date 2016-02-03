@@ -1,6 +1,8 @@
 package de.superioz.library.test;
 
 import de.superioz.library.main.SuperLibrary;
+import de.superioz.library.minecraft.server.common.ParticleData;
+import de.superioz.library.minecraft.server.common.ParticleEffect;
 import de.superioz.library.minecraft.server.common.command.AllowedCommandSender;
 import de.superioz.library.minecraft.server.common.command.Command;
 import de.superioz.library.minecraft.server.common.command.CommandCase;
@@ -283,6 +285,19 @@ public class TestCommandClass implements CommandCase {
         messager.write("&7Test!!! ..", true, MessageChannel.CHAT, player);
 
         NametagManager.setNametag(false, "&cAdmin &8| &r", "", Collections.singletonList(player), BukkitUtilities.onlinePlayers());
+    }
+
+    @SubCommand(label = "test11", desc = "Das ist eine Beschreibung", permission = "test", usage = "",
+            commandTarget = AllowedCommandSender.PLAYER)
+    public void test11(CommandContext context){
+        Player player = (Player) context.getSender();
+        PlayerMessager messager = new PlayerMessager("&cTest &8|");
+
+        ParticleEffect effect = ParticleEffect.FIREWORKS_SPARK;
+        ParticleData data = new ParticleData(player.getLocation(), 0, 1);
+
+        BukkitUtilities.showParticle(effect, data, player);
+        messager.write("&7Particle shown.", player);
     }
 
 }
