@@ -6,18 +6,16 @@ import com.comphenix.protocol.wrappers.*;
 import de.superioz.library.java.util.ReflectionUtils;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.NametagManager;
-import de.superioz.library.minecraft.server.common.ParticleEffect;
-import de.superioz.library.minecraft.server.util.ChatUtil;
+import de.superioz.library.minecraft.server.common.particle.ParticleData;
+import de.superioz.library.minecraft.server.common.particle.ParticleEffect;
+import de.superioz.library.minecraft.server.common.particle.ParticleInformation;
 import de.superioz.library.minecraft.server.util.LocationUtil;
-import de.superioz.library.minecraft.server.util.protocol.lib.WrapperPlayServerAttachEntity;
-import de.superioz.library.minecraft.server.util.protocol.lib.WrapperPlayServerPlayerInfo;
-import de.superioz.library.minecraft.server.util.protocol.lib.WrapperPlayServerScoreboardTeam;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +26,12 @@ import java.util.List;
  * @author Superioz
  */
 public class BukkitPackets {
+
+	public static final int SCOREBOARD_TEAM_CREATED = 0;
+	public static final int SCOREBOARD_TEAM_REMOVED = 1;
+	public static final int SCOREBOARD_TEAM_UPDATED = 2;
+	public static final int SCOREBOARD_PLAYERS_ADDED = 3;
+	public static final int SCOREBOARD_PLAYERS_REMOVED = 4;
 
 	/**
 	 * Gets the packet for adding/removing to a fake team
@@ -40,20 +44,19 @@ public class BukkitPackets {
 	public static PacketContainer getNameTagPacket(NametagManager.TeamHandle team, int mode,
 			HashMap<NametagManager.TeamHandle, List<String>> teams){
 		PacketContainer packetc = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
-		WrapperPlayServerScoreboardTeam packet = new WrapperPlayServerScoreboardTeam(packetc);
 
 		if(!teams.containsKey(team)){
-			return packet.getHandle();
+			return packetc;
 		}
 
-		packet.setPrefix(ChatUtil.colored(team.getPrefix()));
-		packet.setSuffix(ChatUtil.colored(team.getSuffix()));
-		packet.setMode(mode);
-		packet.setName(team.getName());
-		packet.setDisplayName(team.getName());
-		packet.setPlayers(teams.get(team));
+		packetc.getStrings().write(0, team.getName());
+		packetc.getStrings().write(1, team.getName());
+		packetc.getStrings().write(2, team.getPrefix());
+		packetc.getStrings().write(3, team.getSuffix());
+		packetc.getSpecificModifier(Collection.class).write(0, teams.get(team));
+		packetc.getIntegers().write(1, mode);
 
-		return packet.getHandle();
+		return packetc;
 	}
 
 	/**
@@ -118,13 +121,13 @@ public class BukkitPackets {
 	 * @return The packet
 	 */
 	public static PacketContainer getEntityAttachPacket(int passengerId, int vehicleId, boolean leash){
-		WrapperPlayServerAttachEntity packet = new WrapperPlayServerAttachEntity();
+		PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ATTACH_ENTITY);
 
-		packet.setEntityID(passengerId);
-		packet.setVehicleId(vehicleId);
-		packet.setLeash(leash);
+		packet.getIntegers().write(0, passengerId);
+		packet.getIntegers().write(2, vehicleId);
+		packet.getIntegers().write(0, leash ? 1 : 0);
 
-		return packet.getHandle();
+		return packet;
 	}
 
 	/**
@@ -224,13 +227,14 @@ public class BukkitPackets {
 	 * @return The packet
 	 */
 	public static PacketContainer getTablistPacket(WrappedGameProfile profile, EnumWrappers.PlayerInfoAction action){
-		WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo();
-		packet.setAction(action);
-		packet.setData(Collections.singletonList(new PlayerInfoData(profile, 0,
+		PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+
+		packet.getPlayerInfoAction().write(0, action);
+		packet.getPlayerInfoDataLists().write(0, Collections.singletonList(new PlayerInfoData(profile, 0,
 				EnumWrappers.NativeGameMode.NOT_SET,
 				WrappedChatComponent.fromText(profile.getName()))));
 
-		return packet.getHandle();
+		return packet;
 	}
 
 	/**
@@ -254,40 +258,35 @@ public class BukkitPackets {
 	/**
 	 * Get particle effect data
 	 *
-	 * @param effect  The effect
-	 * @param x       The x
-	 * @param y       The y
-	 * @param z       The z
-	 * @param offsetX The offset X
-	 * @param offsetY The offset Y
-	 * @param offsetZ The offset Z
-	 * @param data    The data
-	 * @param amount  The amount
+	 * @param information The particle info's
 	 *
 	 * @return The packet
 	 */
-	public static Object getParticleEffectPacket(ParticleEffect effect, float x, float y, float z,
-			float offsetX, float offsetY, float offsetZ, float data,
-			int amount){
+	public static Object getParticleEffectPacket(ParticleInformation information){
 		Class<?> packetClass = CraftBukkitUtil.PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutWorldParticles");
 		Class<?> enumParticle = CraftBukkitUtil.PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
 		Constructor<?> constructor = ReflectionUtils.getConstructor(packetClass);
 		try{
 			Object packet = constructor.newInstance();
 
-			ReflectionUtils.setField("a", enumParticle.getEnumConstants()[effect.getId()], packet);
+			ReflectionUtils.setField("a", enumParticle.getEnumConstants()[information.getEffect().getId()], packet);
 			ReflectionUtils.setField("j", true, packet);
-			ReflectionUtils.setField("b", x, packet);
-			ReflectionUtils.setField("c", y, packet);
-			ReflectionUtils.setField("d", z, packet);
-			ReflectionUtils.setField("e", offsetX, packet);
-			ReflectionUtils.setField("f", offsetY, packet);
-			ReflectionUtils.setField("g", offsetZ, packet);
 
-			if(data != -1){
-				ReflectionUtils.setField("h", data, packet);
+			ParticleData data = information.getData();
+			if(data != null){
+				int[] packetData = data.getPacketData();
+				ReflectionUtils.setField("k", information.getEffect() == ParticleEffect.ICONCRACK ? packetData :
+						new int[]{packetData[0] | (packetData[1] << 12)}, packet);
 			}
-			ReflectionUtils.setField("i", amount, packet);
+
+			ReflectionUtils.setField("b", information.getX(), packet);
+			ReflectionUtils.setField("c", information.getY(), packet);
+			ReflectionUtils.setField("d", information.getZ(), packet);
+			ReflectionUtils.setField("e", information.getOffsetX(), packet);
+			ReflectionUtils.setField("f", information.getOffsetY(), packet);
+			ReflectionUtils.setField("g", information.getOffsetZ(), packet);
+			ReflectionUtils.setField("h", information.getSpeed(), packet);
+			ReflectionUtils.setField("i", information.getAmount(), packet);
 
 			return packet;
 		}

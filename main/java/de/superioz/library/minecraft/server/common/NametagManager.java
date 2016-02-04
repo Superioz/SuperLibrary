@@ -4,9 +4,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
-import de.superioz.library.minecraft.server.util.protocol.lib.WrapperPlayServerScoreboardTeam;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -44,11 +41,11 @@ public class NametagManager {
         if(getTeam(prefix, suffix) == null){
             createTeam(prefix, suffix, target);
             packet = BukkitPackets.getNameTagPacket(getTeam(prefix, suffix),
-                    WrapperPlayServerScoreboardTeam.Mode.TEAM_CREATED, TEAMS);
+                    BukkitPackets.SCOREBOARD_TEAM_CREATED, TEAMS);
         }
         else{
             TeamHandle team = getTeam(prefix, suffix);
-            packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.PLAYERS_ADDED, TEAMS);
+            packet = BukkitPackets.getNameTagPacket(team, BukkitPackets.SCOREBOARD_PLAYERS_ADDED, TEAMS);
         }
 
         TeamHandle team = getTeam(prefix, suffix);
@@ -97,7 +94,7 @@ public class NametagManager {
         List<String> l = TEAMS.get(team);
         l.remove(player.getDisplayName());
 
-        PacketContainer packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.PLAYERS_REMOVED, TEAMS);
+        PacketContainer packet = BukkitPackets.getNameTagPacket(team, BukkitPackets.SCOREBOARD_PLAYERS_REMOVED, TEAMS);
         ProtocolUtil.sendServerPacket(packet, viewer);
 
         if(TEAMS.get(team).size() == 0){
@@ -192,7 +189,7 @@ public class NametagManager {
         if(TEAMS.get(team).size() != 0)
             return;
 
-        PacketContainer packet = BukkitPackets.getNameTagPacket(team, WrapperPlayServerScoreboardTeam.Mode.TEAM_REMOVED, TEAMS);
+        PacketContainer packet = BukkitPackets.getNameTagPacket(team, BukkitPackets.SCOREBOARD_TEAM_REMOVED, TEAMS);
         ProtocolUtil.sendServerPacket(packet, BukkitUtilities.onlinePlayers());
 
         TEAMS.remove(team);
