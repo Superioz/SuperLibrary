@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  *
  * @author Superioz
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
@@ -32,4 +31,18 @@ public @interface Command {
 
     Class<?> tabCompleter() default BukkitTabCompleter.class;
 
+	String[] flags() default {""};
+
+	String[] flagDescriptions() default {""};
+
+	/**
+	 * Created on 01.03.2016.
+	 */
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Nested {
+
+		String parent();
+
+	}
 }

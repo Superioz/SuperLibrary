@@ -2,7 +2,7 @@ package de.superioz.library.minecraft.server.lab.disguise;
 
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import de.superioz.library.java.util.SimpleStringUtils;
-import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
+import de.superioz.library.minecraft.server.util.protocol.CraftBukkitUtil;
 
 /**
  * Enum for disguisable entities

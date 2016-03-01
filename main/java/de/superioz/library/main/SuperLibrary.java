@@ -4,9 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
 import de.superioz.library.minecraft.server.listener.DefaultCommandListener;
-import de.superioz.library.minecraft.server.listener.FakeMobListener;
-import de.superioz.library.minecraft.server.listener.ProtocolListener;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
@@ -36,9 +34,6 @@ public class SuperLibrary {
             manager = ProtocolLibrary.getProtocolManager();
         }
         protocolManager = manager;
-
-        // ProtocolListener
-        protocolManager.addPacketListener(new ProtocolListener());
     }
 
     public static void initFor(JavaPlugin pl){
@@ -49,8 +44,9 @@ public class SuperLibrary {
         // register default listener
         registerListener();
 
-        // register npc
-        NPCRegistry.init();
+        //register npc
+        if(ProtocolUtil.checkLibrary())
+            NPCRegistry.init();
     }
 
     // -- Intern methods
@@ -73,7 +69,6 @@ public class SuperLibrary {
 
     private static void registerListener(){
         pluginManager().registerEvents(new DefaultCommandListener(), plugin());
-        pluginManager().registerEvents(new FakeMobListener(), plugin());
     }
 
     public static ExecutorService getExecutorService(){

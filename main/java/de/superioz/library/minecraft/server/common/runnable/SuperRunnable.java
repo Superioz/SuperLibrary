@@ -9,8 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * @author Superioz
  */
-@Getter
-@Setter
 public abstract class SuperRunnable {
 
     public SuperRunnable(int counter){
@@ -20,4 +18,19 @@ public abstract class SuperRunnable {
     protected int counter;
     protected BukkitRunnable runnable;
 
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public BukkitRunnable getRunnable() {
+        return runnable;
+    }
+
+    public void setRunnable(BukkitRunnable runnable) {
+        this.runnable = runnable;
+    }
 }

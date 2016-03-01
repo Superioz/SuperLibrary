@@ -1,4 +1,4 @@
-package de.superioz.library.test;
+package de.superioz.library.minecraft.test;
 
 import de.superioz.library.minecraft.server.common.command.BukkitTabCompleter;
 import de.superioz.library.minecraft.server.common.command.CommandWrapper;

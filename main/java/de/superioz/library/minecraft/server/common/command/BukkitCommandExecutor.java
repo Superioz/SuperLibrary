@@ -137,17 +137,6 @@ public class BukkitCommandExecutor {
     private boolean checkCommandContext(CommandContext context, CommandWrapper command){
         CommandSender commandSender = context.getSender();
 
-        // Check arguments length
-        if((context.getArgumentsLength() > command.getMax()
-                && !(command.getMax() <= 0))
-                || context.getArgumentsLength() < command.getMin()){
-
-            // Fire event
-            SuperLibrary.callEvent(new CommandExecutionErrorEvent(CommandExecutionErrorEvent
-                    .Reason.INVALID_COMMAND_USAGE, context));
-            return false;
-        }
-
         // Check commandSender
         if(commandSender instanceof Player){
 
@@ -172,8 +161,6 @@ public class BukkitCommandExecutor {
                     return false;
                 }
             }
-
-            return true;
         }
         else{
 
@@ -183,9 +170,19 @@ public class BukkitCommandExecutor {
                         .Reason.NOT_ALLOWED_COMMANDSENDER, context));
                 return false;
             }
-
-            return true;
         }
+
+        // Check arguments length
+        if((context.getArgumentsLength() > command.getMax()
+                && !(command.getMax() <= 0))
+                || context.getArgumentsLength() < command.getMin()){
+
+            // Fire event
+            SuperLibrary.callEvent(new CommandExecutionErrorEvent(CommandExecutionErrorEvent
+                    .Reason.INVALID_COMMAND_USAGE, context));
+            return false;
+        }
+        return true;
     }
 
 }

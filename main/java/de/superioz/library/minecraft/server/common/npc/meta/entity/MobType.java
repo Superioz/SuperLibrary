@@ -29,6 +29,7 @@ public enum MobType {
     ZOMBIE(EntityType.ZOMBIE),
     RABBIT(EntityType.RABBIT),
     SHEEP(EntityType.SHEEP),
+    SHULKER(EntityType.SHULKER),
     SKELETON(EntityType.SKELETON),
     VILLAGER(EntityType.VILLAGER),
     WITCH(EntityType.WITCH),

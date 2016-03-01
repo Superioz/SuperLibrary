@@ -1,7 +1,7 @@
 name: SuperLibrary
 version: 1.0
 author: Superioz
-main: de.superioz.library.test.TestPlugin
+main: de.superioz.library.minecraft.test.TestPlugin
 description: Description
 
-depend: [ProtocolLib]
+softdepend: [ProtocolLib]

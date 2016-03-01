@@ -2,12 +2,12 @@ package de.superioz.library.minecraft.server.lab.disguise;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import com.darkblade12.particleeffect.ReflectionUtils;
+import de.superioz.library.java.util.ReflectionUtils;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
-import de.superioz.library.minecraft.server.util.CraftBukkitUtil;
+import de.superioz.library.minecraft.server.util.protocol.CraftBukkitUtil;
 import de.superioz.library.minecraft.server.util.ChatUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -36,39 +36,39 @@ public class PlayerDisguise {
         this.type = type;
         this.customName = ChatUtil.colored(name);
 
-        try{
+        try {
             this.initEntity();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     // ======================================= OTHER METHODS ===================================
 
-    public void send(Player... players){
-        try{
+    public void send(Player... players) {
+        try {
             this.initEntity();
             sendDisguise(players);
             SuperLibrary.pluginManager().callEvent(new PlayerDisguiseEvent(getDisguised(), this));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void send(){
+    public void send() {
         send(BukkitUtilities.onlinePlayers());
     }
 
-    public void undisguise(Player... players){
-        try{
+    public void undisguise(Player... players) {
+        try {
             SuperLibrary.pluginManager().callEvent(new PlayerUndisguiseEvent(getDisguised()));
             sendUndisguise(players);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void undisguise(){
+    public void undisguise() {
         undisguise(BukkitUtilities.onlinePlayers());
     }
 
@@ -84,17 +84,16 @@ public class PlayerDisguise {
         Class<?> entityClass = Class.forName(type.getClassName());
 
         // Init entity class
-        if(this.entity == null){
+        if (this.entity == null) {
             this.entity = ReflectionUtils.instantiateObject(entityClass, world);
         }
 
-        assert entity != null;
         ReflectionUtils.invokeMethod(entity, "setPosition", loc.getX(), loc.getY(), loc.getZ());
         ReflectionUtils.getMethod(entityClass, "d", int.class).invoke(entity, p.getEntityId());
         this.handleType(type, entity);
 
         // Name
-        if(customName != null){
+        if (customName != null) {
             ReflectionUtils.getMethod(entityClass, "setCustomName", String.class).invoke(entity, customName);
             ReflectionUtils.getMethod(entityClass, "setCustomNameVisible", boolean.class).invoke(entity, true);
         }
@@ -108,13 +107,12 @@ public class PlayerDisguise {
 
         // Spawn packet
         Object spawnPacket;
-        if(type.getClassName().equals(DisguiseType.ARMORSTAND.getClassName())){
+        if (type.getClassName().equals(DisguiseType.ARMORSTAND.getClassName())) {
             spawnPacket = ReflectionUtils.instantiateObject("PacketPlayOutSpawnEntity",
-                    ReflectionUtils.PackageType.MINECRAFT_SERVER, entity, type.getId());
-        }
-        else{
+                    CraftBukkitUtil.PackageType.MINECRAFT_SERVER, entity, type.getId());
+        } else {
             spawnPacket = ReflectionUtils.instantiateObject("PacketPlayOutSpawnEntityLiving",
-                    ReflectionUtils.PackageType.MINECRAFT_SERVER, entity);
+                    CraftBukkitUtil.PackageType.MINECRAFT_SERVER, entity);
         }
 
         ProtocolUtil.sendServerPacket(destroyPacket, Collections.singletonList(p), players);
@@ -128,7 +126,7 @@ public class PlayerDisguise {
 
         // Spawn packet
         Object spawnPacket = ReflectionUtils.instantiateObject("PacketPlayOutNamedEntitySpawn",
-                ReflectionUtils.PackageType.MINECRAFT_SERVER, CraftBukkitUtil.getHandle(p));
+                CraftBukkitUtil.PackageType.MINECRAFT_SERVER, CraftBukkitUtil.getHandle(p));
 
         ProtocolUtil.sendServerPacket(destroyPacket, Collections.singletonList(p), players);
         CraftBukkitUtil.sendPacket(spawnPacket, Collections.singletonList(p), players);
@@ -156,7 +154,7 @@ public class PlayerDisguise {
         return Bukkit.getPlayer(disguised);
     }
 
-    public Object getEntity(){
+    public Object getEntity() {
         return entity;
     }
 
@@ -179,41 +177,28 @@ public class PlayerDisguise {
     }
 
     public void setSlimeSize(int size) {
-        if(type == DisguiseType.SLIME
-                || type == DisguiseType.MAGMA_CUBE){
-            try{
-                Method m = ReflectionUtils.getMethod(entity.getClass(), "setSize", int.class);
+        if (type == DisguiseType.SLIME
+                || type == DisguiseType.MAGMA_CUBE) {
+            try {
+                Method m = de.superioz.library.java.util.ReflectionUtils.getMethod(entity.getClass(), "setSize", int.class);
                 m.setAccessible(true);
                 m.invoke(entity, size);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
+            } catch (IllegalAccessException |
+                    InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void setEndermanCarried(Block block){
-        if(type == DisguiseType.ENDERMAN){
-            try{
-                ReflectionUtils.invokeMethod(entity, "setCarried", block);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
-                e.printStackTrace();
-            }
+    public void setEndermanCarried(Block block) {
+        if (type == DisguiseType.ENDERMAN) {
+            ReflectionUtils.invokeMethod(entity, "setCarried", block);
         }
     }
 
-    public void setSheepSheared(boolean flag){
-        if(type == DisguiseType.SHEEP){
-            try{
-                ReflectionUtils.invokeMethod(entity, "setSheared", flag);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
-                e.printStackTrace();
-            }
+    public void setSheepSheared(boolean flag) {
+        if (type == DisguiseType.SHEEP) {
+            ReflectionUtils.invokeMethod(entity, "setSheared", flag);
         }
     }
 
@@ -230,15 +215,9 @@ public class PlayerDisguise {
         }
     }*/
 
-    public void setWolfTamed(boolean flag){
-        if(type == DisguiseType.WOLF){
-            try{
-                ReflectionUtils.invokeMethod(entity, "setTamed", flag);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
-                e.printStackTrace();
-            }
+    public void setWolfTamed(boolean flag) {
+        if (type == DisguiseType.WOLF) {
+            ReflectionUtils.invokeMethod(entity, "setTamed", flag);
         }
     }
 
@@ -254,27 +233,15 @@ public class PlayerDisguise {
         }
     }*/
 
-    public void setVillagerProfession(int value){
-        if(type == DisguiseType.VILLAGER){
-            try{
-                ReflectionUtils.invokeMethod(entity, "setProfession", value);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
-                e.printStackTrace();
-            }
+    public void setVillagerProfession(int value) {
+        if (type == DisguiseType.VILLAGER) {
+            ReflectionUtils.invokeMethod(entity, "setProfession", value);
         }
     }
 
-    public void setGuardianElder(boolean flag){
-        if(type == DisguiseType.GUARDIAN){
-            try{
-                ReflectionUtils.invokeMethod(entity, "setElder", flag);
-            }catch(IllegalAccessException |
-                    InvocationTargetException |
-                    NoSuchMethodException e){
-                e.printStackTrace();
-            }
+    public void setGuardianElder(boolean flag) {
+        if (type == DisguiseType.GUARDIAN) {
+            ReflectionUtils.invokeMethod(entity, "setElder", flag);
         }
     }
 

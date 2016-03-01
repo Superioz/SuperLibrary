@@ -9,6 +9,7 @@ public enum CommandType {
 
     ROOT,
     SUB,
-    NESTED
+    NESTED,
+    UNKNOWN
 
 }

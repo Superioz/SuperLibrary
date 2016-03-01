@@ -2,6 +2,8 @@ package de.superioz.library.minecraft.server.common.npc;
 
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeEntity;
+import de.superioz.library.minecraft.server.listener.FakeMobListener;
+import de.superioz.library.minecraft.server.listener.ProtocolListener;
 import de.superioz.library.minecraft.server.util.BukkitUtilities;
 import de.superioz.library.minecraft.server.util.LocationUtil;
 import org.bukkit.Bukkit;
@@ -115,6 +117,12 @@ public class NPCRegistry {
      */
     public static void init(){
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(SuperLibrary.plugin(), new NPCAimUpdate(), 2L, 2L);
+
+        // Register listener
+        SuperLibrary.pluginManager().registerEvents(new FakeMobListener(), SuperLibrary.plugin());
+
+        // ProtocolListener
+        SuperLibrary.protocolManager().addPacketListener(new ProtocolListener());
     }
 
     // -- Intern methods

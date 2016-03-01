@@ -1,9 +1,6 @@
 package de.superioz.library.minecraft.server.common.npc.raw;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.npc.EntityIDManager;
 import de.superioz.library.minecraft.server.common.npc.Hologram;
 import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
@@ -14,8 +11,8 @@ import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySetti
 import de.superioz.library.minecraft.server.common.npc.meta.settings.FakeEntityType;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import de.superioz.library.minecraft.server.util.LocationUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
-import de.superioz.library.minecraft.server.util.protocol.WrapperPlayServerAttachEntity;
+import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -68,7 +65,6 @@ public abstract class CraftFakeEntity {
      * Gets nearby players
      *
      * @param radius The radius
-     *
      * @return The players in range
      */
     public List<Player> getNearbyPlayers(double radius){
@@ -294,11 +290,7 @@ public abstract class CraftFakeEntity {
      * @param p The viewers
      */
     protected void sendDestroyPacket(Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-        packet.getIntegerArrays().write(0, new int[]{this.getUniqueId()});
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityDestroyPacket(getUniqueId()), p);
 
         // Update viewers and name
         setViewers(false, p);
@@ -311,17 +303,7 @@ public abstract class CraftFakeEntity {
      * @param p The viewers
      */
     protected void sendTeleportPacket(Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ENTITY_TELEPORT);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getIntegers().write(1, LocationUtil.toFixedPoint(getLocation().getX()));
-        packet.getIntegers().write(2, LocationUtil.toFixedPoint(getLocation().getY()));
-        packet.getIntegers().write(3, LocationUtil.toFixedPoint(getLocation().getZ()));
-        packet.getBytes().write(0, (byte) LocationUtil.toAngle(getLocation().getYaw()));
-        packet.getBytes().write(1, (byte) LocationUtil.toAngle(getLocation().getPitch()));
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityTeleportPacket(getUniqueId(), getLocation()), p);
     }
 
     /**
@@ -330,13 +312,7 @@ public abstract class CraftFakeEntity {
      * @param p The viewers
      */
     protected void sendMetaPacket(Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ENTITY_METADATA);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getWatchableCollectionModifier().write(0, this.getMetaData().getWatchableObjects());
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityMetaPacket(getUniqueId(), getMetaData().getWatchableObjects()), p);
     }
 
     /**
@@ -347,14 +323,7 @@ public abstract class CraftFakeEntity {
      * @param p           The viewers
      */
     protected void sendAttachPacket(int vehicleID, int passengerID, Player... p){
-        WrapperPlayServerAttachEntity packet = new WrapperPlayServerAttachEntity();
-
-        packet.setEntityID(passengerID);
-        packet.setVehicleId(vehicleID);
-        packet.setLeash(true);
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet.getHandle(), p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityAttachPacket(passengerID, vehicleID, true), p);
     }
 
     /**
@@ -364,16 +333,7 @@ public abstract class CraftFakeEntity {
      * @param p      The viewers
      */
     protected void sendMovePacket(Location newLoc, Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.REL_ENTITY_MOVE);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getBytes().write(0, (byte) LocationUtil.toFixedPoint(newLoc.getX() - getLocation().getX()));
-        packet.getBytes().write(1, (byte) LocationUtil.toFixedPoint(newLoc.getY() - getLocation().getY()));
-        packet.getBytes().write(2, (byte) LocationUtil.toFixedPoint(newLoc.getZ() - getLocation().getZ()));
-        packet.getBooleans().write(0, this.isOnGround());
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityMovePacket(getUniqueId(), newLoc, getLocation(), isOnGround()), p);
     }
 
     /**
@@ -383,18 +343,7 @@ public abstract class CraftFakeEntity {
      * @param p      The viewers
      */
     protected void sendMoveAndLookPacket(Location newLoc, Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ENTITY_MOVE_LOOK);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getBytes().write(0, (byte) LocationUtil.toFixedPoint(newLoc.getX() - getLocation().getX()));
-        packet.getBytes().write(1, (byte) LocationUtil.toFixedPoint(newLoc.getY() - getLocation().getY()));
-        packet.getBytes().write(2, (byte) LocationUtil.toFixedPoint(newLoc.getZ() - getLocation().getZ()));
-        packet.getBytes().write(3, (byte) LocationUtil.toAngle(newLoc.getYaw()));
-        packet.getBytes().write(4, (byte) LocationUtil.toAngle(newLoc.getPitch()));
-        packet.getBooleans().write(0, this.isOnGround());
-
-        // Send server packet
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityMoveAndLookPacket(getUniqueId(), newLoc, getLocation(), isOnGround()), p);
     }
 
     /**
@@ -405,15 +354,7 @@ public abstract class CraftFakeEntity {
      * @param p     The viewers
      */
     protected void sendRotationPacket(double yaw, double pitch, Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server
-                .ENTITY_LOOK);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getBytes().write(0, (byte) LocationUtil.toAngle(yaw));
-        packet.getBytes().write(1, (byte) LocationUtil.toAngle(pitch));
-        packet.getBooleans().write(0, this.isOnGround());
-
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityRotationPacket(getUniqueId(), yaw, pitch, isOnGround()), p);
     }
 
     /**
@@ -423,13 +364,7 @@ public abstract class CraftFakeEntity {
      * @param p       The viewers
      */
     protected void sendHeadRotation(double headYaw, Player... p){
-        PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server
-                .ENTITY_HEAD_ROTATION);
-
-        packet.getIntegers().write(0, this.getUniqueId());
-        packet.getBytes().write(0, (byte) LocationUtil.toAngle(headYaw));
-
-        ProtocolUtil.sendServerPacket(packet, p);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getEntityHeadRotationPacket(getUniqueId(), headYaw), p);
     }
 
     /**

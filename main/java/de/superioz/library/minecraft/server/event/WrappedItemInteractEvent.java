@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Superioz
  */
-@Getter
 public class WrappedItemInteractEvent {
 
     protected PlayerInteractEvent event;
@@ -29,4 +28,23 @@ public class WrappedItemInteractEvent {
         this.player = event.getPlayer();
     }
 
+    public PlayerInteractEvent getEvent() {
+        return event;
+    }
+
+    public ItemStack getItem() {
+        return item;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public Block getClickedBlock() {
+        return clickedBlock;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

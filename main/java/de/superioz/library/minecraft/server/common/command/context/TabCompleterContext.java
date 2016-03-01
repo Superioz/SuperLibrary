@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
  *
  * @author Superioz
  */
-@Getter
 public class TabCompleterContext {
 
     protected CommandSender sender;
@@ -21,4 +20,15 @@ public class TabCompleterContext {
         this.args = args;
     }
 
+    public CommandSender getSender(){
+        return sender;
+    }
+
+    public String getLabel(){
+        return label;
+    }
+
+    public String[] getArgs(){
+        return args;
+    }
 }

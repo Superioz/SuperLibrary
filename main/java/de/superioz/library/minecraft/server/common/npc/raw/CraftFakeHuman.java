@@ -2,7 +2,9 @@ package de.superioz.library.minecraft.server.common.npc.raw;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.*;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
+import com.comphenix.protocol.wrappers.WrappedSignedProperty;
 import com.mojang.authlib.GameProfile;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.npc.meta.FakeHumanInventory;
@@ -10,11 +12,11 @@ import de.superioz.library.minecraft.server.common.npc.meta.FakeHumanProfile;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntityAppearence;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.FakeEntityType;
-import de.superioz.library.minecraft.server.util.protocol.WrapperPlayServerPlayerInfo;
 import de.superioz.library.minecraft.server.common.session.GameProfileBuilder;
 import de.superioz.library.minecraft.server.common.session.UUIDFetcher;
 import de.superioz.library.minecraft.server.util.LocationUtil;
-import de.superioz.library.minecraft.server.util.ProtocolUtil;
+import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
+import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,7 +24,6 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,14 +98,7 @@ public abstract class CraftFakeHuman extends CraftFakeEntity {
      * @param players The viewers
      */
     protected void addToTablist(Player... players){
-        // Wrappers
-        WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo();
-        packet.setAction(EnumWrappers.PlayerInfoAction.ADD_PLAYER);
-        packet.setData(Collections.singletonList(new PlayerInfoData(getProfile(), 0,
-                EnumWrappers.NativeGameMode.NOT_SET,
-                WrappedChatComponent.fromText(getName()))));
-
-        ProtocolUtil.sendServerPacket(packet.getHandle(), players);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getTablistPacket(profile, EnumWrappers.PlayerInfoAction.ADD_PLAYER), players);
     }
 
     /**
@@ -113,13 +107,7 @@ public abstract class CraftFakeHuman extends CraftFakeEntity {
      * @param players The viewers
      */
     protected void removeFromTablist(Player... players){
-        WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo();
-        packet.setAction(EnumWrappers.PlayerInfoAction.REMOVE_PLAYER);
-        packet.setData(Collections.singletonList(new PlayerInfoData(this.profile, 0,
-                EnumWrappers.NativeGameMode.NOT_SET,
-                WrappedChatComponent.fromText(profile.getName()))));
-
-        ProtocolUtil.sendServerPacket(packet.getHandle(), players);
+        ProtocolUtil.sendServerPacket(BukkitPackets.getTablistPacket(profile, EnumWrappers.PlayerInfoAction.REMOVE_PLAYER), players);
     }
 
     /**

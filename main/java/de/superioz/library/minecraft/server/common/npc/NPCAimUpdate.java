@@ -1,6 +1,5 @@
 package de.superioz.library.minecraft.server.common.npc;
 
-import de.superioz.library.minecraft.server.common.npc.NPCRegistry;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeEntity;
 import org.bukkit.entity.Player;
 

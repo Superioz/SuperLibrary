@@ -1,8 +1,7 @@
 package de.superioz.library.minecraft.server.common.npc.meta;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import de.superioz.library.main.SuperLibrary;
+import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -64,11 +63,7 @@ public class FakeHumanInventory {
         List<PacketContainer> packetList = new ArrayList<>();
         for(int i = 0; i < 5; i++){
             ItemStack stack = this.getSlot(i);
-            PacketContainer packet = SuperLibrary.protocolManager().createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
-            packet.getIntegers().write(0, entityId);
-            packet.getIntegers().write(1, i);
-            packet.getItemModifier().write(0, stack);
-            packetList.add(packet);
+            packetList.add(BukkitPackets.getHumanInventoryPacket(entityId, i, stack));
         }
         return packetList;
     }
