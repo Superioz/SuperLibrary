@@ -56,4 +56,26 @@ public class CommandFlag {
 		this.arguments = args;
 	}
 
+	/**
+	 * Get the argument from this flag
+	 *
+	 * @param index The index
+	 * @return The argument
+	 */
+	public String getArgument(int index){
+		if(index < 1 || index > getArguments().size())
+			index = 1;
+
+		return getArguments().get(index - 1);
+	}
+
+	/**
+	 * Check if the flag doesn't contain an argument
+	 *
+	 * @return The result as boolean
+	 */
+	public boolean isEmpty(){
+		return getArguments().size() == 0;
+	}
+
 }

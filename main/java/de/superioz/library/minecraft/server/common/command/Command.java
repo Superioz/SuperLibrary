@@ -33,8 +33,6 @@ public @interface Command {
 
 	String[] flags() default {""};
 
-	String[] flagDescriptions() default {""};
-
 	/**
 	 * Created on 01.03.2016.
 	 */

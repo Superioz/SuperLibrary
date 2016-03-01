@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -100,6 +101,24 @@ public class CommandContext {
 	 */
 	public boolean hasFlag(String specifier){
 		return getCommandFlag(specifier, -1) != null;
+	}
+
+	/**
+	 * Get all flags used in this context
+	 *
+	 * @return The list of flags
+	 */
+	public List<CommandFlag> getFlags(){
+		return getCommand().getFlags().stream().filter(this::hasFlag).map(f -> getCommandFlag(f, -1)).collect(Collectors.toList());
+	}
+
+	/**
+	 * Get all flags as strings (specifier)
+	 *
+	 * @return The list of flags as string list
+	 */
+	public List<String> getRawFlags(){
+		return getFlags().stream().map(CommandFlag::getName).collect(Collectors.toList());
 	}
 
 	// -- Intern methods
