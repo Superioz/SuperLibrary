@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.common.npc.meta.entity;
+package de.superioz.library.minecraft.server.common.npc.meta;
 
 import de.superioz.library.java.util.RandomUtil;
 import org.bukkit.entity.EntityType;

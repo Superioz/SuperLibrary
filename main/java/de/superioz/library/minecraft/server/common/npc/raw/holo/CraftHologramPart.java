@@ -3,7 +3,7 @@ package de.superioz.library.minecraft.server.common.npc.raw.holo;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import de.superioz.library.main.SuperLibrary;
-import de.superioz.library.minecraft.server.common.npc.meta.entity.EntityMetaHandler;
+import de.superioz.library.minecraft.server.common.npc.meta.EntityMetaHandler;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntityAppearence;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.FakeEntityType;

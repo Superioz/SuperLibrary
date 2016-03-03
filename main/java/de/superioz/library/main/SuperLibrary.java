@@ -21,62 +21,60 @@ import java.util.concurrent.Executors;
  */
 public class SuperLibrary {
 
-    private static ProtocolManager protocolManager;
-    private static JavaPlugin plugin;
-    private static PluginManager pluginManager;
-    private static ExecutorService executorService;
+	private static ProtocolManager protocolManager;
+	private static JavaPlugin plugin;
+	private static PluginManager pluginManager;
+	private static ExecutorService executorService;
 
-    public static void initProtocol(ProtocolManager manager){
-        if(!ProtocolUtil.checkLibrary()){
-            return;
-        }
-        if(manager == null){
-            manager = ProtocolLibrary.getProtocolManager();
-        }
-        protocolManager = manager;
-    }
+	public static void initProtocol(){
+		if(!ProtocolUtil.checkLibrary()){
+			return;
+		}
+		protocolManager = ProtocolLibrary.getProtocolManager();
+	}
 
-    public static void initFor(JavaPlugin pl){
-        plugin = pl;
-        pluginManager = Bukkit.getServer().getPluginManager();
-        executorService = Executors.newCachedThreadPool();
+	public static void initFor(JavaPlugin pl){
+		plugin = pl;
+		pluginManager = Bukkit.getServer().getPluginManager();
+		executorService = Executors.newCachedThreadPool();
 
-        // register default listener
-        registerListener();
+		// register default listener
+		registerListener();
 
-        //register npc
-        if(ProtocolUtil.checkLibrary())
-            NPCRegistry.init();
-    }
+		// Register the npc
+		if(ProtocolUtil.checkLibrary()){
+			NPCRegistry.init();
+		}
+	}
 
-    // -- Intern methods
+	// -- Intern methods
 
-    public static JavaPlugin plugin(){
-        return plugin;
-    }
+	public static JavaPlugin plugin(){
+		return plugin;
+	}
 
-    public static PluginManager pluginManager(){
-        return pluginManager;
-    }
+	public static PluginManager pluginManager(){
+		return pluginManager;
+	}
 
-    public static ProtocolManager protocolManager(){
-        return protocolManager;
-    }
+	public static ProtocolManager protocolManager(){
+		return protocolManager;
+	}
 
-    public static void callEvent(Event event){
-        pluginManager().callEvent(event);
-    }
+	public static void callEvent(Event event){
+		pluginManager().callEvent(event);
+	}
 
-    private static void registerListener(){
-        pluginManager().registerEvents(new DefaultCommandListener(), plugin());
-    }
+	private static void registerListener(){
+		pluginManager().registerEvents(new DefaultCommandListener(), plugin());
+	}
 
-    public static ExecutorService getExecutorService(){
-        return executorService;
-    }
+	public static ExecutorService getExecutorService(){
+		return executorService;
+	}
 
-    public static void registerListener(Listener listener){
-        pluginManager().registerEvents(listener, plugin());
-    }
+	public static void registerListener(Listener listener){
+		pluginManager().registerEvents(listener, plugin());
+	}
 
 }

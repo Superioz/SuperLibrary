@@ -5,6 +5,7 @@ import de.superioz.library.minecraft.server.common.command.CommandFlag;
 import de.superioz.library.minecraft.server.common.command.CommandType;
 import de.superioz.library.minecraft.server.common.command.CommandWrapper;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,15 @@ public class CommandContext {
 		this.sender = sender;
 		this.root = root;
 		this.args = args;
+	}
+
+	/**
+	 * Returns the command sender as player
+	 *
+	 * @return The player
+	 */
+	public Player getSenderAsPlayer(){
+		return (Player) getSender();
 	}
 
 	/**
@@ -94,13 +104,41 @@ public class CommandContext {
 	}
 
 	/**
-	 * Check if command arguments contains given flag
+	 * Gets specified command flags from arguments (without argument limit)
 	 *
 	 * @param specifier The specifier
+	 * @return The flag
+	 */
+	public CommandFlag getCommandFlag(String specifier){
+		return getCommandFlag(specifier, -1);
+	}
+
+	/**
+	 * Check if command arguments contains at least one of the given flags
+	 *
+	 * @param similarSpecifier The specifier
 	 * @return The result
 	 */
-	public boolean hasFlag(String specifier){
-		return getCommandFlag(specifier, -1) != null;
+	public boolean hasFlag(String... similarSpecifier){
+		for(String s : similarSpecifier){
+			if(getCommandFlag(s, -1) != null)
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if command arguments contains all given flags
+	 *
+	 * @param specifier The flag specifier
+	 * @return The result
+	 */
+	public boolean hasFlags(String... specifier){
+		for(String s : specifier){
+			if(!hasFlag(s))
+				return false;
+		}
+		return true;
 	}
 
 	/**

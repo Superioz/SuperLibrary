@@ -4,4 +4,5 @@ author: Superioz
 main: de.superioz.library.minecraft.test.TestPlugin
 description: Description
 
+loadbefore: [ProtocolLib]
 softdepend: [ProtocolLib]

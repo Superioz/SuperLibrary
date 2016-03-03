@@ -1,10 +1,12 @@
-package de.superioz.library.minecraft.server.common.npc.meta.entity;
+package de.superioz.library.minecraft.server.common.npc.meta;
 
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeEntity;
 import de.superioz.library.minecraft.server.common.npc.raw.holo.CraftHologramPart;
 import de.superioz.library.minecraft.server.util.ChatUtil;
 import de.superioz.library.minecraft.server.util.protocol.ProtocolUtil;
+import net.minecraft.server.v1_9_R1.DataWatcher;
+import net.minecraft.server.v1_9_R1.DataWatcherObject;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -95,10 +97,10 @@ public class EntityMetaHandler {
     private static WrappedDataWatcher fromEntity(EntityType type){
         WrappedDataWatcher watcher = new WrappedDataWatcher();
 
-        watcher.setObject(6, 1.0F); // Health
-        watcher.setObject(7, 0); // Potion Effect color
-        watcher.setObject(8, (byte) 0); // Potion effect ambient
-        watcher.setObject(9, (byte) 0); // Number of arrows in entity
+        watcher.setObject(EntityMeta.LIVING_ENTITY_HEALTH.getIndex(), 1.0F); // Health
+        watcher.setObject(EntityMeta.LIVING_ENTITY_POTION_EFFECT_COLOR.getIndex(), 0); // Potion Effect color
+        watcher.setObject(EntityMeta.LIVING_ENTITY_POTION_EFFECT_AMBIENT.getIndex(), (byte) 0); // Potion effect ambient
+        watcher.setObject(EntityMeta.LIVING_ENTITY_ARROWS_INSIDE.getIndex(), (byte) 0); // Number of arrows in entity
 
         switch(type){
             case BAT:

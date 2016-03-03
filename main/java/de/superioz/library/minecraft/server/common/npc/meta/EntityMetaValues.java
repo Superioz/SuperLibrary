@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.common.npc.meta.entity;
+package de.superioz.library.minecraft.server.common.npc.meta;
 
 import org.bukkit.entity.Ocelot;
 

@@ -27,7 +27,6 @@ public class CommandWrapper {
 	private CommandType commandType;
 	private CommandWrapper parent;
 	private List<String> flags;
-	private List<String> flagDescriptions;
 
 	protected Class parentClass;
 	protected Method parentMethod;
@@ -58,7 +57,6 @@ public class CommandWrapper {
 		this.tabCompleterClass = annotation.tabCompleter();
 		this.permission = annotation.permission();
 		this.flags = Arrays.asList(annotation.flags());
-		this.flagDescriptions = Arrays.asList(annotation.flagDescriptions());
 
 		// Init command
 		this.initCommand();

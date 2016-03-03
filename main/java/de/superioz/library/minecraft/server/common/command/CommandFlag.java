@@ -78,4 +78,14 @@ public class CommandFlag {
 		return getArguments().size() == 0;
 	}
 
+	/**
+	 * Checks if the name of this flag is equals given string
+	 *
+	 * @param otherFlagsName The name of the other flag (or just a string)
+	 * @return The result
+	 */
+	public boolean isSimilar(String otherFlagsName){
+		return getName().equals(otherFlagsName);
+	}
+
 }

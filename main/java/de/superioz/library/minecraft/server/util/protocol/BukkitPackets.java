@@ -3,18 +3,12 @@ package de.superioz.library.minecraft.server.util.protocol;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.*;
-import de.superioz.library.java.util.ReflectionUtils;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.NametagManager;
-import de.superioz.library.minecraft.server.common.particle.ParticleData;
-import de.superioz.library.minecraft.server.common.particle.ParticleEffect;
-import de.superioz.library.minecraft.server.common.particle.ParticleInformation;
 import de.superioz.library.minecraft.server.util.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -253,47 +247,6 @@ public class BukkitPackets {
 		packet.getItemModifier().write(0, stack);
 
 		return packet;
-	}
-
-	/**
-	 * Get particle effect data
-	 *
-	 * @param information The particle info's
-	 *
-	 * @return The packet
-	 */
-	public static Object getParticleEffectPacket(ParticleInformation information){
-		Class<?> packetClass = CraftBukkitUtil.PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutWorldParticles");
-		Class<?> enumParticle = CraftBukkitUtil.PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
-		Constructor<?> constructor = ReflectionUtils.getConstructor(packetClass);
-		try{
-			Object packet = constructor.newInstance();
-
-			ReflectionUtils.setField("a", enumParticle.getEnumConstants()[information.getEffect().getId()], packet);
-			ReflectionUtils.setField("j", true, packet);
-
-			ParticleData data = information.getData();
-			if(data != null){
-				int[] packetData = data.getPacketData();
-				ReflectionUtils.setField("k", information.getEffect() == ParticleEffect.ICONCRACK ? packetData :
-						new int[]{packetData[0] | (packetData[1] << 12)}, packet);
-			}
-
-			ReflectionUtils.setField("b", information.getX(), packet);
-			ReflectionUtils.setField("c", information.getY(), packet);
-			ReflectionUtils.setField("d", information.getZ(), packet);
-			ReflectionUtils.setField("e", information.getOffsetX(), packet);
-			ReflectionUtils.setField("f", information.getOffsetY(), packet);
-			ReflectionUtils.setField("g", information.getOffsetZ(), packet);
-			ReflectionUtils.setField("h", information.getSpeed(), packet);
-			ReflectionUtils.setField("i", information.getAmount(), packet);
-
-			return packet;
-		}
-		catch(InstantiationException | IllegalAccessException | InvocationTargetException e){
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 }

@@ -1,7 +1,5 @@
 package de.superioz.library.minecraft.server.util;
 
-import de.superioz.library.minecraft.server.common.particle.ParticleInformation;
-import de.superioz.library.minecraft.server.common.particle.ParticleEffect;
 import de.superioz.library.minecraft.server.util.protocol.BukkitPackets;
 import de.superioz.library.minecraft.server.util.protocol.CraftBukkitUtil;
 import org.bukkit.Bukkit;
@@ -102,16 +100,6 @@ public class BukkitUtilities {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Shows particle to given players
-	 *
-	 * @param data    The data
-	 * @param players The viewer
-	 */
-	public static void showParticle(ParticleInformation data, Player... players){
-		CraftBukkitUtil.sendPacket(BukkitPackets.getParticleEffectPacket(data), players);
 	}
 
 	/**
