@@ -14,6 +14,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -162,7 +163,12 @@ public class SuperScoreboard {
             this.setHeader(null);
 
         this.lines.clear();
-        this.teams.forEach(Team::unregister);
+        this.teams.forEach(new Consumer<Team>() {
+            @Override
+            public void accept(Team team){
+                team.unregister();
+            }
+        });
         this.teams.clear();
         return this;
     }

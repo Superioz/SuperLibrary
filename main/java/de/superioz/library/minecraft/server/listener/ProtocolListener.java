@@ -65,9 +65,12 @@ public class ProtocolListener implements PacketListener {
             }
 
             packetEvent.setCancelled(true);
-            Bukkit.getScheduler().runTask(SuperLibrary.plugin(), () -> {
-                PlayerInteractNPCEvent event = new PlayerInteractNPCEvent(player, entity, action);
-                SuperLibrary.callEvent(event);
+            Bukkit.getScheduler().runTask(SuperLibrary.plugin(), new Runnable() {
+                @Override
+                public void run(){
+                    PlayerInteractNPCEvent event = new PlayerInteractNPCEvent(player, entity, action);
+                    SuperLibrary.callEvent(event);
+                }
             });
         }
     }

@@ -47,10 +47,13 @@ public abstract class CraftFakeHuman extends CraftFakeEntity {
         super(appearence, settings, FakeEntityType.HUMAN);
         this.humanProfile = humanProfile;
 
-        this.fetchingThread = new Thread(() -> {
-            profile = initProfile();
-            playerSkin = profile.getProperties().get(getName());
-            universallyUniqueId = profile.getUUID();
+        this.fetchingThread = new Thread(new Runnable() {
+            @Override
+            public void run(){
+                profile = initProfile();
+                playerSkin = profile.getProperties().get(getName());
+                universallyUniqueId = profile.getUUID();
+            }
         });
         this.fetchingThread.start();
     }
@@ -62,7 +65,12 @@ public abstract class CraftFakeHuman extends CraftFakeEntity {
      */
     public void updateName(final Player... players){
         this.despawn(players);
-        Bukkit.getScheduler().runTaskLater(SuperLibrary.plugin(), () -> spawn(players), 5L);
+        Bukkit.getScheduler().runTaskLater(SuperLibrary.plugin(), new Runnable() {
+            @Override
+            public void run(){
+                spawn(players);
+            }
+        }, 5L);
     }
 
     /**

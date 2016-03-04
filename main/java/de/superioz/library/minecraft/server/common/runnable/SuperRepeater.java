@@ -22,7 +22,7 @@ public class SuperRepeater extends SuperRunnable {
      * @param onFinish What happens on finish?
      * @param delay Delay between
      */
-    public void run(Consumer<BukkitRunnable> onRepeat, Consumer<BukkitRunnable> onFinish, int delay){
+    public void run(final Consumer<BukkitRunnable> onRepeat, final Consumer<BukkitRunnable> onFinish, int delay){
         super.setRunnable(new BukkitRunnable() {
             @Override
             public void run(){

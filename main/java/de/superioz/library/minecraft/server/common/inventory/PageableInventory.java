@@ -61,7 +61,12 @@ public class PageableInventory {
      */
     public void update(){
         this.calculatePages(true, contentClick);
-        pages.forEach(SuperInventory::build);
+        pages.forEach(new Consumer<SuperInventory>() {
+            @Override
+            public void accept(SuperInventory superInventory){
+                superInventory.build();
+            }
+        });
     }
 
     /**
@@ -93,21 +98,32 @@ public class PageableInventory {
         // Pageable list
         if(page < pageableList.getTotalPages()){
             final int finalPage = page;
-            inventory.set(new InteractableSimpleItem(getSize().getSlots() - 3, nextPage, inventory, event -> {
-                event.cancelEvent();
-                event.closeInventory();
-                event.getPlayer().openInventory(getPage(finalPage + 1).build());
+            inventory.set(new InteractableSimpleItem(getSize().getSlots() - 3, nextPage, inventory, new Consumer<WrappedInventoryClickEvent>() {
+                @Override
+                public void accept(WrappedInventoryClickEvent event){
+                    event.cancelEvent();
+                    event.closeInventory();
+                    event.getPlayer().openInventory(getPage(finalPage + 1).build());
+                }
             }));
         }
         if(page != 1){
             final int finalPage = page;
-            inventory.set(new InteractableSimpleItem(getSize().getSlots() - 5, lastPage, inventory, event -> {
-                event.cancelEvent();
-                event.closeInventory();
-                event.getPlayer().openInventory(getPage(finalPage - 1).build());
+            inventory.set(new InteractableSimpleItem(getSize().getSlots() - 5, lastPage, inventory, new Consumer<WrappedInventoryClickEvent>() {
+                @Override
+                public void accept(WrappedInventoryClickEvent event){
+                    event.cancelEvent();
+                    event.closeInventory();
+                    event.getPlayer().openInventory(getPage(finalPage - 1).build());
+                }
             }));
         }
-        inventory.set(new InteractableSimpleItem(getSize().getSlots() - 4, middleItem, inventory, WrappedInventoryClickEvent::cancelEvent));
+        inventory.set(new InteractableSimpleItem(getSize().getSlots() - 4, middleItem, inventory, new Consumer<WrappedInventoryClickEvent>() {
+            @Override
+            public void accept(WrappedInventoryClickEvent event){
+                event.cancelEvent();
+            }
+        }));
 
         return inventory;
     }
@@ -141,8 +157,13 @@ public class PageableInventory {
      * @return The list of viewers
      */
     public List<HumanEntity> getViewers(){
-        List<HumanEntity> entities = new ArrayList<>();
-        getPages().forEach(superInventory -> entities.addAll(superInventory.getViewers()));
+        final List<HumanEntity> entities = new ArrayList<>();
+        getPages().forEach(new Consumer<SuperInventory>() {
+            @Override
+            public void accept(SuperInventory superInventory){
+                entities.addAll(superInventory.getViewers());
+            }
+        });
         return entities;
     }
 
@@ -174,7 +195,12 @@ public class PageableInventory {
         for(int i = newMaxPages + 1; i < oldMaxPages + 1; i++){
             toClose.addAll(getViewers(i));
         }
-        toClose.forEach(HumanEntity::closeInventory);
+        toClose.forEach(new Consumer<HumanEntity>() {
+            @Override
+            public void accept(HumanEntity humanEntity){
+                humanEntity.closeInventory();
+            }
+        });
     }
 
     // -- Intern methods

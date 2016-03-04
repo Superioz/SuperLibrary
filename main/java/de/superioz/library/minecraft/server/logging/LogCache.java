@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Class created on April in 2015
@@ -59,9 +60,14 @@ public class LogCache {
 
         // Set text of file
         try{
-            PrintWriter writer = new PrintWriter(f, "UTF-8");
+            final PrintWriter writer = new PrintWriter(f, "UTF-8");
 
-            lines.forEach(writer::println);
+            lines.forEach(new Consumer<String>() {
+                @Override
+                public void accept(String s){
+                    writer.println(s);
+                }
+            });
             writer.println("# End logfile @" + endTimestamp);
             writer.close();
         }catch(FileNotFoundException

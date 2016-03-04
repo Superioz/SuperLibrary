@@ -36,11 +36,11 @@ public class PlayerDisguiseManager implements Listener {
             public void onPacketSending(PacketEvent event){
                 PacketContainer packet = event.getPacket();
                 Player toDisplay = (Player) packet.getEntityModifier(event).readSafely(0);
-                Player receiver = event.getPlayer();
+                final Player receiver = event.getPlayer();
 
                 if(disguised.containsKey(toDisplay.getUniqueId())){
                     event.setCancelled(true);
-                    PlayerDisguise disguise = disguised.get(toDisplay.getUniqueId());
+                    final PlayerDisguise disguise = disguised.get(toDisplay.getUniqueId());
 
                     new BukkitRunnable() {
                         @Override

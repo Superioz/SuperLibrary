@@ -68,8 +68,15 @@ public abstract class CraftFakeEntity {
      * @return The players in range
      */
     public List<Player> getNearbyPlayers(double radius){
-        return this.getLocation().getWorld().getPlayers().stream()
-                .filter(player -> this.getLocation().distance(player.getLocation()) <= radius).collect(Collectors.toList());
+        List<Player> players = new ArrayList<>();
+
+	    for(Player player : this.getLocation().getWorld().getPlayers()){
+		    if(player.getLocation().distance(this.getLocation()) <= radius){
+			    players.add(player);
+		    }
+	    }
+
+        return players;
     }
 
     /**

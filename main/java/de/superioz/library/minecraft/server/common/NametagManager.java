@@ -173,8 +173,8 @@ public class NametagManager {
      * @param players The players
      */
     private static void createTeam(String prefix, String suffix, List<Player> players){
-        List<String> ls = players.stream().map(Player::getDisplayName)
-                .collect(Collectors.toList());
+        List<String> ls = new ArrayList<>();
+        for(Player p : players) ls.add(p.getDisplayName());
 
         TeamHandle team = new TeamHandle(getNextTeamName(), prefix, suffix);
         TEAMS.put(team, ls);

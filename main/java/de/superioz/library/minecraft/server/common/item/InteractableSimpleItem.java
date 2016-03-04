@@ -37,11 +37,21 @@ public class InteractableSimpleItem implements Listener {
     }
 
     public InteractableSimpleItem(int index, SimpleItem item, SuperInventory inv){
-        this(index, item, inv, WrappedInventoryClickEvent::cancelEvent);
+        this(index, item, inv, new Consumer<WrappedInventoryClickEvent>() {
+            @Override
+            public void accept(WrappedInventoryClickEvent event){
+                event.cancelEvent();
+            }
+        });
     }
 
     public InteractableSimpleItem(int index, SimpleItem item){
-        this(index, item, null, WrappedInventoryClickEvent::cancelEvent);
+        this(index, item, null, new Consumer<WrappedInventoryClickEvent>() {
+            @Override
+            public void accept(WrappedInventoryClickEvent event){
+                event.cancelEvent();
+            }
+        });
     }
 
     public InteractableSimpleItem(int index, SimpleItem item, Consumer<WrappedInventoryClickEvent> event){

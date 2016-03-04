@@ -159,6 +159,7 @@ public class CommandHandler {
 		return new CommandWrapper(getExecuteMethod(c), CommandType.ROOT);
 	}
 
+	@SuppressWarnings("unchecked")
 	/**
 	 * Gets all sub commands of given command
 	 *
@@ -167,9 +168,15 @@ public class CommandHandler {
 	 */
 	private static List<CommandWrapper> getSubCommands(CommandWrapper command){
 		List<CommandWrapper> nestedCommands = getCommands(command.parentClass)[1];
+		List<CommandWrapper> subs = new ArrayList<>();
 
-		return nestedCommands.stream().filter(c ->
-				c.getParentCommand().equalsIgnoreCase(command.getLabel())).collect(Collectors.toList());
+		for(CommandWrapper c : nestedCommands){
+			if(c.getParentCommand().equalsIgnoreCase(command.getLabel())){
+				subs.add(c);
+			}
+		}
+
+		return subs;
 	}
 
 	/**
@@ -214,7 +221,9 @@ public class CommandHandler {
 			for(CommandWrapper sc : c.getSubCommands()){
 				commands.add(sc);
 
-				commands.addAll(sc.getSubCommands().stream().collect(Collectors.toList()));
+				for(CommandWrapper wrapper : sc.getSubCommands()){
+					commands.add(wrapper);
+				}
 			}
 		}
 		return commands;
@@ -227,8 +236,13 @@ public class CommandHandler {
 	 * @return The list of commands
 	 */
 	public static List<CommandWrapper> getCommands(String label){
-		return getCommands().stream().filter(wr
-				-> wr.getLabel().equalsIgnoreCase(label)).collect(Collectors.toList());
+		List<CommandWrapper> l = new ArrayList<>();
+		for(CommandWrapper wrapper : getCommands()){
+			if(wrapper.getLabel().equalsIgnoreCase(label)){
+				l.add(wrapper);
+			}
+		}
+		return l;
 	}
 
 	/**

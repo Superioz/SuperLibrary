@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -41,18 +42,21 @@ public class NPCRegistry {
     public static void unregister(CraftFakeEntity fakeEntity, boolean remove){
         if(entities.contains(fakeEntity)){
             List<UUID> uuidList = fakeEntity.getViewers();
-            List<Player> playerList = new ArrayList<>();
+            final List<Player> playerList = new ArrayList<>();
 
-            uuidList.forEach(uuid -> {
-                Player pl = Bukkit.getPlayer(uuid);
+            uuidList.forEach(new Consumer<UUID>() {
+                @Override
+                public void accept(UUID uuid){
+                    Player pl = Bukkit.getPlayer(uuid);
 
-                if(pl.isOnline()){
-                    playerList.add(pl);
+                    if(pl.isOnline()){
+                        playerList.add(pl);
+                    }
                 }
             });
 
             fakeEntity.despawn(playerList.toArray(new Player[playerList.size()]));
-            fakeEntity.setViewers(new ArrayList<>());
+            fakeEntity.setViewers(new ArrayList<UUID>());
 
             if(remove)
                 entities.remove(fakeEntity);
@@ -64,7 +68,12 @@ public class NPCRegistry {
      */
     public static void unregisterAll(){
         List<CraftFakeEntity> entityList = getEntities();
-        entityList.forEach(fakeEntity -> NPCRegistry.unregister(fakeEntity, false));
+        entityList.forEach(new Consumer<CraftFakeEntity>() {
+            @Override
+            public void accept(CraftFakeEntity fakeEntity){
+                NPCRegistry.unregister(fakeEntity, false);
+            }
+        });
         entities = new ArrayList<>();
     }
 
@@ -76,7 +85,15 @@ public class NPCRegistry {
      * @return The list
      */
     public static List<CraftFakeEntity> getEntities(Player player){
-        return getEntities().stream().filter(e -> e.getViewers().contains(player.getUniqueId())).collect(Collectors.toList());
+        List<CraftFakeEntity> entities = new ArrayList<>();
+
+	    for(CraftFakeEntity e : getEntities()){
+		    if(e.getViewers().contains(player.getUniqueId())){
+			    entities.add(e);
+		    }
+	    }
+
+        return entities;
     }
 
     /**

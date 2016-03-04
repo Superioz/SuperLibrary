@@ -147,7 +147,16 @@ public class CommandContext {
 	 * @return The list of flags
 	 */
 	public List<CommandFlag> getFlags(){
-		return getCommand().getFlags().stream().filter(this::hasFlag).map(f -> getCommandFlag(f, -1)).collect(Collectors.toList());
+		List<CommandFlag> flagList = new ArrayList<>();
+
+		for(String flag : getCommand().getFlags()){
+			if(this.hasFlag(flag)){
+				CommandFlag f = getCommandFlag(flag, -1);
+				flagList.add(f);
+			}
+		}
+
+		return flagList;
 	}
 
 	/**
@@ -156,7 +165,13 @@ public class CommandContext {
 	 * @return The list of flags as string list
 	 */
 	public List<String> getRawFlags(){
-		return getFlags().stream().map(CommandFlag::getName).collect(Collectors.toList());
+		List<String> flags = new ArrayList<>();
+
+		for(CommandFlag flag : getFlags()){
+			flags.add(flag.getName());
+		}
+
+		return flags;
 	}
 
 	// -- Intern methods

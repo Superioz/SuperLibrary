@@ -114,7 +114,12 @@ public abstract class CraftHologram {
         if(isActive()){
             this.hide(players);
 
-            Bukkit.getScheduler().runTaskLater(SuperLibrary.plugin(), () -> show(players), 1L);
+            Bukkit.getScheduler().runTaskLater(SuperLibrary.plugin(), new Runnable() {
+                @Override
+                public void run(){
+                    show(players);
+                }
+            }, 1L);
         }
         else{
             this.show(players);
