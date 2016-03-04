@@ -5,7 +5,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.common.npc.FakeMob;
 import de.superioz.library.minecraft.server.common.npc.meta.EntityMetaHandler;
-import de.superioz.library.minecraft.server.common.npc.meta.MobType;
+import de.superioz.library.minecraft.server.common.npc.MobType;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntityAppearence;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.FakeEntityType;

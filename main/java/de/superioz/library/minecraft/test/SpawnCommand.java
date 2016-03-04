@@ -7,7 +7,7 @@ import de.superioz.library.minecraft.server.common.command.CommandCase;
 import de.superioz.library.minecraft.server.common.command.CommandFlag;
 import de.superioz.library.minecraft.server.common.command.context.CommandContext;
 import de.superioz.library.minecraft.server.common.npc.FakeMob;
-import de.superioz.library.minecraft.server.common.npc.meta.MobType;
+import de.superioz.library.minecraft.server.common.npc.MobType;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.message.BukkitChat;
 import org.bukkit.entity.EntityType;

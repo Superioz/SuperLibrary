@@ -2,7 +2,6 @@ package de.superioz.library.minecraft.server.common.npc;
 
 import de.superioz.library.minecraft.server.common.npc.meta.EntityMeta;
 import de.superioz.library.minecraft.server.common.npc.meta.EntityMetaValues;
-import de.superioz.library.minecraft.server.common.npc.meta.MobType;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntityAppearence;
 import de.superioz.library.minecraft.server.common.npc.meta.settings.EntitySettings;
 import de.superioz.library.minecraft.server.common.npc.raw.CraftFakeMob;

@@ -1,4 +1,4 @@
-package de.superioz.library.minecraft.server.common.npc.meta;
+package de.superioz.library.minecraft.server.common.npc;
 
 import de.superioz.library.java.util.RandomUtil;
 import org.bukkit.entity.EntityType;
@@ -29,7 +29,6 @@ public enum MobType {
     ZOMBIE(EntityType.ZOMBIE),
     RABBIT(EntityType.RABBIT),
     SHEEP(EntityType.SHEEP),
-    SHULKER(EntityType.SHULKER),
     SKELETON(EntityType.SKELETON),
     VILLAGER(EntityType.VILLAGER),
     WITCH(EntityType.WITCH),
