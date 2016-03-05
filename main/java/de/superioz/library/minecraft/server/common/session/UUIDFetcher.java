@@ -156,7 +156,7 @@ public class UUIDFetcher {
         return null;
     }
 
-    public static interface Consumer<T> {
+    private static interface Consumer<T> {
 
         void accept(T t);
     }

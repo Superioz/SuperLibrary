@@ -1,12 +1,11 @@
 package de.superioz.library.minecraft.server.logging;
 
-import de.superioz.library.java.util.TimeUtils;
+import de.superioz.library.java.util.time.TimeUtils;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Class created on April in 2015
@@ -62,12 +61,10 @@ public class LogCache {
         try{
             final PrintWriter writer = new PrintWriter(f, "UTF-8");
 
-            lines.forEach(new Consumer<String>() {
-                @Override
-                public void accept(String s){
-                    writer.println(s);
-                }
-            });
+            for(String l : lines){
+                writer.println(l);
+            }
+
             writer.println("# End logfile @" + endTimestamp);
             writer.close();
         }catch(FileNotFoundException

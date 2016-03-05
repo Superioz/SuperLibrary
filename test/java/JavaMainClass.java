@@ -1,3 +1,6 @@
+import de.superioz.library.java.util.Consumer;
+import de.superioz.library.minecraft.server.common.session.UUIDFetcher;
+
 import java.util.Arrays;
 
 /**

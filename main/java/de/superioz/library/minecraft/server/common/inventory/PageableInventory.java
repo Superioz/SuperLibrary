@@ -1,5 +1,6 @@
 package de.superioz.library.minecraft.server.common.inventory;
 
+import de.superioz.library.java.util.Consumer;
 import de.superioz.library.java.util.list.PageableList;
 import de.superioz.library.minecraft.server.common.item.InteractableSimpleItem;
 import de.superioz.library.minecraft.server.common.item.SimpleItem;
@@ -9,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -61,12 +61,10 @@ public class PageableInventory {
      */
     public void update(){
         this.calculatePages(true, contentClick);
-        pages.forEach(new Consumer<SuperInventory>() {
-            @Override
-            public void accept(SuperInventory superInventory){
-                superInventory.build();
-            }
-        });
+
+        for(SuperInventory page : pages){
+	        page.build();
+        }
     }
 
     /**
@@ -158,12 +156,10 @@ public class PageableInventory {
      */
     public List<HumanEntity> getViewers(){
         final List<HumanEntity> entities = new ArrayList<>();
-        getPages().forEach(new Consumer<SuperInventory>() {
-            @Override
-            public void accept(SuperInventory superInventory){
-                entities.addAll(superInventory.getViewers());
-            }
-        });
+
+	    for(SuperInventory inventory : getPages()){
+		    entities.addAll(inventory.getViewers());
+	    }
         return entities;
     }
 
@@ -195,12 +191,10 @@ public class PageableInventory {
         for(int i = newMaxPages + 1; i < oldMaxPages + 1; i++){
             toClose.addAll(getViewers(i));
         }
-        toClose.forEach(new Consumer<HumanEntity>() {
-            @Override
-            public void accept(HumanEntity humanEntity){
-                humanEntity.closeInventory();
-            }
-        });
+
+        for(HumanEntity e : toClose){
+            e.closeInventory();
+        }
     }
 
     // -- Intern methods

@@ -1,5 +1,6 @@
 package de.superioz.library.minecraft.server.common.item;
 
+import de.superioz.library.java.util.Consumer;
 import de.superioz.library.main.SuperLibrary;
 import de.superioz.library.minecraft.server.event.WrappedItemInteractEvent;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.function.Consumer;
 
 /**
  * This class was created as a part of SuperLibrary

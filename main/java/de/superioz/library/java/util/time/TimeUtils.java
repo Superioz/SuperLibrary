@@ -1,8 +1,8 @@
-package de.superioz.library.java.util;
+package de.superioz.library.java.util.time;
+
+import de.superioz.library.java.util.AlphabetUtils;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ public class TimeUtils {
      */
     public static int[] getTime(){
         int[] time = new int[3];
-        LocalTime timeNow = LocalTime.now();
+        CurrentTime timeNow = CurrentTime.now();
 
         // Put into array
         time[0] = timeNow.getHour();
@@ -51,8 +51,8 @@ public class TimeUtils {
      * Returns the year in an integer
      */
     public static int getYear(){
-        LocalDate date = LocalDate.now();
-        return date.getYear();
+        //LocalDate date = LocalDate.now();
+        return 1;
     }
 
     /**

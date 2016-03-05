@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * This class was created as a part of SuperLibrary
@@ -44,16 +42,13 @@ public class NPCRegistry {
             List<UUID> uuidList = fakeEntity.getViewers();
             final List<Player> playerList = new ArrayList<>();
 
-            uuidList.forEach(new Consumer<UUID>() {
-                @Override
-                public void accept(UUID uuid){
-                    Player pl = Bukkit.getPlayer(uuid);
+            for(UUID uuid : uuidList){
+                Player pl = Bukkit.getPlayer(uuid);
 
-                    if(pl.isOnline()){
-                        playerList.add(pl);
-                    }
+                if(pl.isOnline()){
+                    playerList.add(pl);
                 }
-            });
+            }
 
             fakeEntity.despawn(playerList.toArray(new Player[playerList.size()]));
             fakeEntity.setViewers(new ArrayList<UUID>());
@@ -68,12 +63,10 @@ public class NPCRegistry {
      */
     public static void unregisterAll(){
         List<CraftFakeEntity> entityList = getEntities();
-        entityList.forEach(new Consumer<CraftFakeEntity>() {
-            @Override
-            public void accept(CraftFakeEntity fakeEntity){
-                NPCRegistry.unregister(fakeEntity, false);
-            }
-        });
+
+	    for(CraftFakeEntity e : entityList){
+		    NPCRegistry.unregister(e, false);
+	    }
         entities = new ArrayList<>();
     }
 
