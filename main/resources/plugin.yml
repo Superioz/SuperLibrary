@@ -1,7 +1,7 @@
-name: SuperLibrary
+name: BukkitLibrary
 version: 1.0
 author: Superioz
-main: de.superioz.library.minecraft.test.TestPlugin
+main: de.superioz.library.bukkit.test.TestPlugin
 description: Description
 
 loadbefore: [ProtocolLib]

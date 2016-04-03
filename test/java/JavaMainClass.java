@@ -1,14 +1,11 @@
-import de.superioz.library.java.util.Consumer;
-import de.superioz.library.minecraft.server.common.session.UUIDFetcher;
-
-import java.util.Arrays;
-
 /**
- * This class was created as a part of SuperLibrary
+ * This class was created as a part of BukkitLibrary
  *
  * @author Superioz
  */
 public class JavaMainClass {
+
+    int number = 1;
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args){
@@ -31,5 +28,4 @@ public class JavaMainClass {
 //        )));
 //        System.out.println("Created");
     }
-
 }

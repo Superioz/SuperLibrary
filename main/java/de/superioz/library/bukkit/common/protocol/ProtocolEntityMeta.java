@@ -1,0 +1,169 @@
+package de.superioz.library.bukkit.common.protocol;
+
+import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Created on 29.03.2016.
+ */
+@Getter
+public enum ProtocolEntityMeta {
+
+	ENTITY_STATE(0, Type.BYTE),
+	ENTITY_IN_AIR(1, Type.VARINT),
+	ENTITY_CUSTOM_NAME(2, Type.STRING),
+	ENTITY_CUSTOM_NAME_VISIBLE(3, Type.BOOLEAN),
+	ENTITY_IS_SILENT(4, Type.BOOLEAN),
+	POTION_SLOT(5, Type.SLOT),
+	FALLING_BLOCK_POSITION(5, Type.POSITION),
+	AREA_EFFECT_CLOUD_RADIUS(5, Type.FLOAT),
+	AREA_EFFECT_CLOUD_COLOR(6, Type.VARINT), // Only for mob spell particle
+	AREA_EFFECT_CLOUD_IGNORE_RADIUS(7, Type.BOOLEAN),
+	AREA_EFFECT_CLOUD_PARTICLE_ID(8, Type.VARINT),
+	FISHING_HOOK(5, Type.VARINT),
+	ARROW_IS_CRITICAL(5, Type.BYTE),
+	TIPPED_ARROW(6, Type.VARINT),
+	BOAT_TIME_SINCE_LAST_HIT(5, Type.VARINT),
+	BOAT_FORWARD_DIRECTION(6, Type.VARINT),
+	BOAT_DAMAGE_TAKEN(7, Type.FLOAT),
+	BOAT_TYPE(8, Type.VARINT),
+	BOAT_UNKNOWN_9(9, Type.BOOLEAN),
+	BOAT_UNKNOWN_10(10, Type.BOOLEAN),
+	ENDER_CRYSTAL_BEAM_TARGET(5, Type.OPT_POSITION),
+	ENDER_CRYSTAL_SHOW_BOTTOM(6, Type.BOOLEAN),
+	WITHER_SKULL_INVULNERABLE(5, Type.BOOLEAN),
+	FIREWORKS_SLOT(5, Type.SLOT),
+	ITEM_FRAME_ITEM(5, Type.SLOT),
+	ITEM_FRAME_ROTATION(6, Type.VARINT),
+	ITEM_ITEM(5, Type.SLOT),
+	LIVING_UNKNOWN(5, Type.BYTE),
+	LIVING_HEALTH(6, Type.FLOAT),
+	LIVING_POTION_EFFECT_COLOR(7, Type.VARINT),
+	LIVING_IS_POTION_EFFECT_AMBIENT(8, Type.BOOLEAN),
+	LIVING_NUMBER_OF_ARROWS_INSIDE(9, Type.BYTE),
+	PLAYER_ADDITIONAL_HEARTS(10, Type.FLOAT),
+	PLAYER_SCORE(11, Type.VARINT),
+	PLAYER_SKIN_FLAGS(12, Type.BYTE),
+	PLAYER_MAIN_HAND(13, Type.BYTE), // 0 = left; 1 = right
+	ARMOR_STAND_STATE(10, Type.BYTE),
+	ARMOR_STAND_HEAD_ROTATION(11, Type.VECTOR3F),
+	ARMOR_STAND_BODY_ROTATION(12, Type.VECTOR3F),
+	ARMOR_STAND_LEFT_ARM_ROTATION(13, Type.VECTOR3F),
+	ARMOR_STAND_RIGHT_ARM_ROTATION(14, Type.VECTOR3F),
+	ARMOR_STAND_LEFT_LEG_ROTATION(15, Type.VECTOR3F),
+	ARMOR_STAND_RIGHT_LEG_ROTATION(16, Type.VECTOR3F),
+	INSENTIENT_STATE(10, Type.BYTE),
+	BAT_IS_HANGING(11, Type.BYTE),
+	AGEABLE_IS_BABY(11, Type.BOOLEAN),
+	HORSE_STATE(12, Type.BYTE),
+	HORSE_VARIANT(13, Type.VARINT),
+	HORSE_COLOR_STYLE(14, Type.VARINT),
+	HORSE_OWNER(15, Type.OPT_UUID),
+	HORSE_ARMOR(16, Type.VARINT),
+	PIG_HAS_SADDLE(12, Type.BOOLEAN),
+	RABBIT_TYPE(12, Type.VARINT),
+	SHEEP_STATUS(12, Type.BYTE), // Bit mask (color - sheared)
+	TAMEABLE_ANIMAL_STATE(12, Type.BYTE),
+	TAMEABLE_ANIMAL_OWNER(13, Type.OPT_UUID),
+	OCELOT_TYPE(14, Type.VARINT),
+	WOLF_DAMAGE_TAKEN(14, Type.FLOAT), // Used for tail rotation
+	WOLF_IS_BEGGING(15, Type.BOOLEAN),
+	WOLF_COLLAR_COLOR(16, Type.VARINT),
+	VILLAGER_PROFESSION(12, Type.VARINT),
+	IRONGOLEM_IS_PLAYER_MADE(11, Type.BYTE),
+	SNOWMAN_STATE(10, Type.BYTE),
+	SHULKER_FACING_DIRECTION(11, Type.DIRECTION),
+	SHULKER_ATTACHMENT_POSITION(12, Type.OPT_POSITION),
+	SHULKER_SHIELD_HEIGHT(13, Type.BYTE),
+	BLAZE_IS_ON_FIRE(11, Type.BYTE),
+	CREEPER_STATE(11, Type.VARINT), // -1 = idle; 1 = fuse
+	CREEPER_IS_CHARGED(12, Type.BOOLEAN),
+	CREEPER_IS_IGNITED(13, Type.BOOLEAN),
+	GUARDIAN_STATE(11, Type.BYTE),
+	GUARDIAN_TARGET_EID(12, Type.VARINT),
+	SKELETON_TYPE(11, Type.VARINT),
+	SKELETON_UNKNOWN(12, Type.BOOLEAN),
+	SPIDER_IS_CLIMBING(11, Type.BYTE),
+	WITCH_IS_AGRESSIVE(11, Type.BOOLEAN),
+	WITHER_TARGET_FIRST(11, Type.VARINT),
+	WITHER_TARGET_SECOND(12, Type.VARINT),
+	WITHER_TARGET_THIRD(13, Type.VARINT),
+	WITHER_INVULNERABLE_TIME(14, Type.VARINT),
+	ZOMBIE_IS_BABY(11, Type.BOOLEAN),
+	ZOMBIE_IS_VILLAGER(12, Type.VARINT), // 0 = zombie; profession+1 = villager
+	ZOMBIE_IS_CONVERTING(13, Type.BOOLEAN),
+	ZOMBIE_ARE_HANDS_HELD_UP(14, Type.BOOLEAN),
+	ENDERMAN_CARRIED_BLOCK(11, Type.BLOCKID),
+	ENDERMAN_IS_SCREAMING(12, Type.BOOLEAN),
+	ENDER_DRAGON_PHASE(11, Type.VARINT),
+	GHAST_IS_ATTACKING(11, Type.BOOLEAN),
+	SLIME_SIZE(11, Type.VARINT),
+	MINECART_SHAKING_POWER(5, Type.VARINT),
+	MINECART_SHAKING_DIRECTION(6, Type.VARINT),
+	MINECART_SHAKING_MULTIPLIER(7, Type.FLOAT),
+	MINECART_BLOCKID_AND_DAMAGE(8, Type.VARINT),
+	MINECART_BLOCK_Y(9, Type.VARINT),
+	MINECART_SHOW_BLOCK(10, Type.BOOLEAN),
+	MINECART_COMMANDBLOCK_COMMAND(11, Type.STRING),
+	MINECART_COMMANDBLOCK_CHAT(12, Type.CHAT),
+	MINECART_FURNCACE_IS_POWERED(11, Type.BOOLEAN),
+	TNTPRIMED_FUSE_TIME(5, Type.VARINT);
+
+	private int index;
+	private Type type;
+
+	/**
+	 * Constructor for meta data enumeration
+	 * @param index The index
+	 * @param type The type
+	 */
+	ProtocolEntityMeta(int index, Type type){
+		this.index = index;
+		this.type = type;
+
+	}
+
+
+	/**
+	 * Type of protocol meta data
+	 */
+	@Getter
+	public enum Type {
+
+		BYTE(Byte.class),
+		VARINT(Integer.class),
+		FLOAT(Float.class),
+		STRING(String.class),
+		CHAT(String.class),
+		SLOT,
+		BOOLEAN(Boolean.class),
+		VECTOR3F(Float[].class),
+		POSITION(Integer.class), // This integer consists of 3 shifted bytes (x,y,z)
+		OPT_POSITION,
+		DIRECTION(Integer.class),
+		OPT_UUID,
+		BLOCKID(Integer.class);
+
+		private List<Class<?>> registryClasses;
+
+		/**
+		 * Constructor of protocol meta data type
+		 * @param classes The classes (e.g Byte.class, Integer.class ...)
+		 */
+		Type(Class<?>... classes){
+			registryClasses = Arrays.asList(classes);
+		}
+
+		/**
+		 * Get the serializer from this type
+		 * @return The serializer
+		 */
+		public WrappedDataWatcher.Serializer getSerializer(){
+			return WrappedDataWatcher.Serializer.from(this);
+		}
+
+	}
+
+}
