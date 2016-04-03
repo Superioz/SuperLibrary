@@ -19,3 +19,5 @@ You can use this library too, if you want. Just add following lines to your pom.
   <version>2.0.17</version>
 </dependency>
 ```
+
+If you want to use newer versions of this library, goto: https://github.com/SuperiozDE/SuperLibrary/wiki
